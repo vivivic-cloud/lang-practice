@@ -38,7 +38,8 @@
 
     /* CARD */
     .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; width: 100%; max-width: 700px; }
-    .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; }
+    .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
+    .card-sub { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px; }
 
     /* LANG GRID */
     .lang-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
@@ -47,13 +48,27 @@
       background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius);
       padding: 16px 6px; cursor: pointer; display: flex; flex-direction: column;
       align-items: center; gap: 7px; transition: all 0.2s; color: var(--text);
+      position: relative;
     }
-    .lang-btn:hover { border-color: var(--accent); }
-    .lang-btn.selected { border-color: var(--accent); background: rgba(91,110,245,0.15); }
+    .lang-btn:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-2px); }
+    .lang-btn.selected { border-color: var(--accent); background: rgba(91,110,245,0.18); }
+    .lang-btn.selected::after {
+      content: '✓'; position: absolute; top: 6px; right: 8px;
+      font-size: 0.72rem; color: var(--accent); font-weight: 700;
+    }
     .lang-btn:disabled { opacity: 0.3; cursor: not-allowed; }
     .lang-btn .flag { font-size: 1.8rem; }
     .lang-btn .name { font-size: 0.78rem; font-weight: 600; }
     .lang-btn .native { font-size: 0.68rem; color: var(--text-muted); }
+
+    /* SELECTED LANGS CHIPS */
+    .selected-langs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; min-height: 30px; }
+    .lang-chip {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(91,110,245,0.15); border: 1px solid rgba(91,110,245,0.4);
+      border-radius: 20px; padding: 5px 12px; font-size: 0.82rem;
+    }
+    .lang-chip .chip-flag { font-size: 1rem; }
 
     /* LEVEL GRID */
     .level-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
@@ -141,10 +156,14 @@
     .lang-arrow {
       display: flex; align-items: center; gap: 8px; background: var(--surface2);
       border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 0.85rem;
+      flex-wrap: wrap;
     }
     .lang-arrow .arr { color: var(--accent); font-size: 1.1rem; }
+    .target-flags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .target-flag-item { display: flex; align-items: center; gap: 4px; font-size: 0.82rem; }
+    .target-flag-sep { color: var(--text-muted); font-size: 0.7rem; }
 
-    .learn-cards { display: flex; flex-direction: column; gap: 14px; }
+    .learn-cards { display: flex; flex-direction: column; gap: 18px; }
     .learn-card {
       background: var(--surface2); border: 1px solid var(--border);
       border-radius: 12px; overflow: hidden;
@@ -153,24 +172,27 @@
       padding: 18px 20px 14px;
       font-size: 1.1rem; font-weight: 500; line-height: 1.6;
     }
-    .learn-divider {
-      height: 1px; background: var(--border); margin: 0 20px;
-      display: flex; align-items: center; justify-content: center; position: relative;
+
+    /* 언어별 번역 행 */
+    .lang-rows { display: flex; flex-direction: column; }
+    .lang-row {
+      border-top: 1px solid var(--border);
+      display: flex; flex-direction: column;
     }
-    .learn-divider::after {
-      content: '▼';
-      position: absolute;
-      background: var(--surface2);
-      padding: 0 8px;
-      font-size: 0.65rem;
-      color: var(--text-muted);
+    .lang-row-label {
+      display: flex; align-items: center; gap: 7px;
+      padding: 8px 20px 4px;
+      font-size: 0.75rem; color: var(--text-muted);
+      font-weight: 600; letter-spacing: 0.03em;
     }
-    .learn-target {
-      padding: 14px 20px 18px;
-      font-size: 1rem; color: var(--accent); line-height: 1.6;
+    .lang-row-label .flag { font-size: 1rem; }
+    .lang-row-body {
+      padding: 4px 20px 14px;
+      font-size: 1rem; line-height: 1.6;
       display: flex; align-items: center; justify-content: space-between; gap: 12px;
     }
-    .learn-target.hidden-text .target-text { filter: blur(6px); user-select: none; }
+    .lang-row-body.hidden-text .target-text { filter: blur(6px); user-select: none; }
+    .target-text { color: var(--accent); flex: 1; }
     .btn-reveal {
       background: rgba(91,110,245,0.15); border: 1px solid rgba(91,110,245,0.3);
       color: var(--accent); border-radius: 8px; padding: 5px 12px;
@@ -211,6 +233,15 @@
     }
     .btn-next:hover { background: var(--accent-hover); transform: translateY(-1px); }
     .btn-next:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; }
+
+    /* HINT BOX */
+    .hint-box {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(91,110,245,0.08); border: 1px solid rgba(91,110,245,0.2);
+      border-radius: 10px; padding: 10px 14px; margin-bottom: 18px;
+      font-size: 0.82rem; color: var(--text-muted);
+    }
+    .hint-box .hi { font-size: 1rem; }
 
     .fade-in { animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
@@ -305,16 +336,23 @@
   </div>
 </div>
 
-<!-- STEP 4 -->
+<!-- STEP 4 : 학습 언어 (복수 선택) -->
 <div class="card fade-in hidden" id="step4">
   <div class="card-title">배우고 싶은 언어를 선택하세요</div>
-  <div class="lang-grid" id="target-grid">
-    <button class="lang-btn" data-lang="kor" onclick="selectTargetLang(this)"><span class="flag">🇰🇷</span><span class="name">Korean</span><span class="native">한국어</span></button>
-    <button class="lang-btn" data-lang="eng" onclick="selectTargetLang(this)"><span class="flag">🇺🇸</span><span class="name">English</span><span class="native">영어</span></button>
-    <button class="lang-btn" data-lang="jpn" onclick="selectTargetLang(this)"><span class="flag">🇯🇵</span><span class="name">Japanese</span><span class="native">日本語</span></button>
-    <button class="lang-btn" data-lang="cmn" onclick="selectTargetLang(this)"><span class="flag">🇨🇳</span><span class="name">Chinese</span><span class="native">中文</span></button>
-    <button class="lang-btn" data-lang="vie" onclick="selectTargetLang(this)"><span class="flag">🇻🇳</span><span class="name">Vietnamese</span><span class="native">Tiếng Việt</span></button>
+  <div class="card-sub">여러 언어를 동시에 선택할 수 있어요 · 각 문장 아래에 모두 표시됩니다</div>
+  <div class="hint-box">
+    <span class="hi">💡</span>
+    <span>예) 한국어 문장 아래에 영어 + 일본어 + 중국어가 함께 나타납니다</span>
   </div>
+  <div class="lang-grid" id="target-grid">
+    <button class="lang-btn" data-lang="kor" onclick="toggleTargetLang(this)"><span class="flag">🇰🇷</span><span class="name">Korean</span><span class="native">한국어</span></button>
+    <button class="lang-btn" data-lang="eng" onclick="toggleTargetLang(this)"><span class="flag">🇺🇸</span><span class="name">English</span><span class="native">영어</span></button>
+    <button class="lang-btn" data-lang="jpn" onclick="toggleTargetLang(this)"><span class="flag">🇯🇵</span><span class="name">Japanese</span><span class="native">日本語</span></button>
+    <button class="lang-btn" data-lang="cmn" onclick="toggleTargetLang(this)"><span class="flag">🇨🇳</span><span class="name">Chinese</span><span class="native">中文</span></button>
+    <button class="lang-btn" data-lang="vie" onclick="toggleTargetLang(this)"><span class="flag">🇻🇳</span><span class="name">Vietnamese</span><span class="native">Tiếng Việt</span></button>
+  </div>
+  <!-- 선택된 언어 미리보기 -->
+  <div class="selected-langs" id="selected-target-langs"></div>
 </div>
 
 <!-- STEP 5 -->
@@ -324,8 +362,7 @@
       <span id="learn-native-flag">🇰🇷</span>
       <span id="learn-native-name" style="font-weight:600">한국어</span>
       <span class="arr">→</span>
-      <span id="learn-target-flag">🇺🇸</span>
-      <span id="learn-target-name" style="font-weight:600">English</span>
+      <div class="target-flags" id="learn-target-flags"></div>
     </div>
     <div class="info-chip" style="font-size:0.78rem" id="learn-lv-chip">
       <span class="dot" id="learn-lv-dot"></span>
@@ -334,99 +371,104 @@
   </div>
   <div class="toggle-reveal">
     <div class="toggle-switch" id="reveal-toggle" onclick="toggleRevealAll()"></div>
-    <span class="toggle-label">번역 가리기 (클릭해서 확인)</span>
+    <span class="toggle-label">번역 가리기 (각 행의 <strong>보기</strong> 버튼으로 확인)</span>
   </div>
   <div class="learn-cards" id="learn-cards"></div>
 </div>
 
-<!-- BOTTOM BAR -->
+<!-- BOTTOM BAR (step3 & step4 공용) -->
 <div class="bottom-bar hidden" id="bottom-bar">
-  <div class="selected-count"><span id="count-display">0</span>개 선택됨</div>
-  <button class="btn-next" id="next-btn" disabled onclick="goToStep4()">다음 단계 →</button>
+  <div class="selected-count" id="bar-count-area">
+    <span id="count-display">0</span>개 선택됨
+  </div>
+  <button class="btn-next" id="next-btn" disabled onclick="onNextBtn()">다음 단계 →</button>
 </div>
 
 <script>
-// ── PARALLEL DATA (모든 언어가 화용적으로 동등한 문장) ─────────
+// ── PARALLEL DATA (화용적 등가 문장) ─────────────────────────────
 const DATA = {
   daily: [
-    { lv:1, tag:"식사/meal", kor:"밥 먹었어?", eng:"Did you eat?", jpn:"ご飯食べた？", cmn:"吃了吗？", vie:"Ăn chưa?" },
-    { lv:1, tag:"위치/location", kor:"지금 어디야?", eng:"Where are you?", jpn:"今どこ？", cmn:"你在哪？", vie:"Bạn đang ở đâu?" },
-    { lv:1, tag:"이동/movement", kor:"나 집에 가.", eng:"I'm heading home.", jpn:"家帰るね。", cmn:"我回家了。", vie:"Mình về nhà đây." },
-    { lv:1, tag:"식사/meal", kor:"뭐 먹을래?", eng:"What do you want to eat?", jpn:"何食べたい？", cmn:"想吃什么？", vie:"Muốn ăn gì?" },
-    { lv:2, tag:"식사/meal", kor:"나 지금 밥 먹는 중이야.", eng:"I'm eating right now.", jpn:"今ご飯食べてるとこ。", cmn:"我正在吃饭呢。", vie:"Tôi đang ăn cơm." },
-    { lv:2, tag:"연락/contact", kor:"조금 이따가 전화할게.", eng:"I'll call you in a bit.", jpn:"ちょっとしたら電話するね。", cmn:"一会儿给你打电话。", vie:"Lát nữa gọi cho bạn nhé." },
-    { lv:2, tag:"연락/contact", kor:"나 지금 바빠, 나중에 얘기하자.", eng:"I'm busy, let's talk later.", jpn:"今忙しいから後で話そ。", cmn:"我现在忙，晚点再聊。", vie:"Mình bận, nói chuyện sau nhé." },
-    { lv:2, tag:"약속/plan", kor:"이따 같이 가자.", eng:"Let's go together later.", jpn:"後で一緒に行こうよ。", cmn:"待会儿一起去吧。", vie:"Lát đi cùng nhau nhé." },
-    { lv:3, tag:"일상/daily", kor:"아 맞다, 깜빡했어 완전히.", eng:"Oh right, I totally forgot.", jpn:"あ、そうだ、すっかり忘れてた。", cmn:"哦对了，我给忘了。", vie:"Ừ nhỉ, mình quên béng mất." },
-    { lv:3, tag:"일상/daily", kor:"그냥 오늘은 집에서 쉬고 싶어.", eng:"I'd rather just stay home today.", jpn:"今日はなんか家でゆっくりしたい気分。", cmn:"今天就想待在家里休息。", vie:"Hôm nay chỉ muốn ở nhà nghỉ ngơi thôi." },
-    { lv:3, tag:"길/direction", kor:"거기까지 어떻게 가면 돼?", eng:"How do I get there from here?", jpn:"そこってここからどう行けばいいの？", cmn:"从这里怎么去那边？", vie:"Từ đây đi đến đó bằng đường nào?" },
-    { lv:3, tag:"이동/movement", kor:"나 먼저 갈게, 뒤에 따라와.", eng:"I'll head out first, catch up with me.", jpn:"先行くから後でついてきて。", cmn:"我先走了，你跟上来。", vie:"Mình đi trước, bạn đi theo sau nhé." },
-    { lv:4, tag:"일상/daily", kor:"어차피 갈 거면 진작에 말하지.", eng:"You could've just told me earlier.", jpn:"どうせ行くなら早く言ってよ。", cmn:"你早说不就好了。", vie:"Biết vậy nói sớm hơn cho rồi." },
-    { lv:4, tag:"식사/meal", kor:"밥은 먹고 다니는 거야?", eng:"Are you actually eating these days?", jpn:"ちゃんとご飯食べてる？", cmn:"你最近有好好吃饭吗？", vie:"Dạo này bạn có ăn uống đàng hoàng không?" },
-    { lv:4, tag:"식사/meal", kor:"이 동네 맛집 알면 알려줘, 나 완전 초행이거든.", eng:"Know any good spots? I'm totally new to this area.", jpn:"このへんでおすすめあったら教えて、全然詳しくないから。", cmn:"这附近有什么好吃的推荐一下，我完全不熟。", vie:"Ở đây có chỗ nào ngon không chỉ mình với, mình không rành khu này." },
-    { lv:4, tag:"컨디션/condition", kor:"오늘 완전 몸이 안 받쳐줘.", eng:"I'm running on empty today.", jpn:"今日はマジで体がついてかない。", cmn:"今天整个人都不在状态。", vie:"Hôm nay người mình không ra gì cả." },
+    { lv:1, tag:"식사/meal",       kor:"밥 먹었어?",                        eng:"Did you eat?",                           jpn:"ご飯食べた？",                        cmn:"吃了吗？",                     vie:"Ăn chưa?" },
+    { lv:1, tag:"위치/location",   kor:"지금 어디야?",                       eng:"Where are you?",                         jpn:"今どこ？",                           cmn:"你在哪？",                     vie:"Bạn đang ở đâu?" },
+    { lv:1, tag:"이동/movement",   kor:"나 집에 가.",                        eng:"I'm heading home.",                      jpn:"家帰るね。",                          cmn:"我回家了。",                   vie:"Mình về nhà đây." },
+    { lv:1, tag:"식사/meal",       kor:"뭐 먹을래?",                         eng:"What do you want to eat?",               jpn:"何食べたい？",                        cmn:"想吃什么？",                   vie:"Muốn ăn gì?" },
+    { lv:2, tag:"식사/meal",       kor:"나 지금 밥 먹는 중이야.",             eng:"I'm eating right now.",                  jpn:"今ご飯食べてるとこ。",                cmn:"我正在吃饭呢。",               vie:"Tôi đang ăn cơm." },
+    { lv:2, tag:"연락/contact",    kor:"조금 이따가 전화할게.",               eng:"I'll call you in a bit.",                jpn:"ちょっとしたら電話するね。",          cmn:"一会儿给你打电话。",           vie:"Lát nữa gọi cho bạn nhé." },
+    { lv:2, tag:"연락/contact",    kor:"나 지금 바빠, 나중에 얘기하자.",      eng:"I'm busy, let's talk later.",            jpn:"今忙しいから後で話そ。",              cmn:"我现在忙，晚点再聊。",         vie:"Mình bận, nói chuyện sau nhé." },
+    { lv:2, tag:"약속/plan",       kor:"이따 같이 가자.",                    eng:"Let's go together later.",               jpn:"後で一緒に行こうよ。",                cmn:"待会儿一起去吧。",             vie:"Lát đi cùng nhau nhé." },
+    { lv:3, tag:"일상/daily",      kor:"아 맞다, 깜빡했어 완전히.",           eng:"Oh right, I totally forgot.",            jpn:"あ、そうだ、すっかり忘れてた。",     cmn:"哦对了，我给忘了。",           vie:"Ừ nhỉ, mình quên béng mất." },
+    { lv:3, tag:"일상/daily",      kor:"그냥 오늘은 집에서 쉬고 싶어.",       eng:"I'd rather just stay home today.",       jpn:"今日はなんか家でゆっくりしたい気分。", cmn:"今天就想待在家里休息。",     vie:"Hôm nay chỉ muốn ở nhà nghỉ ngơi thôi." },
+    { lv:3, tag:"길/direction",    kor:"거기까지 어떻게 가면 돼?",            eng:"How do I get there from here?",          jpn:"そこってここからどう行けばいいの？", cmn:"从这里怎么去那边？",           vie:"Từ đây đi đến đó bằng đường nào?" },
+    { lv:3, tag:"이동/movement",   kor:"나 먼저 갈게, 뒤에 따라와.",          eng:"I'll head out first, catch up with me.", jpn:"先行くから後でついてきて。",          cmn:"我先走了，你跟上来。",         vie:"Mình đi trước, bạn đi theo sau nhé." },
+    { lv:4, tag:"일상/daily",      kor:"어차피 갈 거면 진작에 말하지.",        eng:"You could've just told me earlier.",     jpn:"どうせ行くなら早く言ってよ。",        cmn:"你早说不就好了。",             vie:"Biết vậy nói sớm hơn cho rồi." },
+    { lv:4, tag:"식사/meal",       kor:"밥은 먹고 다니는 거야?",              eng:"Are you actually eating these days?",    jpn:"ちゃんとご飯食べてる？",              cmn:"你最近有好好吃饭吗？",         vie:"Dạo này bạn có ăn uống đàng hoàng không?" },
+    { lv:4, tag:"식사/meal",       kor:"이 동네 맛집 알면 알려줘, 나 완전 초행이거든.", eng:"Know any good spots? I'm totally new to this area.", jpn:"このへんでおすすめあったら教えて、全然詳しくないから。", cmn:"这附近有什么好吃的推荐一下，我完全不熟。", vie:"Ở đây có chỗ nào ngon không chỉ mình với, mình không rành khu này." },
+    { lv:4, tag:"컨디션/condition",kor:"오늘 완전 몸이 안 받쳐줘.",           eng:"I'm running on empty today.",            jpn:"今日はマジで体がついてかない。",      cmn:"今天整个人都不在状态。",       vie:"Hôm nay người mình không ra gì cả." },
   ],
   greeting: [
-    { lv:1, tag:"인사/greeting", kor:"안녕!", eng:"Hey!", jpn:"こんにちは！", cmn:"你好！", vie:"Xin chào!" },
-    { lv:1, tag:"인사/greeting", kor:"잘 지냈어?", eng:"How have you been?", jpn:"元気？", cmn:"你还好吗？", vie:"Bạn khỏe không?" },
-    { lv:1, tag:"감사/thanks", kor:"고마워!", eng:"Thanks!", jpn:"ありがとう！", cmn:"谢谢！", vie:"Cảm ơn!" },
-    { lv:1, tag:"반응/reaction", kor:"괜찮아.", eng:"It's fine.", jpn:"大丈夫。", cmn:"没事。", vie:"Không sao." },
-    { lv:2, tag:"인사/greeting", kor:"오랜만이야!", eng:"Long time no see!", jpn:"久しぶり！", cmn:"好久不见！", vie:"Lâu quá không gặp!" },
-    { lv:2, tag:"인사/greeting", kor:"나중에 봐!", eng:"Talk later!", jpn:"またね！", cmn:"回头见！", vie:"Gặp lại sau nhé!" },
-    { lv:2, tag:"겸손/humble", kor:"별거 아닌데 뭘.", eng:"No big deal.", jpn:"大したことじゃないよ。", cmn:"没什么大不了的。", vie:"Có gì đâu." },
-    { lv:2, tag:"인사/greeting", kor:"조심히 가.", eng:"Take care!", jpn:"気をつけてね。", cmn:"路上小心。", vie:"Đi cẩn thận nhé." },
-    { lv:3, tag:"인사/greeting", kor:"얼마 만이야, 진짜 오랜만이다.", eng:"It's been forever, seriously.", jpn:"ほんと久々だね、懐かしい。", cmn:"真的好久没见了，都快认不出了。", vie:"Lâu thật, gặp lại mừng quá." },
-    { lv:3, tag:"인사/greeting", kor:"그동안 잘 지냈어? 연락이 없길래.", eng:"Haven't heard from you in a while — you good?", jpn:"連絡なかったから心配してたよ。", cmn:"一直没消息，还以为出什么事了。", vie:"Không thấy liên lạc, tưởng có chuyện gì." },
-    { lv:3, tag:"반응/reaction", kor:"아 그렇구나, 몰랐네.", eng:"Oh, I didn't know that.", jpn:"あー、そうなんだ、知らなかった。", cmn:"哦，这个我还真不知道。", vie:"Ồ, vậy hả, mình không biết." },
-    { lv:3, tag:"인사/greeting", kor:"어디 가? 나도 그쪽인데.", eng:"Where are you headed? I'm going that way too.", jpn:"どこ行くの？私もそっちなんだけど。", cmn:"你去哪儿？我也顺路。", vie:"Bạn đi đâu vậy? Mình cũng đi hướng đó." },
-    { lv:4, tag:"인사/greeting", kor:"야, 요즘 완전 뜸하네 너.", eng:"Hey, you've been MIA lately.", jpn:"最近全然顔出さないじゃん。", cmn:"你最近整个人消失了一样。", vie:"Dạo này bạn biến đi đâu hết vậy?" },
-    { lv:4, tag:"인사/greeting", kor:"별일 없지? 갑자기 연락해서.", eng:"Sorry for the random text — just wanted to check in.", jpn:"急に連絡してごめんね、特に用はないんだけど。", cmn:"突然联系你，没什么事，就是想问问你。", vie:"Nhắn đột ngột vậy thôi chứ không có gì, chỉ hỏi thăm." },
-    { lv:4, tag:"반응/reaction", kor:"어, 잘 됐다 마침 너한테 할 말 있었는데.", eng:"Oh perfect timing, I actually wanted to talk to you.", jpn:"ちょうどよかった、ちょっと話したいことあったんだよね。", cmn:"来得正好，我正好有话要跟你说。", vie:"May quá gặp bạn, mình vừa có chuyện muốn nói." },
-    { lv:4, tag:"반응/reaction", kor:"됐어 됐어, 신경 꺼.", eng:"Forget it, don't worry about it.", jpn:"もういいって、気にしないで。", cmn:"算了，你别管了。", vie:"Thôi kệ đi, đừng nghĩ nhiều." },
+    { lv:1, tag:"인사/greeting",   kor:"안녕!",                              eng:"Hey!",                                   jpn:"こんにちは！",                        cmn:"你好！",                       vie:"Xin chào!" },
+    { lv:1, tag:"인사/greeting",   kor:"잘 지냈어?",                         eng:"How have you been?",                     jpn:"元気？",                              cmn:"你还好吗？",                   vie:"Bạn khỏe không?" },
+    { lv:1, tag:"감사/thanks",     kor:"고마워!",                            eng:"Thanks!",                                jpn:"ありがとう！",                        cmn:"谢谢！",                       vie:"Cảm ơn!" },
+    { lv:1, tag:"반응/reaction",   kor:"괜찮아.",                            eng:"It's fine.",                             jpn:"大丈夫。",                            cmn:"没事。",                       vie:"Không sao." },
+    { lv:2, tag:"인사/greeting",   kor:"오랜만이야!",                        eng:"Long time no see!",                      jpn:"久しぶり！",                          cmn:"好久不见！",                   vie:"Lâu quá không gặp!" },
+    { lv:2, tag:"인사/greeting",   kor:"나중에 봐!",                         eng:"Talk later!",                            jpn:"またね！",                            cmn:"回头见！",                     vie:"Gặp lại sau nhé!" },
+    { lv:2, tag:"겸손/humble",     kor:"별거 아닌데 뭘.",                    eng:"No big deal.",                           jpn:"大したことじゃないよ。",              cmn:"没什么大不了的。",             vie:"Có gì đâu." },
+    { lv:2, tag:"인사/greeting",   kor:"조심히 가.",                         eng:"Take care!",                             jpn:"気をつけてね。",                      cmn:"路上小心。",                   vie:"Đi cẩn thận nhé." },
+    { lv:3, tag:"인사/greeting",   kor:"얼마 만이야, 진짜 오랜만이다.",        eng:"It's been forever, seriously.",          jpn:"ほんと久々だね、懐かしい。",          cmn:"真的好久没见了，都快认不出了。", vie:"Lâu thật, gặp lại mừng quá." },
+    { lv:3, tag:"인사/greeting",   kor:"그동안 잘 지냈어? 연락이 없길래.",   eng:"Haven't heard from you in a while — you good?", jpn:"連絡なかったから心配してたよ。", cmn:"一直没消息，还以为出什么事了。", vie:"Không thấy liên lạc, tưởng có chuyện gì." },
+    { lv:3, tag:"반응/reaction",   kor:"아 그렇구나, 몰랐네.",               eng:"Oh, I didn't know that.",                jpn:"あー、そうなんだ、知らなかった。",   cmn:"哦，这个我还真不知道。",       vie:"Ồ, vậy hả, mình không biết." },
+    { lv:3, tag:"인사/greeting",   kor:"어디 가? 나도 그쪽인데.",            eng:"Where are you headed? I'm going that way too.", jpn:"どこ行くの？私もそっちなんだけど。", cmn:"你去哪儿？我也顺路。", vie:"Bạn đi đâu vậy? Mình cũng đi hướng đó." },
+    { lv:4, tag:"인사/greeting",   kor:"야, 요즘 완전 뜸하네 너.",           eng:"Hey, you've been MIA lately.",           jpn:"最近全然顔出さないじゃん。",          cmn:"你最近整个人消失了一样。",     vie:"Dạo này bạn biến đi đâu hết vậy?" },
+    { lv:4, tag:"인사/greeting",   kor:"별일 없지? 갑자기 연락해서.",         eng:"Sorry for the random text — just wanted to check in.", jpn:"急に連絡してごめんね、特に用はないんだけど。", cmn:"突然联系你，没什么事，就是想问问你。", vie:"Nhắn đột ngột vậy thôi chứ không có gì, chỉ hỏi thăm." },
+    { lv:4, tag:"반응/reaction",   kor:"어, 잘 됐다 마침 너한테 할 말 있었는데.", eng:"Oh perfect timing, I actually wanted to talk to you.", jpn:"ちょうどよかった、ちょっと話したいことあったんだよね。", cmn:"来得正好，我正好有话要跟你说。", vie:"May quá gặp bạn, mình vừa có chuyện muốn nói." },
+    { lv:4, tag:"반응/reaction",   kor:"됐어 됐어, 신경 꺼.",               eng:"Forget it, don't worry about it.",       jpn:"もういいって、気にしないで。",        cmn:"算了，你别管了。",             vie:"Thôi kệ đi, đừng nghĩ nhiều." },
   ],
   feeling: [
-    { lv:1, tag:"피로/tired", kor:"피곤해.", eng:"I'm tired.", jpn:"疲れた。", cmn:"好累。", vie:"Mệt quá." },
-    { lv:1, tag:"배고픔/hungry", kor:"배고파.", eng:"I'm hungry.", jpn:"お腹すいた。", cmn:"好饿。", vie:"Đói bụng." },
-    { lv:1, tag:"피로/tired", kor:"졸려.", eng:"I'm sleepy.", jpn:"眠い。", cmn:"好困。", vie:"Buồn ngủ." },
-    { lv:1, tag:"감정/emotion", kor:"짜증나.", eng:"So annoying.", jpn:"イライラする。", cmn:"好烦。", vie:"Bực mình." },
-    { lv:2, tag:"피로/tired", kor:"너무 피곤해 죽겠어.", eng:"I'm absolutely exhausted.", jpn:"もうめっちゃ疲れた。", cmn:"累死了。", vie:"Mệt quá trời." },
-    { lv:2, tag:"배고픔/hungry", kor:"배고파 미칠 것 같아.", eng:"I'm starving.", jpn:"お腹ペコペコ。", cmn:"饿死了。", vie:"Đói muốn xỉu." },
-    { lv:2, tag:"감정/emotion", kor:"기분이 좀 별로야.", eng:"I'm not feeling great.", jpn:"なんかちょっとしんどいな。", cmn:"感觉不太好。", vie:"Không được khỏe lắm." },
-    { lv:2, tag:"감정/emotion", kor:"너무 설레.", eng:"I'm so excited!", jpn:"すごくドキドキしてる。", cmn:"好期待啊。", vie:"Hồi hộp ghê." },
-    { lv:3, tag:"피로/tired", kor:"몸이 천근만근이야 오늘.", eng:"My body is completely done today.", jpn:"今日は体が全然言うこと聞かない。", cmn:"今天身体完全不听使唤。", vie:"Hôm nay người không nghe lời gì hết." },
-    { lv:3, tag:"감정/emotion", kor:"뭔가 찝찝한 느낌이 안 가.", eng:"Something just feels off and I can't shake it.", jpn:"なんかモヤモヤが取れないんだよね。", cmn:"有种说不清的不舒服，一直在那。", vie:"Có gì đó cứ vướng mãi, không rõ là gì." },
-    { lv:3, tag:"감정/emotion", kor:"속이 다 시원하다, 진짜.", eng:"That's such a relief, honestly.", jpn:"これでスッキリした、ほんとに。", cmn:"终于说出来了，整个人都轻松了。", vie:"Nói ra được rồi, nhẹ cả người." },
-    { lv:3, tag:"감정/emotion", kor:"완전 신나, 기분 최고야.", eng:"I'm pumped, best mood ever.", jpn:"完全テンション上がってる。", cmn:"现在状态超好，心情美美的。", vie:"Đang cực kỳ phấn khởi, tâm trạng đỉnh lắm." },
-    { lv:4, tag:"감정/emotion", kor:"기분이 묘하게 싱숭생숭해.", eng:"I'm in this weird unsettled headspace.", jpn:"なんか変にそわそわしてる自分がいる。", cmn:"莫名有点心神不定。", vie:"Không hiểu sao hôm nay bứt rứt lạ." },
-    { lv:4, tag:"피로/tired", kor:"뭔가 에너지가 방전된 느낌이야.", eng:"I feel completely drained, like my battery's at zero.", jpn:"エネルギーが完全に切れた感じ。", cmn:"感觉能量被榨干了，什么都不想做。", vie:"Cảm giác pin xuống về không, không muốn làm gì hết." },
-    { lv:4, tag:"감정/emotion", kor:"괜히 심통이 나는 날이야 오늘.", eng:"I'm just randomly irritable today for no reason.", jpn:"理由もないのになんか今日むしゃくしゃする。", cmn:"今天就是无缘无故地烦，也不知道为什么。", vie:"Hôm nay bực bội vô cớ, cũng chẳng biết tại sao." },
-    { lv:4, tag:"감정/emotion", kor:"이거 해치우고 나니까 속이 뻥 뚫리네.", eng:"Getting that off my chest feels like a weight lifted.", jpn:"これ言えてすっごい楽になった。", cmn:"把这事说出来之后感觉压在心里的石头掉了。", vie:"Nói xong cái này thấy như trút được gánh nặng." },
+    { lv:1, tag:"피로/tired",      kor:"피곤해.",                            eng:"I'm tired.",                             jpn:"疲れた。",                            cmn:"好累。",                       vie:"Mệt quá." },
+    { lv:1, tag:"배고픔/hungry",   kor:"배고파.",                            eng:"I'm hungry.",                            jpn:"お腹すいた。",                        cmn:"好饿。",                       vie:"Đói bụng." },
+    { lv:1, tag:"피로/tired",      kor:"졸려.",                              eng:"I'm sleepy.",                            jpn:"眠い。",                              cmn:"好困。",                       vie:"Buồn ngủ." },
+    { lv:1, tag:"감정/emotion",    kor:"짜증나.",                            eng:"So annoying.",                           jpn:"イライラする。",                      cmn:"好烦。",                       vie:"Bực mình." },
+    { lv:2, tag:"피로/tired",      kor:"너무 피곤해 죽겠어.",                 eng:"I'm absolutely exhausted.",              jpn:"もうめっちゃ疲れた。",                cmn:"累死了。",                     vie:"Mệt quá trời." },
+    { lv:2, tag:"배고픔/hungry",   kor:"배고파 미칠 것 같아.",               eng:"I'm starving.",                          jpn:"お腹ペコペコ。",                      cmn:"饿死了。",                     vie:"Đói muốn xỉu." },
+    { lv:2, tag:"감정/emotion",    kor:"기분이 좀 별로야.",                  eng:"I'm not feeling great.",                 jpn:"なんかちょっとしんどいな。",          cmn:"感觉不太好。",                 vie:"Không được khỏe lắm." },
+    { lv:2, tag:"감정/emotion",    kor:"너무 설레.",                         eng:"I'm so excited!",                        jpn:"すごくドキドキしてる。",              cmn:"好期待啊。",                   vie:"Hồi hộp ghê." },
+    { lv:3, tag:"피로/tired",      kor:"몸이 천근만근이야 오늘.",             eng:"My body is completely done today.",      jpn:"今日は体が全然言うこと聞かない。",   cmn:"今天身体完全不听使唤。",       vie:"Hôm nay người không nghe lời gì hết." },
+    { lv:3, tag:"감정/emotion",    kor:"뭔가 찝찝한 느낌이 안 가.",          eng:"Something just feels off and I can't shake it.", jpn:"なんかモヤモヤが取れないんだよね。", cmn:"有种说不清的不舒服，一直在那。", vie:"Có gì đó cứ vướng mãi, không rõ là gì." },
+    { lv:3, tag:"감정/emotion",    kor:"속이 다 시원하다, 진짜.",             eng:"That's such a relief, honestly.",        jpn:"これでスッキリした、ほんとに。",     cmn:"终于说出来了，整个人都轻松了。", vie:"Nói ra được rồi, nhẹ cả người." },
+    { lv:3, tag:"감정/emotion",    kor:"완전 신나, 기분 최고야.",             eng:"I'm pumped, best mood ever.",            jpn:"完全テンション上がってる。",          cmn:"现在状态超好，心情美美的。",   vie:"Đang cực kỳ phấn khởi, tâm trạng đỉnh lắm." },
+    { lv:4, tag:"감정/emotion",    kor:"기분이 묘하게 싱숭생숭해.",           eng:"I'm in this weird unsettled headspace.", jpn:"なんか変にそわそわしてる自分がいる。", cmn:"莫名有点心神不定。",          vie:"Không hiểu sao hôm nay bứt rứt lạ." },
+    { lv:4, tag:"피로/tired",      kor:"뭔가 에너지가 방전된 느낌이야.",      eng:"I feel completely drained, like my battery's at zero.", jpn:"エネルギーが完全に切れた感じ。", cmn:"感觉能量被榨干了，什么都不想做。", vie:"Cảm giác pin xuống về không, không muốn làm gì hết." },
+    { lv:4, tag:"감정/emotion",    kor:"괜히 심통이 나는 날이야 오늘.",       eng:"I'm just randomly irritable today for no reason.", jpn:"理由もないのになんか今日むしゃくしゃする。", cmn:"今天就是无缘无故地烦，也不知道为什么。", vie:"Hôm nay bực bội vô cớ, cũng chẳng biết tại sao." },
+    { lv:4, tag:"감정/emotion",    kor:"이거 해치우고 나니까 속이 뻥 뚫리네.", eng:"Getting that off my chest feels like a weight lifted.", jpn:"これ言えてすっごい楽になった。", cmn:"把这事说出来之后感觉压在心里的石头掉了。", vie:"Nói xong cái này thấy như trút được gánh nặng." },
   ],
   question: [
-    { lv:1, tag:"질문/question", kor:"뭐 해?", eng:"What's up?", jpn:"何してる？", cmn:"在干嘛？", vie:"Đang làm gì?" },
-    { lv:1, tag:"질문/question", kor:"어디야?", eng:"Where are you?", jpn:"どこにいる？", cmn:"你在哪？", vie:"Bạn ở đâu?" },
-    { lv:1, tag:"질문/question", kor:"왜?", eng:"Why?", jpn:"なんで？", cmn:"为什么？", vie:"Tại sao?" },
-    { lv:1, tag:"질문/question", kor:"언제 와?", eng:"When are you coming?", jpn:"いつ来る？", cmn:"什么时候来？", vie:"Khi nào đến?" },
-    { lv:2, tag:"질문/question", kor:"지금 뭐 해?", eng:"What are you up to?", jpn:"今何してるの？", cmn:"你现在在干嘛？", vie:"Bạn đang làm gì vậy?" },
-    { lv:2, tag:"질문/question", kor:"그거 어디서 샀어?", eng:"Where'd you get that?", jpn:"それどこで買ったの？", cmn:"这个在哪买的？", vie:"Mua cái đó ở đâu?" },
-    { lv:2, tag:"질문/question", kor:"그 영화 재밌어?", eng:"Is that movie good?", jpn:"その映画、面白い？", cmn:"那部电影好看吗？", vie:"Phim đó hay không?" },
-    { lv:2, tag:"질문/question", kor:"같이 갈래?", eng:"Wanna come with?", jpn:"一緒に行かない？", cmn:"要不要一起去？", vie:"Đi cùng không?" },
-    { lv:3, tag:"질문/question", kor:"거기 예약하고 가야 돼?", eng:"Do you need a reservation there?", jpn:"そこって予約してから行く感じ？", cmn:"那个地方要提前订位吗？", vie:"Chỗ đó có cần đặt trước không?" },
-    { lv:3, tag:"질문/question", kor:"이거 지금 당장 해야 해?", eng:"Does this need to happen right now?", jpn:"これって今すぐやらないとダメ？", cmn:"这个现在必须做吗？", vie:"Cái này phải làm ngay bây giờ không?" },
-    { lv:3, tag:"질문/question", kor:"그 얘기 어디서 들었어?", eng:"Where did you hear that from?", jpn:"その話どこで聞いたの？", cmn:"这是从哪听来的？", vie:"Nghe chuyện này ở đâu vậy?" },
-    { lv:3, tag:"질문/question", kor:"혹시 나한테 서운한 거 있어?", eng:"Is there something I did that bothered you?", jpn:"もしかして私のことで何か気に障ってる？", cmn:"你是不是对我有什么意见？", vie:"Bạn có đang phật lòng gì về mình không?" },
-    { lv:4, tag:"질문/question", kor:"그게 다야? 뭔가 더 있는 거 아니야?", eng:"That's it? I feel like there's more to it.", jpn:"それだけ？なんか他にもある気がするんだけど。", cmn:"就这样？感觉还有什么没说。", vie:"Chỉ vậy thôi? Mình thấy còn có gì đó nữa." },
-    { lv:4, tag:"질문/question", kor:"설마 그 말 진심으로 한 거야?", eng:"Wait, were you actually serious when you said that?", jpn:"え、あれって本気で言ってたの？", cmn:"等等，你说那句话是认真的吗？", vie:"Ủa, câu đó bạn nói thật hay đùa vậy?" },
-    { lv:4, tag:"질문/question", kor:"그쪽이랑은 어떻게 알게 된 거야?", eng:"How do you even know them?", jpn:"あの人とはどういう経緯で知り合ったの？", cmn:"你们是怎么认识的？", vie:"Bạn và người đó quen nhau qua đâu?" },
-    { lv:4, tag:"질문/question", kor:"이거 나만 이상하게 느끼는 거야?", eng:"Am I the only one who finds this weird?", jpn:"これって私だけ変に感じてる？", cmn:"这件事就我一个人觉得奇怪吗？", vie:"Hay chỉ mình thấy chuyện này kỳ kỳ?" },
+    { lv:1, tag:"질문/question",   kor:"뭐 해?",                             eng:"What's up?",                             jpn:"何してる？",                          cmn:"在干嘛？",                     vie:"Đang làm gì?" },
+    { lv:1, tag:"질문/question",   kor:"어디야?",                            eng:"Where are you?",                         jpn:"どこにいる？",                        cmn:"你在哪？",                     vie:"Bạn ở đâu?" },
+    { lv:1, tag:"질문/question",   kor:"왜?",                                eng:"Why?",                                   jpn:"なんで？",                            cmn:"为什么？",                     vie:"Tại sao?" },
+    { lv:1, tag:"질문/question",   kor:"언제 와?",                           eng:"When are you coming?",                   jpn:"いつ来る？",                          cmn:"什么时候来？",                 vie:"Khi nào đến?" },
+    { lv:2, tag:"질문/question",   kor:"지금 뭐 해?",                        eng:"What are you up to?",                    jpn:"今何してるの？",                      cmn:"你现在在干嘛？",               vie:"Bạn đang làm gì vậy?" },
+    { lv:2, tag:"질문/question",   kor:"그거 어디서 샀어?",                  eng:"Where'd you get that?",                  jpn:"それどこで買ったの？",                cmn:"这个在哪买的？",               vie:"Mua cái đó ở đâu?" },
+    { lv:2, tag:"질문/question",   kor:"그 영화 재밌어?",                    eng:"Is that movie good?",                    jpn:"その映画、面白い？",                  cmn:"那部电影好看吗？",             vie:"Phim đó hay không?" },
+    { lv:2, tag:"질문/question",   kor:"같이 갈래?",                         eng:"Wanna come with?",                       jpn:"一緒に行かない？",                    cmn:"要不要一起去？",               vie:"Đi cùng không?" },
+    { lv:3, tag:"질문/question",   kor:"거기 예약하고 가야 돼?",              eng:"Do you need a reservation there?",       jpn:"そこって予約してから行く感じ？",     cmn:"那个地方要提前订位吗？",       vie:"Chỗ đó có cần đặt trước không?" },
+    { lv:3, tag:"질문/question",   kor:"이거 지금 당장 해야 해?",             eng:"Does this need to happen right now?",    jpn:"これって今すぐやらないとダメ？",     cmn:"这个现在必须做吗？",           vie:"Cái này phải làm ngay bây giờ không?" },
+    { lv:3, tag:"질문/question",   kor:"그 얘기 어디서 들었어?",             eng:"Where did you hear that from?",          jpn:"その話どこで聞いたの？",              cmn:"这是从哪听来的？",             vie:"Nghe chuyện này ở đâu vậy?" },
+    { lv:3, tag:"질문/question",   kor:"혹시 나한테 서운한 거 있어?",         eng:"Is there something I did that bothered you?", jpn:"もしかして私のことで何か気に障ってる？", cmn:"你是不是对我有什么意见？", vie:"Bạn có đang phật lòng gì về mình không?" },
+    { lv:4, tag:"질문/question",   kor:"그게 다야? 뭔가 더 있는 거 아니야?", eng:"That's it? I feel like there's more to it.", jpn:"それだけ？なんか他にもある気がするんだけど。", cmn:"就这样？感觉还有什么没说。", vie:"Chỉ vậy thôi? Mình thấy còn có gì đó nữa." },
+    { lv:4, tag:"질문/question",   kor:"설마 그 말 진심으로 한 거야?",        eng:"Wait, were you actually serious when you said that?", jpn:"え、あれって本気で言ってたの？", cmn:"等等，你说那句话是认真的吗？", vie:"Ủa, câu đó bạn nói thật hay đùa vậy?" },
+    { lv:4, tag:"질문/question",   kor:"그쪽이랑은 어떻게 알게 된 거야?",    eng:"How do you even know them?",             jpn:"あの人とはどういう経緯で知り合ったの？", cmn:"你们是怎么认识的？",         vie:"Bạn và người đó quen nhau qua đâu?" },
+    { lv:4, tag:"질문/question",   kor:"이거 나만 이상하게 느끼는 거야?",     eng:"Am I the only one who finds this weird?", jpn:"これって私だけ変に感じてる？",       cmn:"这件事就我一个人觉得奇怪吗？", vie:"Hay chỉ mình thấy chuyện này kỳ kỳ?" },
   ],
 };
 
-// ── STATE ─────────────────────────────────────────────
-let nativeLang = null, targetLang = null, currentLevel = null;
+// ── STATE ───────────────────────────────────────────────────
+let nativeLang = null;
+let targetLangs = new Set();   // ← 복수 선택
+let currentLevel = null;
 let currentCategory = 'daily';
-let selectedIds = new Set(); // store sentence index keys like "daily-0"
+let selectedIds = new Set();
 let revealAll = false;
+let currentStep = 3; // 현재 bottom-bar가 어느 step용인지 (3 or 4)
 
 const LANG_INFO = {
   kor:{ flag:'🇰🇷', name:'한국어' }, eng:{ flag:'🇺🇸', name:'English' },
@@ -438,7 +480,7 @@ const LV_INFO = {
   3:{ name:'고급', color:'var(--lv3)', cls:'lv3' }, 4:{ name:'급',   color:'var(--lv4)', cls:'lv4' },
 };
 
-// ── STEP HELPERS ──────────────────────────────────────
+// ── STEP HELPERS ─────────────────────────────────────────────
 function stepDone(n) {
   const el = document.getElementById(`si${n}`);
   el.classList.remove('active'); el.classList.add('done');
@@ -452,8 +494,8 @@ function goToStep(n) {
   [1,2,3,4,5].forEach(i => { if(i>=n) document.getElementById(`step${i}`).classList.add('hidden'); });
   document.getElementById('bottom-bar').classList.add('hidden');
   if (n<=3) { selectedIds.clear(); updateBottomBar(); updatePreview(); }
+  if (n<=4) { targetLangs.clear(); renderTargetChips(); }
 
-  // reset indicators from n onward
   for(let i=n;i<=5;i++){
     const el=document.getElementById(`si${i}`);
     el.classList.remove('active','done');
@@ -465,15 +507,20 @@ function goToStep(n) {
   stepActive(n);
 }
 
-// ── STEP 1 ────────────────────────────────────────────
+// ── STEP 1 ───────────────────────────────────────────────────
 function selectNativeLang(btn) {
   document.querySelectorAll('#native-grid .lang-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
   nativeLang = btn.dataset.lang;
-  setTimeout(()=>{ stepDone(1); goToStep(2); document.getElementById('step2').classList.remove('hidden'); stepActive(2); document.getElementById('step1').classList.add('hidden'); }, 200);
+  setTimeout(()=>{
+    stepDone(1);
+    document.getElementById('step1').classList.add('hidden');
+    document.getElementById('step2').classList.remove('hidden');
+    stepActive(2);
+  }, 200);
 }
 
-// ── STEP 2 ────────────────────────────────────────────
+// ── STEP 2 ───────────────────────────────────────────────────
 function selectLevel(btn) {
   document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
@@ -484,10 +531,15 @@ function selectLevel(btn) {
   document.getElementById('i-lv-name').textContent = li.name;
   document.getElementById('i-lv-dot').style.background = li.color;
   setTimeout(()=>{
-    stepDone(2); goToStep(3);
-    document.getElementById('step3').classList.remove('hidden'); stepActive(3);
-    document.getElementById('bottom-bar').classList.remove('hidden');
+    stepDone(2);
     document.getElementById('step2').classList.add('hidden');
+    document.getElementById('step3').classList.remove('hidden');
+    stepActive(3);
+    currentStep = 3;
+    document.getElementById('bottom-bar').classList.remove('hidden');
+    document.getElementById('bar-count-area').innerHTML = '<span id="count-display">0</span>개 선택됨';
+    document.getElementById('next-btn').textContent = '다음 단계 →';
+    document.getElementById('next-btn').onclick = onNextBtn;
     currentCategory='daily';
     document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
     document.querySelector('[data-cat="daily"]').classList.add('active');
@@ -495,7 +547,7 @@ function selectLevel(btn) {
   }, 200);
 }
 
-// ── STEP 3 ────────────────────────────────────────────
+// ── STEP 3 ───────────────────────────────────────────────────
 function switchCategory(btn, cat) {
   document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active'); currentCategory = cat;
@@ -539,8 +591,11 @@ function refreshSentences() {
 }
 
 function updateBottomBar() {
-  document.getElementById('count-display').textContent=selectedIds.size;
-  document.getElementById('next-btn').disabled=selectedIds.size===0;
+  const countEl = document.getElementById('count-display');
+  if(countEl) countEl.textContent = selectedIds.size;
+  if(currentStep===3){
+    document.getElementById('next-btn').disabled = selectedIds.size===0;
+  }
 }
 
 function updatePreview() {
@@ -567,77 +622,157 @@ function removeSelected(key) {
   updateBottomBar(); updatePreview();
 }
 
-// ── STEP 4 ────────────────────────────────────────────
+// ── STEP 3 → STEP 4 ──────────────────────────────────────────
+function onNextBtn() {
+  if(currentStep===3) goToStep4();
+  else if(currentStep===4) startLearning();
+}
+
 function goToStep4() {
   stepDone(3);
   document.getElementById('step3').classList.add('hidden');
-  document.getElementById('bottom-bar').classList.add('hidden');
 
-  // disable native lang button in target grid
+  // 모국어 버튼 비활성화, 나머지 초기화
   document.querySelectorAll('#target-grid .lang-btn').forEach(b=>{
     b.disabled = (b.dataset.lang===nativeLang);
     b.classList.remove('selected');
   });
+  targetLangs.clear();
+  renderTargetChips();
+
   document.getElementById('step4').classList.remove('hidden');
   stepActive(4);
+
+  // 바텀바: 학습 언어 선택 개수 표시 + 학습 시작 버튼
+  currentStep = 4;
+  document.getElementById('bar-count-area').innerHTML = '<span id="count-display">0</span>개 언어 선택됨';
+  document.getElementById('next-btn').textContent = '학습 시작 →';
+  document.getElementById('next-btn').disabled = true;
+  document.getElementById('next-btn').onclick = onNextBtn;
 }
 
-function selectTargetLang(btn) {
-  document.querySelectorAll('#target-grid .lang-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
-  targetLang = btn.dataset.lang;
-  setTimeout(()=>{ stepDone(4); showLearning(); }, 200);
+// ── STEP 4 : 복수 언어 토글 ───────────────────────────────────
+function toggleTargetLang(btn) {
+  const lang = btn.dataset.lang;
+  if(targetLangs.has(lang)){
+    targetLangs.delete(lang);
+    btn.classList.remove('selected');
+  } else {
+    targetLangs.add(lang);
+    btn.classList.add('selected');
+  }
+  renderTargetChips();
+  document.getElementById('count-display').textContent = targetLangs.size;
+  document.getElementById('next-btn').disabled = targetLangs.size === 0;
 }
 
-// ── STEP 5 ────────────────────────────────────────────
-function showLearning() {
-  const nl=LANG_INFO[nativeLang], tl=LANG_INFO[targetLang], li=LV_INFO[currentLevel];
-  document.getElementById('learn-native-flag').textContent=nl.flag;
-  document.getElementById('learn-native-name').textContent=nl.name;
-  document.getElementById('learn-target-flag').textContent=tl.flag;
-  document.getElementById('learn-target-name').textContent=tl.name;
-  document.getElementById('learn-lv-dot').style.background=li.color;
-  document.getElementById('learn-lv-name').textContent=li.name;
-
-  const cards=document.getElementById('learn-cards'); cards.innerHTML='';
-  selectedIds.forEach(key=>{
-    const [cat,idx]=key.split('-');
-    const s=DATA[cat][parseInt(idx)];
-    if(!s) return;
-    const card=document.createElement('div'); card.className='learn-card fade-in';
-    card.innerHTML=`
-      <div class="learn-native">
-        <span class="learn-tag" style="float:right;margin-left:8px">${s.tag.split('/')[0]}</span>
-        ${s[nativeLang]}
-      </div>
-      <div class="learn-divider"></div>
-      <div class="learn-target${revealAll?'':' hidden-text'}" id="lt-${key}">
-        <span class="target-text">${s[targetLang]}</span>
-        <button class="btn-reveal" onclick="revealOne('lt-${key}',this)">${revealAll?'가리기':'보기'}</button>
-      </div>`;
-    cards.appendChild(card);
+function renderTargetChips() {
+  const area = document.getElementById('selected-target-langs');
+  area.innerHTML = '';
+  if(!targetLangs.size){
+    area.innerHTML = '<span style="font-size:0.82rem;color:var(--text-muted)">언어를 선택하면 여기에 표시됩니다</span>';
+    return;
+  }
+  targetLangs.forEach(lang=>{
+    const info = LANG_INFO[lang];
+    const chip = document.createElement('div'); chip.className = 'lang-chip';
+    chip.innerHTML = `<span class="chip-flag">${info.flag}</span><span>${info.name}</span>`;
+    area.appendChild(chip);
   });
+}
 
+// ── STEP 5 : 학습 화면 ───────────────────────────────────────
+function startLearning() {
+  stepDone(4);
   document.getElementById('step4').classList.add('hidden');
+  document.getElementById('bottom-bar').classList.add('hidden');
+  buildLearningView();
   document.getElementById('step5').classList.remove('hidden');
   stepActive(5);
 }
 
-function revealOne(id, btn) {
-  const el=document.getElementById(id);
-  const hidden=el.classList.toggle('hidden-text');
-  btn.textContent=hidden?'보기':'가리기';
+function buildLearningView() {
+  const nl = LANG_INFO[nativeLang];
+  const li = LV_INFO[currentLevel];
+
+  document.getElementById('learn-native-flag').textContent = nl.flag;
+  document.getElementById('learn-native-name').textContent = nl.name;
+  document.getElementById('learn-lv-dot').style.background = li.color;
+  document.getElementById('learn-lv-name').textContent = li.name;
+
+  // 선택한 목표 언어 플래그들
+  const flagsEl = document.getElementById('learn-target-flags');
+  flagsEl.innerHTML = '';
+  const langs = Array.from(targetLangs);
+  langs.forEach((lang, idx)=>{
+    const info = LANG_INFO[lang];
+    if(idx>0){
+      const sep = document.createElement('span'); sep.className='target-flag-sep'; sep.textContent='·';
+      flagsEl.appendChild(sep);
+    }
+    const item = document.createElement('div'); item.className='target-flag-item';
+    item.innerHTML=`<span>${info.flag}</span><span style="font-weight:600">${info.name}</span>`;
+    flagsEl.appendChild(item);
+  });
+
+  // 카드 렌더링
+  const cards = document.getElementById('learn-cards');
+  cards.innerHTML = '';
+  revealAll = false;
+  document.getElementById('reveal-toggle').classList.remove('on');
+
+  selectedIds.forEach(key=>{
+    const [cat,idx] = key.split('-');
+    const s = DATA[cat][parseInt(idx)];
+    if(!s) return;
+
+    const card = document.createElement('div'); card.className='learn-card fade-in';
+
+    // 모국어 표시
+    let html = `
+      <div class="learn-native">
+        <span class="learn-tag" style="float:right;margin-left:8px">${s.tag.split('/')[0]}</span>
+        ${s[nativeLang]}
+      </div>
+      <div class="lang-rows">`;
+
+    // 각 선택 언어별 행
+    langs.forEach(lang=>{
+      const info = LANG_INFO[lang];
+      const rowId = `row-${key}-${lang}`;
+      html += `
+        <div class="lang-row">
+          <div class="lang-row-label">
+            <span class="flag">${info.flag}</span>
+            <span>${info.name}</span>
+          </div>
+          <div class="lang-row-body hidden-text" id="${rowId}">
+            <span class="target-text">${s[lang]}</span>
+            <button class="btn-reveal" onclick="revealRow('${rowId}',this)">보기</button>
+          </div>
+        </div>`;
+    });
+
+    html += `</div>`;
+    card.innerHTML = html;
+    cards.appendChild(card);
+  });
+}
+
+function revealRow(id, btn) {
+  const el = document.getElementById(id);
+  const isHidden = el.classList.toggle('hidden-text');
+  btn.textContent = isHidden ? '보기' : '가리기';
 }
 
 function toggleRevealAll() {
-  revealAll=!revealAll;
-  const toggle=document.getElementById('reveal-toggle');
-  toggle.classList.toggle('on',revealAll);
-  document.querySelectorAll('.learn-target').forEach(el=>{
-    el.classList.toggle('hidden-text',!revealAll);
+  revealAll = !revealAll;
+  document.getElementById('reveal-toggle').classList.toggle('on', revealAll);
+  document.querySelectorAll('.lang-row-body').forEach(el=>{
+    el.classList.toggle('hidden-text', !revealAll);
   });
   document.querySelectorAll('.btn-reveal').forEach(btn=>{
-    btn.textContent=revealAll?'가리기':'보기';
+    btn.textContent = revealAll ? '가리기' : '보기';
   });
 }
 </script>
