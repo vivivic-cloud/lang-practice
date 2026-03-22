@@ -1,251 +1,226 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
   <title>LangPick</title>
   <style>
-    :root {
-      --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a; --border: #2e3349;
-      --accent: #5b6ef5; --accent-hover: #7080ff; --text: #e8eaf6; --text-muted: #7b82a8;
-      --success: #4caf8a; --radius: 14px;
-      --lv1: #4caf8a; --lv2: #f5a623; --lv3: #e05c5c; --lv4: #b06ef5;
+    :root{
+      --bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;--border:#2e3349;
+      --accent:#5b6ef5;--accent-hover:#7080ff;--text:#e8eaf6;--text-muted:#7b82a8;
+      --success:#4caf8a;--warn:#f5a623;--radius:14px;
+      --lv1:#4caf8a;--lv2:#f5a623;--lv3:#e05c5c;--lv4:#b06ef5;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
-      background: var(--bg); color: var(--text);
-      min-height: 100vh; display: flex; flex-direction: column;
-      align-items: center; padding: 40px 16px 80px;
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR','Noto Sans JP','Noto Sans SC',sans-serif;
+      background:var(--bg);color:var(--text);min-height:100vh;
+      display:flex;flex-direction:column;align-items:center;padding:30px 12px 90px;
     }
-    header { text-align: center; margin-bottom: 40px; }
-    header h1 { font-size: 2rem; font-weight: 700; }
-    header p { margin-top: 8px; color: var(--text-muted); font-size: 0.95rem; }
+    header{text-align:center;margin-bottom:32px;}
+    header h1{font-size:1.8rem;font-weight:700;}
+    header p{margin-top:6px;color:var(--text-muted);font-size:0.9rem;}
 
     /* STEPS */
-    .steps { display: flex; align-items: center; margin-bottom: 36px; flex-wrap: wrap; justify-content: center; gap: 4px; }
-    .step { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--text-muted); }
-    .step.active { color: var(--accent); }
-    .step.done { color: var(--success); }
-    .step-num {
-      width: 26px; height: 26px; border-radius: 50%; border: 2px solid currentColor;
-      display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
-    }
-    .step.done .step-num { background: var(--success); border-color: var(--success); color: #fff; }
-    .step.active .step-num { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .step-line { width: 28px; height: 2px; background: var(--border); }
-    .step-line.done { background: var(--success); }
+    .steps{display:flex;align-items:center;margin-bottom:28px;flex-wrap:wrap;justify-content:center;gap:3px;}
+    .step{display:flex;align-items:center;gap:5px;font-size:0.75rem;color:var(--text-muted);}
+    .step.active{color:var(--accent);}
+    .step.done{color:var(--success);}
+    .step-num{width:24px;height:24px;border-radius:50%;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:0.72rem;font-weight:700;flex-shrink:0;}
+    .step.done .step-num{background:var(--success);border-color:var(--success);color:#fff;}
+    .step.active .step-num{background:var(--accent);border-color:var(--accent);color:#fff;}
+    .step-line{width:22px;height:2px;background:var(--border);}
+    .step-line.done{background:var(--success);}
 
     /* CARD */
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; width: 100%; max-width: 700px; }
-    .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; }
-    .card-sub { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 20px; }
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;width:100%;max-width:700px;}
+    .card-title{font-size:1.05rem;font-weight:600;margin-bottom:5px;}
+    .card-sub{font-size:0.8rem;color:var(--text-muted);margin-bottom:18px;}
 
     /* LANG GRID */
-    .lang-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-    @media (max-width: 520px) { .lang-grid { grid-template-columns: repeat(3, 1fr); } }
-    .lang-btn {
-      background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius);
-      padding: 16px 6px; cursor: pointer; display: flex; flex-direction: column;
-      align-items: center; gap: 7px; transition: all 0.2s; color: var(--text);
-      position: relative;
+    .lang-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;}
+    @media(max-width:520px){.lang-grid{grid-template-columns:repeat(3,1fr);}}
+    .lang-btn{
+      background:var(--surface2);border:2px solid var(--border);border-radius:var(--radius);
+      padding:14px 5px;cursor:pointer;display:flex;flex-direction:column;
+      align-items:center;gap:6px;transition:all 0.2s;color:var(--text);position:relative;
     }
-    .lang-btn:hover:not(:disabled) { border-color: var(--accent); transform: translateY(-2px); }
-    .lang-btn.selected { border-color: var(--accent); background: rgba(91,110,245,0.18); }
-    .lang-btn.selected::after {
-      content: '✓'; position: absolute; top: 6px; right: 8px;
-      font-size: 0.72rem; color: var(--accent); font-weight: 700;
-    }
-    .lang-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-    .lang-btn .flag { font-size: 1.8rem; }
-    .lang-btn .name { font-size: 0.78rem; font-weight: 600; }
-    .lang-btn .native { font-size: 0.68rem; color: var(--text-muted); }
+    .lang-btn:hover:not(:disabled){border-color:var(--accent);transform:translateY(-2px);}
+    .lang-btn.selected{border-color:var(--accent);background:rgba(91,110,245,0.18);}
+    .lang-btn.selected::after{content:'✓';position:absolute;top:5px;right:7px;font-size:0.7rem;color:var(--accent);font-weight:700;}
+    .lang-btn:disabled{opacity:0.3;cursor:not-allowed;}
+    .lang-btn .flag{font-size:1.7rem;}
+    .lang-btn .name{font-size:0.75rem;font-weight:600;}
+    .lang-btn .native{font-size:0.65rem;color:var(--text-muted);}
 
     /* SELECTED LANGS CHIPS */
-    .selected-langs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; min-height: 30px; }
-    .lang-chip {
-      display: flex; align-items: center; gap: 6px;
-      background: rgba(91,110,245,0.15); border: 1px solid rgba(91,110,245,0.4);
-      border-radius: 20px; padding: 5px 12px; font-size: 0.82rem;
-    }
-    .lang-chip .chip-flag { font-size: 1rem; }
+    .selected-langs{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px;min-height:28px;}
+    .lang-chip{display:flex;align-items:center;gap:5px;background:rgba(91,110,245,0.15);border:1px solid rgba(91,110,245,0.4);border-radius:20px;padding:4px 10px;font-size:0.8rem;}
 
     /* LEVEL GRID */
-    .level-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-    @media (max-width: 480px) { .level-grid { grid-template-columns: repeat(2, 1fr); } }
-    .level-btn {
-      background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius);
-      padding: 18px 8px 14px; cursor: pointer; display: flex; flex-direction: column;
-      align-items: center; gap: 7px; transition: all 0.2s; color: var(--text);
+    .level-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;}
+    @media(max-width:480px){.level-grid{grid-template-columns:repeat(2,1fr);}}
+    .level-btn{
+      background:var(--surface2);border:2px solid var(--border);border-radius:var(--radius);
+      padding:16px 6px 12px;cursor:pointer;display:flex;flex-direction:column;
+      align-items:center;gap:6px;transition:all 0.2s;color:var(--text);
     }
-    .level-btn.lv1 { --lv-c: var(--lv1); } .level-btn.lv2 { --lv-c: var(--lv2); }
-    .level-btn.lv3 { --lv-c: var(--lv3); } .level-btn.lv4 { --lv-c: var(--lv4); }
-    .level-btn:hover { border-color: var(--lv-c); transform: translateY(-2px); }
-    .level-btn.selected { border-color: var(--lv-c); background: color-mix(in srgb, var(--lv-c) 12%, transparent); }
-    .level-icon { font-size: 1.7rem; }
-    .level-name { font-size: 1rem; font-weight: 700; color: var(--lv-c); }
-    .level-label { font-size: 0.7rem; color: var(--text-muted); }
-    .level-desc { font-size: 0.7rem; color: var(--text-muted); text-align: center; line-height: 1.4; }
-    .level-bar { width: 100%; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-    .level-bar-fill { height: 100%; background: var(--lv-c); border-radius: 2px; }
+    .level-btn.lv1{--lv-c:var(--lv1);} .level-btn.lv2{--lv-c:var(--lv2);}
+    .level-btn.lv3{--lv-c:var(--lv3);} .level-btn.lv4{--lv-c:var(--lv4);}
+    .level-btn:hover{border-color:var(--lv-c);transform:translateY(-2px);}
+    .level-btn.selected{border-color:var(--lv-c);background:rgba(91,110,245,0.08);}
+    .level-icon{font-size:1.6rem;}
+    .level-name{font-size:0.95rem;font-weight:700;color:var(--lv-c);}
+    .level-label{font-size:0.68rem;color:var(--text-muted);}
+    .level-desc{font-size:0.68rem;color:var(--text-muted);text-align:center;line-height:1.4;}
+    .level-bar{width:100%;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+    .level-bar-fill{height:100%;background:var(--lv-c);border-radius:2px;}
 
     /* SENTENCE LIST */
-    .sentence-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
-    .badge { border-radius: 20px; padding: 3px 10px; font-size: 0.78rem; font-weight: 600; }
-    .badge-cat { background: rgba(91,110,245,0.2); color: var(--accent); }
-    .btn-sm {
-      background: transparent; border: 1px solid var(--border); color: var(--text-muted);
-      border-radius: 8px; padding: 5px 12px; cursor: pointer; font-size: 0.8rem;
-      display: flex; align-items: center; gap: 5px; transition: all 0.2s;
-    }
-    .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-sm:disabled { opacity: 0.4; cursor: not-allowed; }
-    .cat-tab {
-      background: var(--surface2); border: 1px solid var(--border); border-radius: 20px;
-      padding: 5px 12px; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s;
-    }
-    .cat-tab:hover { border-color: var(--accent); color: var(--text); }
-    .cat-tab.active { background: rgba(91,110,245,0.2); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+    .sentence-controls{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:7px;}
+    .badge{border-radius:20px;padding:2px 9px;font-size:0.75rem;font-weight:600;}
+    .badge-cat{background:rgba(91,110,245,0.2);color:var(--accent);}
+    .btn-sm{background:transparent;border:1px solid var(--border);color:var(--text-muted);border-radius:8px;padding:4px 11px;cursor:pointer;font-size:0.78rem;display:flex;align-items:center;gap:4px;transition:all 0.2s;}
+    .btn-sm:hover{border-color:var(--accent);color:var(--accent);}
+    .btn-sm:disabled{opacity:0.4;cursor:not-allowed;}
+    .cat-tab{background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 11px;font-size:0.78rem;color:var(--text-muted);cursor:pointer;transition:all 0.2s;}
+    .cat-tab:hover{border-color:var(--accent);color:var(--text);}
+    .cat-tab.active{background:rgba(91,110,245,0.2);border-color:var(--accent);color:var(--accent);font-weight:600;}
 
-    .sentence-list { display: flex; flex-direction: column; gap: 9px; }
-    .sentence-item {
-      background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px;
-      padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px;
-      transition: all 0.18s; user-select: none;
-    }
-    .sentence-item:hover { border-color: var(--accent); }
-    .sentence-item.selected { border-color: var(--accent); background: rgba(91,110,245,0.1); }
-    .lv-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .lv-dot.lv1 { background: var(--lv1); } .lv-dot.lv2 { background: var(--lv2); }
-    .lv-dot.lv3 { background: var(--lv3); } .lv-dot.lv4 { background: var(--lv4); }
-    .checkbox {
-      width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border);
-      flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.18s;
-    }
-    .sentence-item.selected .checkbox { background: var(--accent); border-color: var(--accent); }
-    .checkbox-mark { color: #fff; font-size: 0.75rem; display: none; }
-    .sentence-item.selected .checkbox-mark { display: block; }
-    .sentence-text { font-size: 0.98rem; line-height: 1.5; flex: 1; }
-    .sentence-tag { font-size: 0.7rem; color: var(--text-muted); background: var(--border); border-radius: 4px; padding: 2px 6px; flex-shrink: 0; }
+    .sentence-list{display:flex;flex-direction:column;gap:8px;}
+    .sentence-item{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;display:flex;align-items:center;gap:11px;transition:all 0.18s;user-select:none;}
+    .sentence-item:hover{border-color:var(--accent);}
+    .sentence-item.selected{border-color:var(--accent);background:rgba(91,110,245,0.1);}
+    .lv-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+    .lv-dot.lv1{background:var(--lv1);} .lv-dot.lv2{background:var(--lv2);}
+    .lv-dot.lv3{background:var(--lv3);} .lv-dot.lv4{background:var(--lv4);}
+    .checkbox{width:19px;height:19px;border-radius:5px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.18s;}
+    .sentence-item.selected .checkbox{background:var(--accent);border-color:var(--accent);}
+    .checkbox-mark{color:#fff;font-size:0.72rem;display:none;}
+    .sentence-item.selected .checkbox-mark{display:block;}
+    .sentence-text{font-size:0.95rem;line-height:1.5;flex:1;}
+    .sentence-tag{font-size:0.68rem;color:var(--text-muted);background:var(--border);border-radius:4px;padding:2px 5px;flex-shrink:0;}
 
     /* SELECTED PREVIEW */
-    .selected-preview { margin-top: 18px; display: none; }
-    .selected-preview.visible { display: block; }
-    .preview-title { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
-    .preview-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-    .preview-chip {
-      background: rgba(91,110,245,0.12); border: 1px solid rgba(91,110,245,0.3);
-      border-radius: 20px; padding: 4px 10px; font-size: 0.78rem; display: flex; align-items: center; gap: 5px;
-    }
-    .chip-remove { cursor: pointer; color: var(--text-muted); } .chip-remove:hover { color: #ff6b6b; }
+    .selected-preview{margin-top:16px;display:none;}
+    .selected-preview.visible{display:block;}
+    .preview-title{font-size:0.78rem;color:var(--text-muted);margin-bottom:7px;}
+    .preview-chips{display:flex;flex-wrap:wrap;gap:5px;}
+    .preview-chip{background:rgba(91,110,245,0.12);border:1px solid rgba(91,110,245,0.3);border-radius:20px;padding:3px 9px;font-size:0.75rem;display:flex;align-items:center;gap:4px;}
+    .chip-remove{cursor:pointer;color:var(--text-muted);}
+    .chip-remove:hover{color:#ff6b6b;}
 
     /* INFO CHIPS */
-    .current-info { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .info-chip {
-      display: flex; align-items: center; gap: 5px; background: var(--surface2);
-      border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px;
-      font-size: 0.78rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s;
-    }
-    .info-chip:hover { border-color: var(--accent); color: var(--text); }
-    .info-chip .dot { width: 7px; height: 7px; border-radius: 50%; }
-
-    /* ── LEARNING VIEW ── */
-    .learning-header {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .lang-arrow {
-      display: flex; align-items: center; gap: 8px; background: var(--surface2);
-      border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 0.85rem;
-      flex-wrap: wrap;
-    }
-    .lang-arrow .arr { color: var(--accent); font-size: 1.1rem; }
-    .target-flags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-    .target-flag-item { display: flex; align-items: center; gap: 4px; font-size: 0.82rem; }
-    .target-flag-sep { color: var(--text-muted); font-size: 0.7rem; }
-
-    .learn-cards { display: flex; flex-direction: column; gap: 18px; }
-    .learn-card {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 12px; overflow: hidden;
-    }
-    .learn-native {
-      padding: 18px 20px 14px;
-      font-size: 1.1rem; font-weight: 500; line-height: 1.6;
-    }
-
-    /* 언어별 번역 행 */
-    .lang-rows { display: flex; flex-direction: column; }
-    .lang-row {
-      border-top: 1px solid var(--border);
-      display: flex; flex-direction: column;
-    }
-    .lang-row-label {
-      display: flex; align-items: center; gap: 7px;
-      padding: 8px 20px 4px;
-      font-size: 0.75rem; color: var(--text-muted);
-      font-weight: 600; letter-spacing: 0.03em;
-    }
-    .lang-row-label .flag { font-size: 1rem; }
-    .lang-row-body {
-      padding: 4px 20px 14px;
-      font-size: 1rem; line-height: 1.6;
-      display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    }
-    .lang-row-body.hidden-text .target-text { filter: blur(6px); user-select: none; }
-    .target-text { color: var(--accent); flex: 1; }
-    .btn-reveal {
-      background: rgba(91,110,245,0.15); border: 1px solid rgba(91,110,245,0.3);
-      color: var(--accent); border-radius: 8px; padding: 5px 12px;
-      cursor: pointer; font-size: 0.75rem; white-space: nowrap; flex-shrink: 0; transition: all 0.2s;
-    }
-    .btn-reveal:hover { background: rgba(91,110,245,0.25); }
-    .learn-tag { font-size: 0.7rem; color: var(--text-muted); background: var(--border); border-radius: 4px; padding: 2px 6px; }
-
-    /* TOGGLE REVEAL ALL */
-    .toggle-reveal {
-      display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
-    }
-    .toggle-label { font-size: 0.82rem; color: var(--text-muted); }
-    .toggle-switch {
-      width: 40px; height: 22px; background: var(--border); border-radius: 11px;
-      position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0;
-    }
-    .toggle-switch.on { background: var(--accent); }
-    .toggle-switch::after {
-      content: ''; position: absolute; top: 3px; left: 3px;
-      width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: left 0.2s;
-    }
-    .toggle-switch.on::after { left: 21px; }
-
-    /* BOTTOM BAR */
-    .bottom-bar {
-      position: fixed; bottom: 0; left: 0; right: 0;
-      background: rgba(15,17,23,0.95); border-top: 1px solid var(--border);
-      backdrop-filter: blur(10px); padding: 12px 24px;
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    }
-    .selected-count { font-size: 0.88rem; color: var(--text-muted); }
-    .selected-count span { color: var(--accent); font-weight: 700; }
-    .btn-next {
-      background: var(--accent); color: #fff; border: none; border-radius: 10px;
-      padding: 11px 24px; font-size: 0.92rem; font-weight: 600; cursor: pointer;
-      transition: all 0.2s; display: flex; align-items: center; gap: 7px;
-    }
-    .btn-next:hover { background: var(--accent-hover); transform: translateY(-1px); }
-    .btn-next:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; }
+    .current-info{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:14px;}
+    .info-chip{display:flex;align-items:center;gap:4px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:3px 9px;font-size:0.75rem;color:var(--text-muted);cursor:pointer;transition:all 0.2s;}
+    .info-chip:hover{border-color:var(--accent);color:var(--text);}
+    .info-chip .dot{width:7px;height:7px;border-radius:50%;}
 
     /* HINT BOX */
-    .hint-box {
-      display: flex; align-items: center; gap: 8px;
-      background: rgba(91,110,245,0.08); border: 1px solid rgba(91,110,245,0.2);
-      border-radius: 10px; padding: 10px 14px; margin-bottom: 18px;
-      font-size: 0.82rem; color: var(--text-muted);
-    }
-    .hint-box .hi { font-size: 1rem; }
+    .hint-box{display:flex;align-items:flex-start;gap:8px;background:rgba(91,110,245,0.07);border:1px solid rgba(91,110,245,0.2);border-radius:10px;padding:10px 13px;margin-bottom:16px;font-size:0.8rem;color:var(--text-muted);}
 
-    .fade-in { animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
-    .hidden { display: none !important; }
+    /* BOTTOM BAR */
+    .bottom-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(15,17,23,0.97);border-top:1px solid var(--border);backdrop-filter:blur(10px);padding:11px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;z-index:100;}
+    .selected-count{font-size:0.85rem;color:var(--text-muted);}
+    .selected-count span{color:var(--accent);font-weight:700;}
+    .btn-next{background:var(--accent);color:#fff;border:none;border-radius:10px;padding:10px 22px;font-size:0.9rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px;}
+    .btn-next:hover{background:var(--accent-hover);transform:translateY(-1px);}
+    .btn-next:disabled{background:var(--border);color:var(--text-muted);cursor:not-allowed;transform:none;}
+
+    /* ══════════ STEP 5 : CAROUSEL ══════════ */
+    #step5{padding:0;overflow:visible;}
+
+    .carousel-header{
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+      padding:12px 16px;background:var(--surface);
+      border:1px solid var(--border);border-bottom:none;
+      border-radius:var(--radius) var(--radius) 0 0;
+    }
+    .lang-arrow{display:flex;align-items:center;gap:7px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:5px 13px;font-size:0.82rem;flex-wrap:wrap;}
+    .lang-arrow .arr{color:var(--accent);}
+    .card-counter-badge{font-size:0.82rem;color:var(--text-muted);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-weight:600;}
+
+    .carousel-wrap{overflow:hidden;border-left:1px solid var(--border);border-right:1px solid var(--border);transition:height 0.3s ease;}
+    .carousel-track{display:flex;transition:transform 0.38s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;}
+
+    /* LEARNING CARD */
+    .lc-card{flex-shrink:0;width:100%;display:flex;flex-direction:column;}
+
+    .lc-native{padding:22px 18px 16px;border-bottom:1px solid var(--border);}
+    .lc-tag-row{display:flex;align-items:center;gap:7px;margin-bottom:10px;}
+    .lc-tag{font-size:0.7rem;color:var(--text-muted);background:var(--border);border-radius:4px;padding:2px 6px;}
+    .lc-lv-dot{width:7px;height:7px;border-radius:50%;}
+    .lc-native-text{font-size:1.45rem;font-weight:700;line-height:1.55;letter-spacing:-0.01em;}
+    .lc-native-lang{margin-top:6px;font-size:0.75rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;}
+
+    /* TARGET ROWS */
+    .lc-targets{display:flex;flex-direction:column;}
+    .lc-target{
+      padding:14px 18px;border-top:1px solid var(--border);
+      cursor:pointer;transition:background 0.15s;user-select:none;
+      -webkit-tap-highlight-color:transparent;position:relative;
+    }
+    .lc-target:active{background:rgba(91,110,245,0.07);}
+    .lc-target.playing{background:rgba(76,175,138,0.06);}
+
+    .lc-target-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
+    .lc-target-label{display:flex;align-items:center;gap:6px;font-size:0.73rem;color:var(--text-muted);font-weight:600;}
+    .speak-icon{font-size:0.9rem;opacity:0;}
+    .lc-target.playing .speak-icon{opacity:1;animation:pulse 0.8s ease infinite alternate;}
+    @keyframes pulse{from{opacity:0.5;}to{opacity:1;}}
+    .tap-hint{font-size:0.62rem;color:var(--text-muted);opacity:0.6;}
+
+    .lc-target-text{font-size:1.1rem;color:var(--accent);line-height:1.6;}
+    .lc-target.playing .lc-target-text{color:var(--success);}
+
+    /* Pinyin */
+    .lc-pinyin{font-size:0.75rem;color:var(--text-muted);margin-bottom:2px;letter-spacing:0.04em;font-style:italic;}
+
+    /* Furigana */
+    ruby rt{font-size:0.52em;color:var(--text-muted);}
+
+    /* CAROUSEL FOOTER */
+    .carousel-footer{
+      background:var(--surface);border:1px solid var(--border);border-top:none;
+      border-radius:0 0 var(--radius) var(--radius);
+      padding:13px 18px;display:flex;align-items:center;justify-content:space-between;
+    }
+    .carousel-dots{display:flex;gap:6px;align-items:center;}
+    .cdot{width:7px;height:7px;border-radius:50%;background:var(--border);transition:all 0.25s;cursor:pointer;}
+    .cdot.active{background:var(--accent);width:20px;border-radius:4px;}
+    .carousel-nav{display:flex;gap:8px;}
+    .btn-nav{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:50%;color:var(--text);cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+    .btn-nav:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+    .btn-nav:disabled{opacity:0.28;cursor:not-allowed;}
+
+    /* ══════════ BREAKDOWN MODAL ══════════ */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:500;display:flex;align-items:flex-end;backdrop-filter:blur(3px);}
+    .modal-overlay.hidden{display:none;}
+    .modal-sheet{background:var(--surface);width:100%;max-width:700px;margin:0 auto;border-radius:20px 20px 0 0;max-height:80vh;overflow-y:auto;animation:slideUp 0.28s ease;}
+    @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+    .modal-handle{width:38px;height:4px;background:var(--border);border-radius:2px;margin:12px auto 0;}
+    .modal-header{display:flex;align-items:flex-start;justify-content:space-between;padding:16px 18px 14px;border-bottom:1px solid var(--border);}
+    .modal-header-left{display:flex;flex-direction:column;gap:4px;}
+    .modal-lang-line{display:flex;align-items:center;gap:8px;}
+    .modal-flag{font-size:1.3rem;}
+    .modal-lang-name{font-size:0.9rem;font-weight:700;}
+    .modal-original{font-size:1.05rem;color:var(--accent);}
+    .modal-close{background:var(--surface2);border:1px solid var(--border);border-radius:50%;width:30px;height:30px;cursor:pointer;color:var(--text-muted);font-size:1rem;display:flex;align-items:center;justify-content:center;}
+    .modal-close:hover{border-color:var(--accent);color:var(--text);}
+
+    .modal-words{padding:14px 18px 20px;display:flex;flex-direction:column;gap:7px;}
+    .word-row{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;align-items:center;padding:9px 13px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);}
+    .word-left{display:flex;flex-direction:column;gap:2px;min-width:70px;}
+    .word-text{font-size:1.05rem;font-weight:700;color:var(--accent);}
+    .word-reading{font-size:0.72rem;color:var(--text-muted);}
+    .word-meaning{font-size:0.88rem;color:var(--text);line-height:1.5;}
+
+    .modal-tip{margin:0 18px 18px;padding:9px 13px;background:rgba(91,110,245,0.07);border:1px solid rgba(91,110,245,0.2);border-radius:10px;font-size:0.78rem;color:var(--text-muted);line-height:1.5;}
+
+    /* MISC */
+    .fade-in{animation:fadeIn 0.3s ease;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(7px);}to{opacity:1;transform:translateY(0);}}
+    .hidden{display:none!important;}
   </style>
 </head>
 <body>
@@ -265,7 +240,7 @@
   <div class="step-line" id="sl3"></div>
   <div class="step" id="si4"><div class="step-num">4</div><span>학습 언어</span></div>
   <div class="step-line" id="sl4"></div>
-  <div class="step" id="si5"><div class="step-num">5</div><span>학습하기</span></div>
+  <div class="step" id="si5"><div class="step-num">5</div><span>학습</span></div>
 </div>
 
 <!-- STEP 1 -->
@@ -311,19 +286,19 @@
 <div class="card fade-in hidden" id="step3">
   <div class="sentence-controls">
     <div>
-      <div class="card-title" style="margin-bottom:4px">문장을 선택하세요</div>
-      <div style="font-size:0.8rem;color:var(--text-muted)">여러 개 선택 가능 · 일상에서 실제로 쓰는 표현</div>
+      <div class="card-title" style="margin-bottom:3px">문장을 선택하세요</div>
+      <div style="font-size:0.78rem;color:var(--text-muted)">여러 개 선택 가능 · 일상에서 실제로 쓰는 표현</div>
     </div>
-    <div style="display:flex;gap:7px;align-items:center">
+    <div style="display:flex;gap:6px;align-items:center">
       <span class="badge badge-cat" id="category-badge">일상</span>
       <button class="btn-sm" id="refresh-btn" onclick="refreshSentences()">↻ 새로고침</button>
     </div>
   </div>
   <div class="current-info">
-    <div class="info-chip" onclick="goToStep(1)"><span id="i-lang-flag">🇰🇷</span><span id="i-lang-name">한국어</span><span style="font-size:0.65rem">✕</span></div>
-    <div class="info-chip" onclick="goToStep(2)"><span class="dot" id="i-lv-dot" style="background:var(--lv1)"></span><span id="i-lv-name">초급</span><span style="font-size:0.65rem">✕</span></div>
+    <div class="info-chip" onclick="goToStep(1)"><span id="i-lang-flag">🇰🇷</span><span id="i-lang-name">한국어</span><span style="font-size:0.6rem">✕</span></div>
+    <div class="info-chip" onclick="goToStep(2)"><span class="dot" id="i-lv-dot" style="background:var(--lv1)"></span><span id="i-lv-name">초급</span><span style="font-size:0.6rem">✕</span></div>
   </div>
-  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px">
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
     <button class="cat-tab active" data-cat="daily" onclick="switchCategory(this,'daily')">일상 대화</button>
     <button class="cat-tab" data-cat="greeting" onclick="switchCategory(this,'greeting')">인사/반응</button>
     <button class="cat-tab" data-cat="feeling" onclick="switchCategory(this,'feeling')">감정/상태</button>
@@ -336,13 +311,13 @@
   </div>
 </div>
 
-<!-- STEP 4 : 학습 언어 (복수 선택) -->
+<!-- STEP 4 -->
 <div class="card fade-in hidden" id="step4">
   <div class="card-title">배우고 싶은 언어를 선택하세요</div>
-  <div class="card-sub">여러 언어를 동시에 선택할 수 있어요 · 각 문장 아래에 모두 표시됩니다</div>
+  <div class="card-sub">여러 언어 동시 선택 가능 · 각 카드에 모두 표시됩니다</div>
   <div class="hint-box">
-    <span class="hi">💡</span>
-    <span>예) 한국어 문장 아래에 영어 + 일본어 + 중국어가 함께 나타납니다</span>
+    <span>💡</span>
+    <span><b>탭 1회</b> = 해당 언어 음성 재생 &nbsp;·&nbsp; <b>탭 2회</b> = 단어별 뜻·발음 해설</span>
   </div>
   <div class="lang-grid" id="target-grid">
     <button class="lang-btn" data-lang="kor" onclick="toggleTargetLang(this)"><span class="flag">🇰🇷</span><span class="name">Korean</span><span class="native">한국어</span></button>
@@ -351,430 +326,864 @@
     <button class="lang-btn" data-lang="cmn" onclick="toggleTargetLang(this)"><span class="flag">🇨🇳</span><span class="name">Chinese</span><span class="native">中文</span></button>
     <button class="lang-btn" data-lang="vie" onclick="toggleTargetLang(this)"><span class="flag">🇻🇳</span><span class="name">Vietnamese</span><span class="native">Tiếng Việt</span></button>
   </div>
-  <!-- 선택된 언어 미리보기 -->
   <div class="selected-langs" id="selected-target-langs"></div>
 </div>
 
-<!-- STEP 5 -->
+<!-- STEP 5 : CAROUSEL -->
 <div class="card fade-in hidden" id="step5">
-  <div class="learning-header">
+  <div class="carousel-header">
     <div class="lang-arrow">
       <span id="learn-native-flag">🇰🇷</span>
-      <span id="learn-native-name" style="font-weight:600">한국어</span>
+      <span id="learn-native-name" style="font-weight:700">한국어</span>
       <span class="arr">→</span>
-      <div class="target-flags" id="learn-target-flags"></div>
+      <span id="learn-target-flags"></span>
     </div>
-    <div class="info-chip" style="font-size:0.78rem" id="learn-lv-chip">
-      <span class="dot" id="learn-lv-dot"></span>
-      <span id="learn-lv-name">초급</span>
+    <span class="card-counter-badge"><span id="card-cur">1</span> / <span id="card-tot">1</span></span>
+  </div>
+  <div class="carousel-wrap" id="carousel-wrap">
+    <div class="carousel-track" id="carousel-track"></div>
+  </div>
+  <div class="carousel-footer">
+    <div class="carousel-dots" id="carousel-dots"></div>
+    <div class="carousel-nav">
+      <button class="btn-nav" id="btn-prev" onclick="prevCard()">‹</button>
+      <button class="btn-nav" id="btn-next-card" onclick="nextCard()">›</button>
     </div>
   </div>
-  <div class="toggle-reveal">
-    <div class="toggle-switch" id="reveal-toggle" onclick="toggleRevealAll()"></div>
-    <span class="toggle-label">번역 가리기 (각 행의 <strong>보기</strong> 버튼으로 확인)</span>
-  </div>
-  <div class="learn-cards" id="learn-cards"></div>
 </div>
 
-<!-- BOTTOM BAR (step3 & step4 공용) -->
-<div class="bottom-bar hidden" id="bottom-bar">
-  <div class="selected-count" id="bar-count-area">
-    <span id="count-display">0</span>개 선택됨
+<!-- BREAKDOWN MODAL -->
+<div class="modal-overlay hidden" id="breakdown-modal" onclick="closeBreakdown()">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-lang-line">
+          <span class="modal-flag" id="modal-flag">🇺🇸</span>
+          <span class="modal-lang-name" id="modal-lang-name">English</span>
+        </div>
+        <div class="modal-original" id="modal-original"></div>
+      </div>
+      <button class="modal-close" onclick="closeBreakdown()">✕</button>
+    </div>
+    <div class="modal-words" id="modal-words"></div>
+    <div class="modal-tip" id="modal-tip"></div>
   </div>
+</div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar hidden" id="bottom-bar">
+  <div class="selected-count" id="bar-count-area"><span id="count-display">0</span>개 선택됨</div>
   <button class="btn-next" id="next-btn" disabled onclick="onNextBtn()">다음 단계 →</button>
 </div>
 
 <script>
-// ── PARALLEL DATA (화용적 등가 문장) ─────────────────────────────
+// ══════════════════════════════════════════════════════════
+// DATA  (화용적 등가 · 후리가나 · 병음 포함)
+// ══════════════════════════════════════════════════════════
 const DATA = {
-  daily: [
-    { lv:1, tag:"식사/meal",       kor:"밥 먹었어?",                        eng:"Did you eat?",                           jpn:"ご飯食べた？",                        cmn:"吃了吗？",                     vie:"Ăn chưa?" },
-    { lv:1, tag:"위치/location",   kor:"지금 어디야?",                       eng:"Where are you?",                         jpn:"今どこ？",                           cmn:"你在哪？",                     vie:"Bạn đang ở đâu?" },
-    { lv:1, tag:"이동/movement",   kor:"나 집에 가.",                        eng:"I'm heading home.",                      jpn:"家帰るね。",                          cmn:"我回家了。",                   vie:"Mình về nhà đây." },
-    { lv:1, tag:"식사/meal",       kor:"뭐 먹을래?",                         eng:"What do you want to eat?",               jpn:"何食べたい？",                        cmn:"想吃什么？",                   vie:"Muốn ăn gì?" },
-    { lv:2, tag:"식사/meal",       kor:"나 지금 밥 먹는 중이야.",             eng:"I'm eating right now.",                  jpn:"今ご飯食べてるとこ。",                cmn:"我正在吃饭呢。",               vie:"Tôi đang ăn cơm." },
-    { lv:2, tag:"연락/contact",    kor:"조금 이따가 전화할게.",               eng:"I'll call you in a bit.",                jpn:"ちょっとしたら電話するね。",          cmn:"一会儿给你打电话。",           vie:"Lát nữa gọi cho bạn nhé." },
-    { lv:2, tag:"연락/contact",    kor:"나 지금 바빠, 나중에 얘기하자.",      eng:"I'm busy, let's talk later.",            jpn:"今忙しいから後で話そ。",              cmn:"我现在忙，晚点再聊。",         vie:"Mình bận, nói chuyện sau nhé." },
-    { lv:2, tag:"약속/plan",       kor:"이따 같이 가자.",                    eng:"Let's go together later.",               jpn:"後で一緒に行こうよ。",                cmn:"待会儿一起去吧。",             vie:"Lát đi cùng nhau nhé." },
-    { lv:3, tag:"일상/daily",      kor:"아 맞다, 깜빡했어 완전히.",           eng:"Oh right, I totally forgot.",            jpn:"あ、そうだ、すっかり忘れてた。",     cmn:"哦对了，我给忘了。",           vie:"Ừ nhỉ, mình quên béng mất." },
-    { lv:3, tag:"일상/daily",      kor:"그냥 오늘은 집에서 쉬고 싶어.",       eng:"I'd rather just stay home today.",       jpn:"今日はなんか家でゆっくりしたい気分。", cmn:"今天就想待在家里休息。",     vie:"Hôm nay chỉ muốn ở nhà nghỉ ngơi thôi." },
-    { lv:3, tag:"길/direction",    kor:"거기까지 어떻게 가면 돼?",            eng:"How do I get there from here?",          jpn:"そこってここからどう行けばいいの？", cmn:"从这里怎么去那边？",           vie:"Từ đây đi đến đó bằng đường nào?" },
-    { lv:3, tag:"이동/movement",   kor:"나 먼저 갈게, 뒤에 따라와.",          eng:"I'll head out first, catch up with me.", jpn:"先行くから後でついてきて。",          cmn:"我先走了，你跟上来。",         vie:"Mình đi trước, bạn đi theo sau nhé." },
-    { lv:4, tag:"일상/daily",      kor:"어차피 갈 거면 진작에 말하지.",        eng:"You could've just told me earlier.",     jpn:"どうせ行くなら早く言ってよ。",        cmn:"你早说不就好了。",             vie:"Biết vậy nói sớm hơn cho rồi." },
-    { lv:4, tag:"식사/meal",       kor:"밥은 먹고 다니는 거야?",              eng:"Are you actually eating these days?",    jpn:"ちゃんとご飯食べてる？",              cmn:"你最近有好好吃饭吗？",         vie:"Dạo này bạn có ăn uống đàng hoàng không?" },
-    { lv:4, tag:"식사/meal",       kor:"이 동네 맛집 알면 알려줘, 나 완전 초행이거든.", eng:"Know any good spots? I'm totally new to this area.", jpn:"このへんでおすすめあったら教えて、全然詳しくないから。", cmn:"这附近有什么好吃的推荐一下，我完全不熟。", vie:"Ở đây có chỗ nào ngon không chỉ mình với, mình không rành khu này." },
-    { lv:4, tag:"컨디션/condition",kor:"오늘 완전 몸이 안 받쳐줘.",           eng:"I'm running on empty today.",            jpn:"今日はマジで体がついてかない。",      cmn:"今天整个人都不在状态。",       vie:"Hôm nay người mình không ra gì cả." },
-  ],
-  greeting: [
-    { lv:1, tag:"인사/greeting",   kor:"안녕!",                              eng:"Hey!",                                   jpn:"こんにちは！",                        cmn:"你好！",                       vie:"Xin chào!" },
-    { lv:1, tag:"인사/greeting",   kor:"잘 지냈어?",                         eng:"How have you been?",                     jpn:"元気？",                              cmn:"你还好吗？",                   vie:"Bạn khỏe không?" },
-    { lv:1, tag:"감사/thanks",     kor:"고마워!",                            eng:"Thanks!",                                jpn:"ありがとう！",                        cmn:"谢谢！",                       vie:"Cảm ơn!" },
-    { lv:1, tag:"반응/reaction",   kor:"괜찮아.",                            eng:"It's fine.",                             jpn:"大丈夫。",                            cmn:"没事。",                       vie:"Không sao." },
-    { lv:2, tag:"인사/greeting",   kor:"오랜만이야!",                        eng:"Long time no see!",                      jpn:"久しぶり！",                          cmn:"好久不见！",                   vie:"Lâu quá không gặp!" },
-    { lv:2, tag:"인사/greeting",   kor:"나중에 봐!",                         eng:"Talk later!",                            jpn:"またね！",                            cmn:"回头见！",                     vie:"Gặp lại sau nhé!" },
-    { lv:2, tag:"겸손/humble",     kor:"별거 아닌데 뭘.",                    eng:"No big deal.",                           jpn:"大したことじゃないよ。",              cmn:"没什么大不了的。",             vie:"Có gì đâu." },
-    { lv:2, tag:"인사/greeting",   kor:"조심히 가.",                         eng:"Take care!",                             jpn:"気をつけてね。",                      cmn:"路上小心。",                   vie:"Đi cẩn thận nhé." },
-    { lv:3, tag:"인사/greeting",   kor:"얼마 만이야, 진짜 오랜만이다.",        eng:"It's been forever, seriously.",          jpn:"ほんと久々だね、懐かしい。",          cmn:"真的好久没见了，都快认不出了。", vie:"Lâu thật, gặp lại mừng quá." },
-    { lv:3, tag:"인사/greeting",   kor:"그동안 잘 지냈어? 연락이 없길래.",   eng:"Haven't heard from you in a while — you good?", jpn:"連絡なかったから心配してたよ。", cmn:"一直没消息，还以为出什么事了。", vie:"Không thấy liên lạc, tưởng có chuyện gì." },
-    { lv:3, tag:"반응/reaction",   kor:"아 그렇구나, 몰랐네.",               eng:"Oh, I didn't know that.",                jpn:"あー、そうなんだ、知らなかった。",   cmn:"哦，这个我还真不知道。",       vie:"Ồ, vậy hả, mình không biết." },
-    { lv:3, tag:"인사/greeting",   kor:"어디 가? 나도 그쪽인데.",            eng:"Where are you headed? I'm going that way too.", jpn:"どこ行くの？私もそっちなんだけど。", cmn:"你去哪儿？我也顺路。", vie:"Bạn đi đâu vậy? Mình cũng đi hướng đó." },
-    { lv:4, tag:"인사/greeting",   kor:"야, 요즘 완전 뜸하네 너.",           eng:"Hey, you've been MIA lately.",           jpn:"最近全然顔出さないじゃん。",          cmn:"你最近整个人消失了一样。",     vie:"Dạo này bạn biến đi đâu hết vậy?" },
-    { lv:4, tag:"인사/greeting",   kor:"별일 없지? 갑자기 연락해서.",         eng:"Sorry for the random text — just wanted to check in.", jpn:"急に連絡してごめんね、特に用はないんだけど。", cmn:"突然联系你，没什么事，就是想问问你。", vie:"Nhắn đột ngột vậy thôi chứ không có gì, chỉ hỏi thăm." },
-    { lv:4, tag:"반응/reaction",   kor:"어, 잘 됐다 마침 너한테 할 말 있었는데.", eng:"Oh perfect timing, I actually wanted to talk to you.", jpn:"ちょうどよかった、ちょっと話したいことあったんだよね。", cmn:"来得正好，我正好有话要跟你说。", vie:"May quá gặp bạn, mình vừa có chuyện muốn nói." },
-    { lv:4, tag:"반응/reaction",   kor:"됐어 됐어, 신경 꺼.",               eng:"Forget it, don't worry about it.",       jpn:"もういいって、気にしないで。",        cmn:"算了，你别管了。",             vie:"Thôi kệ đi, đừng nghĩ nhiều." },
-  ],
-  feeling: [
-    { lv:1, tag:"피로/tired",      kor:"피곤해.",                            eng:"I'm tired.",                             jpn:"疲れた。",                            cmn:"好累。",                       vie:"Mệt quá." },
-    { lv:1, tag:"배고픔/hungry",   kor:"배고파.",                            eng:"I'm hungry.",                            jpn:"お腹すいた。",                        cmn:"好饿。",                       vie:"Đói bụng." },
-    { lv:1, tag:"피로/tired",      kor:"졸려.",                              eng:"I'm sleepy.",                            jpn:"眠い。",                              cmn:"好困。",                       vie:"Buồn ngủ." },
-    { lv:1, tag:"감정/emotion",    kor:"짜증나.",                            eng:"So annoying.",                           jpn:"イライラする。",                      cmn:"好烦。",                       vie:"Bực mình." },
-    { lv:2, tag:"피로/tired",      kor:"너무 피곤해 죽겠어.",                 eng:"I'm absolutely exhausted.",              jpn:"もうめっちゃ疲れた。",                cmn:"累死了。",                     vie:"Mệt quá trời." },
-    { lv:2, tag:"배고픔/hungry",   kor:"배고파 미칠 것 같아.",               eng:"I'm starving.",                          jpn:"お腹ペコペコ。",                      cmn:"饿死了。",                     vie:"Đói muốn xỉu." },
-    { lv:2, tag:"감정/emotion",    kor:"기분이 좀 별로야.",                  eng:"I'm not feeling great.",                 jpn:"なんかちょっとしんどいな。",          cmn:"感觉不太好。",                 vie:"Không được khỏe lắm." },
-    { lv:2, tag:"감정/emotion",    kor:"너무 설레.",                         eng:"I'm so excited!",                        jpn:"すごくドキドキしてる。",              cmn:"好期待啊。",                   vie:"Hồi hộp ghê." },
-    { lv:3, tag:"피로/tired",      kor:"몸이 천근만근이야 오늘.",             eng:"My body is completely done today.",      jpn:"今日は体が全然言うこと聞かない。",   cmn:"今天身体完全不听使唤。",       vie:"Hôm nay người không nghe lời gì hết." },
-    { lv:3, tag:"감정/emotion",    kor:"뭔가 찝찝한 느낌이 안 가.",          eng:"Something just feels off and I can't shake it.", jpn:"なんかモヤモヤが取れないんだよね。", cmn:"有种说不清的不舒服，一直在那。", vie:"Có gì đó cứ vướng mãi, không rõ là gì." },
-    { lv:3, tag:"감정/emotion",    kor:"속이 다 시원하다, 진짜.",             eng:"That's such a relief, honestly.",        jpn:"これでスッキリした、ほんとに。",     cmn:"终于说出来了，整个人都轻松了。", vie:"Nói ra được rồi, nhẹ cả người." },
-    { lv:3, tag:"감정/emotion",    kor:"완전 신나, 기분 최고야.",             eng:"I'm pumped, best mood ever.",            jpn:"完全テンション上がってる。",          cmn:"现在状态超好，心情美美的。",   vie:"Đang cực kỳ phấn khởi, tâm trạng đỉnh lắm." },
-    { lv:4, tag:"감정/emotion",    kor:"기분이 묘하게 싱숭생숭해.",           eng:"I'm in this weird unsettled headspace.", jpn:"なんか変にそわそわしてる自分がいる。", cmn:"莫名有点心神不定。",          vie:"Không hiểu sao hôm nay bứt rứt lạ." },
-    { lv:4, tag:"피로/tired",      kor:"뭔가 에너지가 방전된 느낌이야.",      eng:"I feel completely drained, like my battery's at zero.", jpn:"エネルギーが完全に切れた感じ。", cmn:"感觉能量被榨干了，什么都不想做。", vie:"Cảm giác pin xuống về không, không muốn làm gì hết." },
-    { lv:4, tag:"감정/emotion",    kor:"괜히 심통이 나는 날이야 오늘.",       eng:"I'm just randomly irritable today for no reason.", jpn:"理由もないのになんか今日むしゃくしゃする。", cmn:"今天就是无缘无故地烦，也不知道为什么。", vie:"Hôm nay bực bội vô cớ, cũng chẳng biết tại sao." },
-    { lv:4, tag:"감정/emotion",    kor:"이거 해치우고 나니까 속이 뻥 뚫리네.", eng:"Getting that off my chest feels like a weight lifted.", jpn:"これ言えてすっごい楽になった。", cmn:"把这事说出来之后感觉压在心里的石头掉了。", vie:"Nói xong cái này thấy như trút được gánh nặng." },
-  ],
-  question: [
-    { lv:1, tag:"질문/question",   kor:"뭐 해?",                             eng:"What's up?",                             jpn:"何してる？",                          cmn:"在干嘛？",                     vie:"Đang làm gì?" },
-    { lv:1, tag:"질문/question",   kor:"어디야?",                            eng:"Where are you?",                         jpn:"どこにいる？",                        cmn:"你在哪？",                     vie:"Bạn ở đâu?" },
-    { lv:1, tag:"질문/question",   kor:"왜?",                                eng:"Why?",                                   jpn:"なんで？",                            cmn:"为什么？",                     vie:"Tại sao?" },
-    { lv:1, tag:"질문/question",   kor:"언제 와?",                           eng:"When are you coming?",                   jpn:"いつ来る？",                          cmn:"什么时候来？",                 vie:"Khi nào đến?" },
-    { lv:2, tag:"질문/question",   kor:"지금 뭐 해?",                        eng:"What are you up to?",                    jpn:"今何してるの？",                      cmn:"你现在在干嘛？",               vie:"Bạn đang làm gì vậy?" },
-    { lv:2, tag:"질문/question",   kor:"그거 어디서 샀어?",                  eng:"Where'd you get that?",                  jpn:"それどこで買ったの？",                cmn:"这个在哪买的？",               vie:"Mua cái đó ở đâu?" },
-    { lv:2, tag:"질문/question",   kor:"그 영화 재밌어?",                    eng:"Is that movie good?",                    jpn:"その映画、面白い？",                  cmn:"那部电影好看吗？",             vie:"Phim đó hay không?" },
-    { lv:2, tag:"질문/question",   kor:"같이 갈래?",                         eng:"Wanna come with?",                       jpn:"一緒に行かない？",                    cmn:"要不要一起去？",               vie:"Đi cùng không?" },
-    { lv:3, tag:"질문/question",   kor:"거기 예약하고 가야 돼?",              eng:"Do you need a reservation there?",       jpn:"そこって予約してから行く感じ？",     cmn:"那个地方要提前订位吗？",       vie:"Chỗ đó có cần đặt trước không?" },
-    { lv:3, tag:"질문/question",   kor:"이거 지금 당장 해야 해?",             eng:"Does this need to happen right now?",    jpn:"これって今すぐやらないとダメ？",     cmn:"这个现在必须做吗？",           vie:"Cái này phải làm ngay bây giờ không?" },
-    { lv:3, tag:"질문/question",   kor:"그 얘기 어디서 들었어?",             eng:"Where did you hear that from?",          jpn:"その話どこで聞いたの？",              cmn:"这是从哪听来的？",             vie:"Nghe chuyện này ở đâu vậy?" },
-    { lv:3, tag:"질문/question",   kor:"혹시 나한테 서운한 거 있어?",         eng:"Is there something I did that bothered you?", jpn:"もしかして私のことで何か気に障ってる？", cmn:"你是不是对我有什么意见？", vie:"Bạn có đang phật lòng gì về mình không?" },
-    { lv:4, tag:"질문/question",   kor:"그게 다야? 뭔가 더 있는 거 아니야?", eng:"That's it? I feel like there's more to it.", jpn:"それだけ？なんか他にもある気がするんだけど。", cmn:"就这样？感觉还有什么没说。", vie:"Chỉ vậy thôi? Mình thấy còn có gì đó nữa." },
-    { lv:4, tag:"질문/question",   kor:"설마 그 말 진심으로 한 거야?",        eng:"Wait, were you actually serious when you said that?", jpn:"え、あれって本気で言ってたの？", cmn:"等等，你说那句话是认真的吗？", vie:"Ủa, câu đó bạn nói thật hay đùa vậy?" },
-    { lv:4, tag:"질문/question",   kor:"그쪽이랑은 어떻게 알게 된 거야?",    eng:"How do you even know them?",             jpn:"あの人とはどういう経緯で知り合ったの？", cmn:"你们是怎么认识的？",         vie:"Bạn và người đó quen nhau qua đâu?" },
-    { lv:4, tag:"질문/question",   kor:"이거 나만 이상하게 느끼는 거야?",     eng:"Am I the only one who finds this weird?", jpn:"これって私だけ変に感じてる？",       cmn:"这件事就我一个人觉得奇怪吗？", vie:"Hay chỉ mình thấy chuyện này kỳ kỳ?" },
-  ],
+ daily:[
+  {lv:1,tag:"식사",
+   kor:"밥 먹었어?",eng:"Did you eat?",
+   jpn:"ご飯食べた？",jpn_ruby:"<ruby>ご飯<rt>ごはん</rt></ruby><ruby>食<rt>た</rt></ruby>べた？",
+   cmn:"吃了吗？",cmn_pinyin:"Chī le ma?",vie:"Ăn chưa?"},
+  {lv:1,tag:"위치",
+   kor:"지금 어디야?",eng:"Where are you?",
+   jpn:"今どこ？",jpn_ruby:"<ruby>今<rt>いま</rt></ruby>どこ？",
+   cmn:"你在哪？",cmn_pinyin:"Nǐ zài nǎ?",vie:"Bạn đang ở đâu?"},
+  {lv:1,tag:"이동",
+   kor:"나 집에 가.",eng:"I'm heading home.",
+   jpn:"家帰るね。",jpn_ruby:"<ruby>家<rt>いえ</rt></ruby><ruby>帰<rt>かえ</rt></ruby>るね。",
+   cmn:"我回家了。",cmn_pinyin:"Wǒ huí jiā le.",vie:"Mình về nhà đây."},
+  {lv:1,tag:"식사",
+   kor:"뭐 먹을래?",eng:"What do you want to eat?",
+   jpn:"何食べたい？",jpn_ruby:"<ruby>何<rt>なに</rt></ruby><ruby>食<rt>た</rt></ruby>べたい？",
+   cmn:"想吃什么？",cmn_pinyin:"Xiǎng chī shénme?",vie:"Muốn ăn gì?"},
+  {lv:2,tag:"식사",
+   kor:"나 지금 밥 먹는 중이야.",eng:"I'm eating right now.",
+   jpn:"今ご飯食べてるとこ。",jpn_ruby:"<ruby>今<rt>いま</rt></ruby><ruby>ご飯<rt>ごはん</rt></ruby><ruby>食<rt>た</rt></ruby>べてるとこ。",
+   cmn:"我正在吃饭呢。",cmn_pinyin:"Wǒ zhèngzài chīfàn ne.",vie:"Tôi đang ăn cơm."},
+  {lv:2,tag:"연락",
+   kor:"조금 이따가 전화할게.",eng:"I'll call you in a bit.",
+   jpn:"ちょっとしたら電話するね。",jpn_ruby:"ちょっとしたら<ruby>電話<rt>でんわ</rt></ruby>するね。",
+   cmn:"一会儿给你打电话。",cmn_pinyin:"Yīhuìr gěi nǐ dǎ diànhuà.",vie:"Lát nữa gọi cho bạn nhé."},
+  {lv:2,tag:"연락",
+   kor:"나 지금 바빠, 나중에 얘기하자.",eng:"I'm busy, let's talk later.",
+   jpn:"今忙しいから後で話そ。",jpn_ruby:"<ruby>今<rt>いま</rt></ruby><ruby>忙<rt>いそが</rt></ruby>しいから<ruby>後<rt>あと</rt></ruby>で<ruby>話<rt>はな</rt></ruby>そ。",
+   cmn:"我现在忙，晚点再聊。",cmn_pinyin:"Wǒ xiànzài máng, wǎn diǎn zài liáo.",vie:"Mình bận, nói chuyện sau nhé."},
+  {lv:2,tag:"약속",
+   kor:"이따 같이 가자.",eng:"Let's go together later.",
+   jpn:"後で一緒に行こうよ。",jpn_ruby:"<ruby>後<rt>あと</rt></ruby>で<ruby>一緒<rt>いっしょ</rt></ruby>に<ruby>行<rt>い</rt></ruby>こうよ。",
+   cmn:"待会儿一起去吧。",cmn_pinyin:"Dāihuìr yīqǐ qù ba.",vie:"Lát đi cùng nhau nhé."},
+  {lv:3,tag:"일상",
+   kor:"아 맞다, 깜빡했어 완전히.",eng:"Oh right, I totally forgot.",
+   jpn:"あ、そうだ、すっかり忘れてた。",jpn_ruby:"あ、そうだ、すっかり<ruby>忘<rt>わす</rt></ruby>れてた。",
+   cmn:"哦对了，我给忘了。",cmn_pinyin:"Ó duì le, wǒ gěi wàng le.",vie:"Ừ nhỉ, mình quên béng mất."},
+  {lv:3,tag:"일상",
+   kor:"그냥 오늘은 집에서 쉬고 싶어.",eng:"I'd rather just stay home today.",
+   jpn:"今日はなんか家でゆっくりしたい気分。",jpn_ruby:"<ruby>今日<rt>きょう</rt></ruby>はなんか<ruby>家<rt>いえ</rt></ruby>でゆっくりしたい<ruby>気分<rt>きぶん</rt></ruby>。",
+   cmn:"今天就想待在家里休息。",cmn_pinyin:"Jīntiān jiù xiǎng dāi zài jiā lǐ xiūxi.",vie:"Hôm nay chỉ muốn ở nhà nghỉ ngơi thôi."},
+  {lv:3,tag:"길",
+   kor:"거기까지 어떻게 가면 돼?",eng:"How do I get there from here?",
+   jpn:"そこってここからどう行けばいいの？",jpn_ruby:"そこってここからどう<ruby>行<rt>い</rt></ruby>けばいいの？",
+   cmn:"从这里怎么去那边？",cmn_pinyin:"Cóng zhèlǐ zěnme qù nàbiān?",vie:"Từ đây đi đến đó bằng đường nào?"},
+  {lv:3,tag:"이동",
+   kor:"나 먼저 갈게, 뒤에 따라와.",eng:"I'll head out first, catch up with me.",
+   jpn:"先行くから後でついてきて。",jpn_ruby:"<ruby>先<rt>さき</rt></ruby><ruby>行<rt>い</rt></ruby>くから<ruby>後<rt>あと</rt></ruby>でついてきて。",
+   cmn:"我先走了，你跟上来。",cmn_pinyin:"Wǒ xiān zǒu le, nǐ gēn shàng lái.",vie:"Mình đi trước, bạn đi theo sau nhé."},
+  {lv:4,tag:"일상",
+   kor:"어차피 갈 거면 진작에 말하지.",eng:"You could've just told me earlier.",
+   jpn:"どうせ行くなら早く言ってよ。",jpn_ruby:"どうせ<ruby>行<rt>い</rt></ruby>くなら<ruby>早<rt>はや</rt></ruby>く<ruby>言<rt>い</rt></ruby>ってよ。",
+   cmn:"你早说不就好了。",cmn_pinyin:"Nǐ zǎo shuō bù jiù hǎo le.",vie:"Biết vậy nói sớm hơn cho rồi."},
+  {lv:4,tag:"식사",
+   kor:"밥은 먹고 다니는 거야?",eng:"Are you actually eating these days?",
+   jpn:"ちゃんとご飯食べてる？",jpn_ruby:"ちゃんと<ruby>ご飯<rt>ごはん</rt></ruby><ruby>食<rt>た</rt></ruby>べてる？",
+   cmn:"你最近有好好吃饭吗？",cmn_pinyin:"Nǐ zuìjìn yǒu hǎohǎo chīfàn ma?",vie:"Dạo này bạn có ăn uống đàng hoàng không?"},
+  {lv:4,tag:"식사",
+   kor:"이 동네 맛집 알면 알려줘.",eng:"Know any good spots around here?",
+   jpn:"このへんでおすすめあったら教えて。",jpn_ruby:"このへんでおすすめあったら<ruby>教<rt>おし</rt></ruby>えて。",
+   cmn:"这附近有什么好吃的推荐一下？",cmn_pinyin:"Zhè fùjìn yǒu shénme hǎochī de tuījiàn yīxià?",vie:"Khu này có chỗ nào ngon chỉ mình với?"},
+  {lv:4,tag:"컨디션",
+   kor:"오늘 완전 몸이 안 받쳐줘.",eng:"I'm running on empty today.",
+   jpn:"今日はマジで体がついてかない。",jpn_ruby:"<ruby>今日<rt>きょう</rt></ruby>はマジで<ruby>体<rt>からだ</rt></ruby>がついてかない。",
+   cmn:"今天整个人都不在状态。",cmn_pinyin:"Jīntiān zhěnggè rén dōu bú zài zhuàngtài.",vie:"Hôm nay người mình không ra gì cả."},
+ ],
+ greeting:[
+  {lv:1,tag:"인사",
+   kor:"안녕!",eng:"Hey!",
+   jpn:"こんにちは！",jpn_ruby:"こんにちは！",
+   cmn:"你好！",cmn_pinyin:"Nǐ hǎo!",vie:"Xin chào!"},
+  {lv:1,tag:"안부",
+   kor:"잘 지냈어?",eng:"How have you been?",
+   jpn:"元気？",jpn_ruby:"<ruby>元気<rt>げんき</rt></ruby>？",
+   cmn:"你还好吗？",cmn_pinyin:"Nǐ hái hǎo ma?",vie:"Bạn khỏe không?"},
+  {lv:1,tag:"감사",
+   kor:"고마워!",eng:"Thanks!",
+   jpn:"ありがとう！",jpn_ruby:"ありがとう！",
+   cmn:"谢谢！",cmn_pinyin:"Xièxiè!",vie:"Cảm ơn!"},
+  {lv:1,tag:"반응",
+   kor:"괜찮아.",eng:"It's fine.",
+   jpn:"大丈夫。",jpn_ruby:"<ruby>大丈夫<rt>だいじょうぶ</rt></ruby>。",
+   cmn:"没事。",cmn_pinyin:"Méi shì.",vie:"Không sao."},
+  {lv:2,tag:"인사",
+   kor:"오랜만이야!",eng:"Long time no see!",
+   jpn:"久しぶり！",jpn_ruby:"<ruby>久<rt>ひさ</rt></ruby>しぶり！",
+   cmn:"好久不见！",cmn_pinyin:"Hǎo jiǔ bú jiàn!",vie:"Lâu quá không gặp!"},
+  {lv:2,tag:"인사",
+   kor:"나중에 봐!",eng:"Talk later!",
+   jpn:"またね！",jpn_ruby:"またね！",
+   cmn:"回头见！",cmn_pinyin:"Huí tóu jiàn!",vie:"Gặp lại sau nhé!"},
+  {lv:2,tag:"겸손",
+   kor:"별거 아닌데 뭘.",eng:"No big deal.",
+   jpn:"大したことじゃないよ。",jpn_ruby:"<ruby>大<rt>た</rt></ruby>したことじゃないよ。",
+   cmn:"没什么大不了的。",cmn_pinyin:"Méi shénme dà bù liǎo de.",vie:"Có gì đâu."},
+  {lv:2,tag:"인사",
+   kor:"조심히 가.",eng:"Take care!",
+   jpn:"気をつけてね。",jpn_ruby:"<ruby>気<rt>き</rt></ruby>をつけてね。",
+   cmn:"路上小心。",cmn_pinyin:"Lù shàng xiǎoxīn.",vie:"Đi cẩn thận nhé."},
+  {lv:3,tag:"인사",
+   kor:"얼마 만이야, 진짜 오랜만이다.",eng:"It's been forever, seriously.",
+   jpn:"ほんと久々だね。",jpn_ruby:"ほんと<ruby>久々<rt>ひさびさ</rt></ruby>だね。",
+   cmn:"真的好久没见了。",cmn_pinyin:"Zhēnde hǎo jiǔ méi jiàn le.",vie:"Lâu thật, gặp lại mừng quá."},
+  {lv:3,tag:"인사",
+   kor:"그동안 잘 지냈어? 연락이 없길래.",eng:"Haven't heard from you — you good?",
+   jpn:"連絡なかったから心配してたよ。",jpn_ruby:"<ruby>連絡<rt>れんらく</rt></ruby>なかったから<ruby>心配<rt>しんぱい</rt></ruby>してたよ。",
+   cmn:"一直没消息，还以为出什么事了。",cmn_pinyin:"Yīzhí méi xiāoxi, hái yǐwéi chū shénme shì le.",vie:"Không thấy liên lạc, tưởng có chuyện gì."},
+  {lv:3,tag:"반응",
+   kor:"아 그렇구나, 몰랐네.",eng:"Oh, I didn't know that.",
+   jpn:"あー、そうなんだ、知らなかった。",jpn_ruby:"あー、そうなんだ、<ruby>知<rt>し</rt></ruby>らなかった。",
+   cmn:"哦，这个我还真不知道。",cmn_pinyin:"Ó, zhège wǒ hái zhēn bù zhīdào.",vie:"Ồ, vậy hả, mình không biết."},
+  {lv:3,tag:"인사",
+   kor:"어디 가? 나도 그쪽인데.",eng:"Where are you headed? I'm going that way too.",
+   jpn:"どこ行くの？私もそっちなんだけど。",jpn_ruby:"どこ<ruby>行<rt>い</rt></ruby>くの？<ruby>私<rt>わたし</rt></ruby>もそっちなんだけど。",
+   cmn:"你去哪儿？我也顺路。",cmn_pinyin:"Nǐ qù nǎr? Wǒ yě shùn lù.",vie:"Bạn đi đâu vậy? Mình cũng đi hướng đó."},
+  {lv:4,tag:"인사",
+   kor:"야, 요즘 완전 뜸하네 너.",eng:"Hey, you've been MIA lately.",
+   jpn:"最近全然顔出さないじゃん。",jpn_ruby:"<ruby>最近<rt>さいきん</rt></ruby><ruby>全然<rt>ぜんぜん</rt></ruby><ruby>顔<rt>かお</rt></ruby><ruby>出<rt>だ</rt></ruby>さないじゃん。",
+   cmn:"你最近整个人消失了一样。",cmn_pinyin:"Nǐ zuìjìn zhěnggè rén xiāoshī le yīyàng.",vie:"Dạo này bạn biến đi đâu hết vậy?"},
+  {lv:4,tag:"인사",
+   kor:"별일 없지? 갑자기 연락해서.",eng:"Sorry for the random text — just checking in.",
+   jpn:"急に連絡してごめんね。",jpn_ruby:"<ruby>急<rt>きゅう</rt></ruby>に<ruby>連絡<rt>れんらく</rt></ruby>してごめんね。",
+   cmn:"突然联系你，没什么事，就是想问问你。",cmn_pinyin:"Tūrán liánxì nǐ, méi shénme shì.",vie:"Nhắn đột ngột vậy thôi, chỉ hỏi thăm."},
+  {lv:4,tag:"반응",
+   kor:"어, 잘 됐다 마침 너한테 할 말 있었는데.",eng:"Oh perfect timing, I wanted to talk to you.",
+   jpn:"ちょうどよかった、話したいことあったんだよね。",jpn_ruby:"ちょうどよかった、<ruby>話<rt>はな</rt></ruby>したいことあったんだよね。",
+   cmn:"来得正好，我正好有话要跟你说。",cmn_pinyin:"Lái de zhènghǎo, wǒ yǒu huà yào gēn nǐ shuō.",vie:"May quá gặp bạn, mình vừa có chuyện muốn nói."},
+  {lv:4,tag:"반응",
+   kor:"됐어 됐어, 신경 꺼.",eng:"Forget it, don't worry about it.",
+   jpn:"もういいって、気にしないで。",jpn_ruby:"もういいって、<ruby>気<rt>き</rt></ruby>にしないで。",
+   cmn:"算了，你别管了。",cmn_pinyin:"Suàn le, nǐ bié guǎn le.",vie:"Thôi kệ đi, đừng nghĩ nhiều."},
+ ],
+ feeling:[
+  {lv:1,tag:"피로",
+   kor:"피곤해.",eng:"I'm tired.",
+   jpn:"疲れた。",jpn_ruby:"<ruby>疲<rt>つか</rt></ruby>れた。",
+   cmn:"好累。",cmn_pinyin:"Hǎo lèi.",vie:"Mệt quá."},
+  {lv:1,tag:"배고픔",
+   kor:"배고파.",eng:"I'm hungry.",
+   jpn:"お腹すいた。",jpn_ruby:"お<ruby>腹<rt>なか</rt></ruby>すいた。",
+   cmn:"好饿。",cmn_pinyin:"Hǎo è.",vie:"Đói bụng."},
+  {lv:1,tag:"졸림",
+   kor:"졸려.",eng:"I'm sleepy.",
+   jpn:"眠い。",jpn_ruby:"<ruby>眠<rt>ねむ</rt></ruby>い。",
+   cmn:"好困。",cmn_pinyin:"Hǎo kùn.",vie:"Buồn ngủ."},
+  {lv:1,tag:"감정",
+   kor:"짜증나.",eng:"So annoying.",
+   jpn:"イライラする。",jpn_ruby:"イライラする。",
+   cmn:"好烦。",cmn_pinyin:"Hǎo fán.",vie:"Bực mình."},
+  {lv:2,tag:"피로",
+   kor:"너무 피곤해 죽겠어.",eng:"I'm absolutely exhausted.",
+   jpn:"もうめっちゃ疲れた。",jpn_ruby:"もうめっちゃ<ruby>疲<rt>つか</rt></ruby>れた。",
+   cmn:"累死了。",cmn_pinyin:"Lèi sǐ le.",vie:"Mệt quá trời."},
+  {lv:2,tag:"배고픔",
+   kor:"배고파 미칠 것 같아.",eng:"I'm starving.",
+   jpn:"お腹ペコペコ。",jpn_ruby:"お<ruby>腹<rt>なか</rt></ruby>ペコペコ。",
+   cmn:"饿死了。",cmn_pinyin:"È sǐ le.",vie:"Đói muốn xỉu."},
+  {lv:2,tag:"감정",
+   kor:"기분이 좀 별로야.",eng:"I'm not feeling great.",
+   jpn:"なんかちょっとしんどいな。",jpn_ruby:"なんかちょっとしんどいな。",
+   cmn:"感觉不太好。",cmn_pinyin:"Gǎnjué bú tài hǎo.",vie:"Không được khỏe lắm."},
+  {lv:2,tag:"설렘",
+   kor:"너무 설레.",eng:"I'm so excited!",
+   jpn:"すごくドキドキしてる。",jpn_ruby:"すごくドキドキしてる。",
+   cmn:"好期待啊。",cmn_pinyin:"Hǎo qīdài a.",vie:"Hồi hộp ghê."},
+  {lv:3,tag:"피로",
+   kor:"몸이 천근만근이야 오늘.",eng:"My body is completely done today.",
+   jpn:"今日は体が全然言うこと聞かない。",jpn_ruby:"<ruby>今日<rt>きょう</rt></ruby>は<ruby>体<rt>からだ</rt></ruby>が<ruby>全然<rt>ぜんぜん</rt></ruby><ruby>言<rt>い</rt></ruby>うこと<ruby>聞<rt>き</rt></ruby>かない。",
+   cmn:"今天身体完全不听使唤。",cmn_pinyin:"Jīntiān shēntǐ wánquán bù tīng shǐhuàn.",vie:"Hôm nay người không nghe lời gì hết."},
+  {lv:3,tag:"감정",
+   kor:"뭔가 찝찝한 느낌이 안 가.",eng:"Something feels off and I can't shake it.",
+   jpn:"なんかモヤモヤが取れないんだよね。",jpn_ruby:"なんかモヤモヤが<ruby>取<rt>と</rt></ruby>れないんだよね。",
+   cmn:"有种说不清的不舒服，一直在那。",cmn_pinyin:"Yǒu zhǒng shuō bu qīng de bù shūfu.",vie:"Có gì đó cứ vướng mãi, không rõ là gì."},
+  {lv:3,tag:"감정",
+   kor:"속이 다 시원하다, 진짜.",eng:"That's such a relief, honestly.",
+   jpn:"これでスッキリした、ほんとに。",jpn_ruby:"これでスッキリした、ほんとに。",
+   cmn:"终于说出来了，整个人都轻松了。",cmn_pinyin:"Zhōngyú shuō chūlái le, zhěnggè rén qīngsōng le.",vie:"Nói ra được rồi, nhẹ cả người."},
+  {lv:3,tag:"감정",
+   kor:"완전 신나, 기분 최고야.",eng:"I'm pumped, best mood ever.",
+   jpn:"完全テンション上がってる。",jpn_ruby:"<ruby>完全<rt>かんぜん</rt></ruby>テンション<ruby>上<rt>あ</rt></ruby>がってる。",
+   cmn:"现在状态超好，心情美美的。",cmn_pinyin:"Xiànzài zhuàngtài chāo hǎo, xīnqíng měiměi de.",vie:"Đang cực kỳ phấn khởi, tâm trạng đỉnh lắm."},
+  {lv:4,tag:"감정",
+   kor:"기분이 묘하게 싱숭생숭해.",eng:"I'm in this weird unsettled headspace.",
+   jpn:"なんか変にそわそわしてる自分がいる。",jpn_ruby:"なんか<ruby>変<rt>へん</rt></ruby>にそわそわしてる<ruby>自分<rt>じぶん</rt></ruby>がいる。",
+   cmn:"莫名有点心神不定。",cmn_pinyin:"Mòmíng yǒudiǎn xīnshén bú dìng.",vie:"Không hiểu sao hôm nay bứt rứt lạ."},
+  {lv:4,tag:"피로",
+   kor:"뭔가 에너지가 방전된 느낌이야.",eng:"I feel completely drained.",
+   jpn:"エネルギーが完全に切れた感じ。",jpn_ruby:"エネルギーが<ruby>完全<rt>かんぜん</rt></ruby>に<ruby>切<rt>き</rt></ruby>れた<ruby>感<rt>かん</rt></ruby>じ。",
+   cmn:"感觉能量被榨干了，什么都不想做。",cmn_pinyin:"Gǎnjué néngliàng bèi zhà gān le.",vie:"Cảm giác pin xuống về không."},
+  {lv:4,tag:"감정",
+   kor:"괜히 심통이 나는 날이야 오늘.",eng:"I'm just randomly irritable today.",
+   jpn:"理由もないのになんか今日むしゃくしゃする。",jpn_ruby:"<ruby>理由<rt>りゆう</rt></ruby>もないのになんか<ruby>今日<rt>きょう</rt></ruby>むしゃくしゃする。",
+   cmn:"今天就是无缘无故地烦。",cmn_pinyin:"Jīntiān jiùshì wúyuán wúgù de fán.",vie:"Hôm nay bực bội vô cớ, chẳng biết tại sao."},
+  {lv:4,tag:"감정",
+   kor:"이거 해치우고 나니까 속이 뻥 뚫리네.",eng:"Getting that done feels like a weight lifted.",
+   jpn:"これ言えてすっごい楽になった。",jpn_ruby:"これ<ruby>言<rt>い</rt></ruby>えてすっごい<ruby>楽<rt>らく</rt></ruby>になった。",
+   cmn:"把这事说出来之后感觉压在心里的石头掉了。",cmn_pinyin:"Bǎ zhè shì shuō chūlái zhīhòu gǎnjué qīngsōng le.",vie:"Nói xong cái này thấy như trút được gánh nặng."},
+ ],
+ question:[
+  {lv:1,tag:"질문",
+   kor:"뭐 해?",eng:"What's up?",
+   jpn:"何してる？",jpn_ruby:"<ruby>何<rt>なに</rt></ruby>してる？",
+   cmn:"在干嘛？",cmn_pinyin:"Zài gàn ma?",vie:"Đang làm gì?"},
+  {lv:1,tag:"위치",
+   kor:"어디야?",eng:"Where are you?",
+   jpn:"どこにいる？",jpn_ruby:"どこにいる？",
+   cmn:"你在哪？",cmn_pinyin:"Nǐ zài nǎ?",vie:"Bạn ở đâu?"},
+  {lv:1,tag:"이유",
+   kor:"왜?",eng:"Why?",
+   jpn:"なんで？",jpn_ruby:"なんで？",
+   cmn:"为什么？",cmn_pinyin:"Wèishénme?",vie:"Tại sao?"},
+  {lv:1,tag:"시간",
+   kor:"언제 와?",eng:"When are you coming?",
+   jpn:"いつ来る？",jpn_ruby:"いつ<ruby>来<rt>く</rt></ruby>る？",
+   cmn:"什么时候来？",cmn_pinyin:"Shénme shíhou lái?",vie:"Khi nào đến?"},
+  {lv:2,tag:"질문",
+   kor:"지금 뭐 해?",eng:"What are you up to?",
+   jpn:"今何してるの？",jpn_ruby:"<ruby>今<rt>いま</rt></ruby><ruby>何<rt>なに</rt></ruby>してるの？",
+   cmn:"你现在在干嘛？",cmn_pinyin:"Nǐ xiànzài zài gàn ma?",vie:"Bạn đang làm gì vậy?"},
+  {lv:2,tag:"구매",
+   kor:"그거 어디서 샀어?",eng:"Where'd you get that?",
+   jpn:"それどこで買ったの？",jpn_ruby:"それどこで<ruby>買<rt>か</rt></ruby>ったの？",
+   cmn:"这个在哪买的？",cmn_pinyin:"Zhège zài nǎ mǎi de?",vie:"Mua cái đó ở đâu?"},
+  {lv:2,tag:"영화",
+   kor:"그 영화 재밌어?",eng:"Is that movie good?",
+   jpn:"その映画、面白い？",jpn_ruby:"その<ruby>映画<rt>えいが</rt></ruby>、<ruby>面白<rt>おもしろ</rt></ruby>い？",
+   cmn:"那部电影好看吗？",cmn_pinyin:"Nà bù diànyǐng hǎokàn ma?",vie:"Phim đó hay không?"},
+  {lv:2,tag:"제안",
+   kor:"같이 갈래?",eng:"Wanna come with?",
+   jpn:"一緒に行かない？",jpn_ruby:"<ruby>一緒<rt>いっしょ</rt></ruby>に<ruby>行<rt>い</rt></ruby>かない？",
+   cmn:"要不要一起去？",cmn_pinyin:"Yào bú yào yīqǐ qù?",vie:"Đi cùng không?"},
+  {lv:3,tag:"예약",
+   kor:"거기 예약하고 가야 돼?",eng:"Do you need a reservation there?",
+   jpn:"そこって予約してから行く感じ？",jpn_ruby:"そこって<ruby>予約<rt>よやく</rt></ruby>してから<ruby>行<rt>い</rt></ruby>く<ruby>感<rt>かん</rt></ruby>じ？",
+   cmn:"那个地方要提前订位吗？",cmn_pinyin:"Nàge dìfāng yào tíqián dìng wèi ma?",vie:"Chỗ đó có cần đặt trước không?"},
+  {lv:3,tag:"긴급",
+   kor:"이거 지금 당장 해야 해?",eng:"Does this need to happen right now?",
+   jpn:"これって今すぐやらないとダメ？",jpn_ruby:"これって<ruby>今<rt>いま</rt></ruby>すぐやらないとダメ？",
+   cmn:"这个现在必须做吗？",cmn_pinyin:"Zhège xiànzài bìxū zuò ma?",vie:"Cái này phải làm ngay bây giờ không?"},
+  {lv:3,tag:"출처",
+   kor:"그 얘기 어디서 들었어?",eng:"Where did you hear that from?",
+   jpn:"その話どこで聞いたの？",jpn_ruby:"その<ruby>話<rt>はなし</rt></ruby>どこで<ruby>聞<rt>き</rt></ruby>いたの？",
+   cmn:"这是从哪听来的？",cmn_pinyin:"Zhè shì cóng nǎ tīng lái de?",vie:"Nghe chuyện này ở đâu vậy?"},
+  {lv:3,tag:"감정",
+   kor:"혹시 나한테 서운한 거 있어?",eng:"Is there something I did that bothered you?",
+   jpn:"もしかして私のことで何か気に障ってる？",jpn_ruby:"もしかして<ruby>私<rt>わたし</rt></ruby>のことで<ruby>何<rt>なに</rt></ruby>か<ruby>気<rt>き</rt></ruby>に<ruby>障<rt>さわ</rt></ruby>ってる？",
+   cmn:"你是不是对我有什么意见？",cmn_pinyin:"Nǐ shì bú shì duì wǒ yǒu shénme yìjiàn?",vie:"Bạn có đang phật lòng gì về mình không?"},
+  {lv:4,tag:"질문",
+   kor:"그게 다야? 뭔가 더 있는 거 아니야?",eng:"That's it? I feel like there's more to it.",
+   jpn:"それだけ？なんか他にもある気がするんだけど。",jpn_ruby:"それだけ？なんか<ruby>他<rt>ほか</rt></ruby>にもある<ruby>気<rt>き</rt></ruby>がするんだけど。",
+   cmn:"就这样？感觉还有什么没说。",cmn_pinyin:"Jiù zhèyàng? Gǎnjué hái yǒu shénme méi shuō.",vie:"Chỉ vậy thôi? Mình thấy còn có gì đó nữa."},
+  {lv:4,tag:"확인",
+   kor:"설마 그 말 진심으로 한 거야?",eng:"Wait, were you actually serious when you said that?",
+   jpn:"え、あれって本気で言ってたの？",jpn_ruby:"え、あれって<ruby>本気<rt>ほんき</rt></ruby>で<ruby>言<rt>い</rt></ruby>ってたの？",
+   cmn:"等等，你说那句话是认真的吗？",cmn_pinyin:"Děng děng, nǐ shuō nà jù huà shì rènzhēn de ma?",vie:"Ủa, câu đó bạn nói thật hay đùa vậy?"},
+  {lv:4,tag:"관계",
+   kor:"그쪽이랑은 어떻게 알게 된 거야?",eng:"How do you even know them?",
+   jpn:"あの人とはどういう経緯で知り合ったの？",jpn_ruby:"あの<ruby>人<rt>ひと</rt></ruby>とはどういう<ruby>経緯<rt>けいい</rt></ruby>で<ruby>知<rt>し</rt></ruby>り<ruby>合<rt>あ</rt></ruby>ったの？",
+   cmn:"你们是怎么认识的？",cmn_pinyin:"Nǐmen shì zěnme rènshi de?",vie:"Bạn và người đó quen nhau qua đâu?"},
+  {lv:4,tag:"확인",
+   kor:"이거 나만 이상하게 느끼는 거야?",eng:"Am I the only one who finds this weird?",
+   jpn:"これって私だけ変に感じてる？",jpn_ruby:"これって<ruby>私<rt>わたし</rt></ruby>だけ<ruby>変<rt>へん</rt></ruby>に<ruby>感<rt>かん</rt></ruby>じてる？",
+   cmn:"这件事就我一个人觉得奇怪吗？",cmn_pinyin:"Zhè jiàn shì jiù wǒ yīgè rén juéde qíguài ma?",vie:"Hay chỉ mình thấy chuyện này kỳ kỳ?"},
+ ],
 };
 
-// ── STATE ───────────────────────────────────────────────────
-let nativeLang = null;
-let targetLangs = new Set();   // ← 복수 선택
-let currentLevel = null;
-let currentCategory = 'daily';
-let selectedIds = new Set();
-let revealAll = false;
-let currentStep = 3; // 현재 bottom-bar가 어느 step용인지 (3 or 4)
-
-const LANG_INFO = {
-  kor:{ flag:'🇰🇷', name:'한국어' }, eng:{ flag:'🇺🇸', name:'English' },
-  jpn:{ flag:'🇯🇵', name:'日本語' }, cmn:{ flag:'🇨🇳', name:'中文' },
-  vie:{ flag:'🇻🇳', name:'Tiếng Việt' },
+// ══════════════════════════════════════════════════════════
+// WORD BREAKDOWN DATA  (key: "cat-idx")
+// ══════════════════════════════════════════════════════════
+const WORDS = {
+ "daily-0":{
+  eng:[{t:"Did",m:"과거 의문조동사"},{t:"you",m:"너"},{t:"eat?",m:"먹다 (의문형)"}],
+  jpn:[{t:"ご飯",r:"ごはん",m:"밥, 식사"},{t:"食べた",r:"たべた",m:"먹었다 (食べる 과거)"},{t:"？",m:"의문 어미"}],
+  cmn:[{t:"吃",p:"chī",m:"먹다"},{t:"了",p:"le",m:"완료 조사"},{t:"吗",p:"ma",m:"의문 조사"}],
+  vie:[{t:"Ăn",m:"먹다"},{t:"chưa?",m:"아직? / 했어? (완료 의문)"}],
+  kor:[{t:"밥",m:"rice, meal"},{t:"먹었어?",m:"ate? (casual past question)"}],
+ },
+ "daily-1":{
+  eng:[{t:"Where",m:"어디"},{t:"are you?",m:"있어? (지금)"}],
+  jpn:[{t:"今",r:"いま",m:"지금"},{t:"どこ？",m:"어디? (의문)"}],
+  cmn:[{t:"你",p:"nǐ",m:"너"},{t:"在",p:"zài",m:"있다, ~에 있다"},{t:"哪",p:"nǎ",m:"어디"}],
+  vie:[{t:"Bạn",m:"너, 친구"},{t:"đang",m:"~하는 중 (진행형)"},{t:"ở đâu?",m:"어디에 있어?"}],
+  kor:[{t:"지금",m:"now"},{t:"어디야?",m:"where are you? (casual)"}],
+ },
+ "daily-2":{
+  eng:[{t:"I'm",m:"나는"},{t:"heading",m:"가고 있다"},{t:"home.",m:"집으로"}],
+  jpn:[{t:"家",r:"いえ",m:"집"},{t:"帰る",r:"かえる",m:"돌아가다"},{t:"ね",m:"~이네, 부드러운 종결"}],
+  cmn:[{t:"我",p:"wǒ",m:"나"},{t:"回",p:"huí",m:"돌아가다"},{t:"家",p:"jiā",m:"집"},{t:"了",p:"le",m:"완료/상태변화"}],
+  vie:[{t:"Mình",m:"나 (친근)"},{t:"về",m:"돌아가다"},{t:"nhà",m:"집"},{t:"đây.",m:"~이야 (확인)"}],
+  kor:[{t:"나",m:"I"},{t:"집에",m:"home (to home)"},{t:"가.",m:"go (casual)"}],
+ },
+ "daily-3":{
+  eng:[{t:"What",m:"뭐"},{t:"do you want",m:"원하다"},{t:"to eat?",m:"먹다"}],
+  jpn:[{t:"何",r:"なに",m:"뭐, 무엇"},{t:"食べたい",r:"たべたい",m:"먹고 싶다 (~たい 희망형)"},{t:"？",m:"의문"}],
+  cmn:[{t:"想",p:"xiǎng",m:"~하고 싶다"},{t:"吃",p:"chī",m:"먹다"},{t:"什么",p:"shénme",m:"무엇, 뭐"}],
+  vie:[{t:"Muốn",m:"원하다, ~하고 싶다"},{t:"ăn",m:"먹다"},{t:"gì?",m:"무엇? (의문)"}],
+  kor:[{t:"뭐",m:"what"},{t:"먹을래?",m:"want to eat? (casual offer)"}],
+ },
+ "greeting-0":{
+  eng:[{t:"Hey!",m:"안녕! (캐주얼)"}],
+  jpn:[{t:"こんにちは",m:"안녕하세요 (낮 시간 인사)"},{t:"！",m:"느낌표"}],
+  cmn:[{t:"你",p:"nǐ",m:"너"},{t:"好",p:"hǎo",m:"좋다 → 인사말"}],
+  vie:[{t:"Xin",m:"경의 접두어"},{t:"chào!",m:"안녕 (인사)"}],
+  kor:[{t:"안녕!",m:"hi! (casual greeting)"}],
+ },
+ "greeting-2":{
+  eng:[{t:"Thanks!",m:"고마워! (캐주얼)"}],
+  jpn:[{t:"ありがとう",m:"감사합니다 (캐주얼)"},{t:"！",m:"느낌표"}],
+  cmn:[{t:"谢",p:"xiè",m:"감사하다"},{t:"谢",p:"xie",m:"(강조 반복)"}],
+  vie:[{t:"Cảm",m:"느끼다"},{t:"ơn!",m:"감사 (은혜)"}],
+  kor:[{t:"고마워!",m:"thanks! (casual)"}],
+ },
+ "greeting-3":{
+  eng:[{t:"It's",m:"그것은"},{t:"fine.",m:"괜찮다"}],
+  jpn:[{t:"大丈夫",r:"だいじょうぶ",m:"괜찮다, 문제없다"},{t:"。",m:"문장 종결"}],
+  cmn:[{t:"没",p:"méi",m:"없다 (부정)"},{t:"事",p:"shì",m:"일, 문제"}],
+  vie:[{t:"Không",m:"아니다"},{t:"sao.",m:"문제, 어떤"}],
+  kor:[{t:"괜찮아.",m:"it's fine / no problem (casual)"}],
+ },
+ "feeling-0":{
+  eng:[{t:"I'm",m:"나는"},{t:"tired.",m:"피곤하다"}],
+  jpn:[{t:"疲れた",r:"つかれた",m:"피곤했다 (疲れる 과거)"},{t:"。",m:"종결"}],
+  cmn:[{t:"好",p:"hǎo",m:"정말, 매우"},{t:"累",p:"lèi",m:"피곤하다"}],
+  vie:[{t:"Mệt",m:"피곤하다"},{t:"quá.",m:"너무, 매우"}],
+  kor:[{t:"피곤해.",m:"I'm tired (casual)"}],
+ },
+ "feeling-1":{
+  eng:[{t:"I'm",m:"나는"},{t:"hungry.",m:"배고프다"}],
+  jpn:[{t:"お腹",r:"おなか",m:"배"},{t:"すいた",m:"비었다, 고프다"}],
+  cmn:[{t:"好",p:"hǎo",m:"매우, 정말"},{t:"饿",p:"è",m:"배고프다"}],
+  vie:[{t:"Đói",m:"배고프다"},{t:"bụng.",m:"배"}],
+  kor:[{t:"배고파.",m:"I'm hungry (casual)"}],
+ },
+ "question-0":{
+  eng:[{t:"What's",m:"무엇이"},{t:"up?",m:"일어나고 있어? (안부 표현)"}],
+  jpn:[{t:"何",r:"なに",m:"무엇"},{t:"してる？",m:"하고 있어? (진행 의문)"}],
+  cmn:[{t:"在",p:"zài",m:"~하고 있다 (진행)"},{t:"干",p:"gàn",m:"하다"},{t:"嘛",p:"ma",m:"의문 어기조사"}],
+  vie:[{t:"Đang",m:"~하는 중 (진행)"},{t:"làm",m:"하다"},{t:"gì?",m:"무엇?"}],
+  kor:[{t:"뭐",m:"what"},{t:"해?",m:"doing? (casual)"}],
+ },
+ "question-6":{
+  eng:[{t:"Is",m:"~인가?"},{t:"that",m:"그"},{t:"movie",m:"영화"},{t:"good?",m:"좋은? 재밌는?"}],
+  jpn:[{t:"映画",r:"えいが",m:"영화"},{t:"面白い",r:"おもしろい",m:"재밌다, 흥미롭다"},{t:"？",m:"의문"}],
+  cmn:[{t:"那部",p:"nà bù",m:"그 편 (영화 편수)"},{t:"电影",p:"diànyǐng",m:"영화"},{t:"好看",p:"hǎokàn",m:"보기 좋다, 재밌다"},{t:"吗",p:"ma",m:"의문"}],
+  vie:[{t:"Phim",m:"영화"},{t:"đó",m:"그"},{t:"hay",m:"재밌다, 훌륭하다"},{t:"không?",m:"아니? (의문)"}],
+  kor:[{t:"그 영화",m:"that movie"},{t:"재밌어?",m:"is it fun/good?"}],
+ },
 };
-const LV_INFO = {
-  1:{ name:'초급', color:'var(--lv1)', cls:'lv1' }, 2:{ name:'중급', color:'var(--lv2)', cls:'lv2' },
-  3:{ name:'고급', color:'var(--lv3)', cls:'lv3' }, 4:{ name:'급',   color:'var(--lv4)', cls:'lv4' },
+
+// ══════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════
+let nativeLang=null, targetLangs=new Set(), currentLevel=null;
+let currentCategory='daily', selectedIds=new Set(), currentStep=3;
+let cardIndex=0, cardTotal=0;
+let tapTimer=null, tapEl=null;
+
+const LANG_INFO={
+ kor:{flag:'🇰🇷',name:'한국어',tts:'ko-KR'},
+ eng:{flag:'🇺🇸',name:'English',tts:'en-US'},
+ jpn:{flag:'🇯🇵',name:'日本語',tts:'ja-JP'},
+ cmn:{flag:'🇨🇳',name:'中文',tts:'zh-CN'},
+ vie:{flag:'🇻🇳',name:'Tiếng Việt',tts:'vi-VN'},
+};
+const LV_INFO={
+ 1:{name:'초급',color:'var(--lv1)',cls:'lv1'},
+ 2:{name:'중급',color:'var(--lv2)',cls:'lv2'},
+ 3:{name:'고급',color:'var(--lv3)',cls:'lv3'},
+ 4:{name:'급',  color:'var(--lv4)',cls:'lv4'},
 };
 
-// ── STEP HELPERS ─────────────────────────────────────────────
-function stepDone(n) {
-  const el = document.getElementById(`si${n}`);
-  el.classList.remove('active'); el.classList.add('done');
-  el.querySelector('.step-num').textContent = '✓';
-  const sl = document.getElementById(`sl${n}`);
-  if (sl) sl.classList.add('done');
+// ══════════════════════════════════════════════════════════
+// STEP HELPERS
+// ══════════════════════════════════════════════════════════
+function stepDone(n){
+ const el=document.getElementById('si'+n);
+ el.classList.remove('active');el.classList.add('done');
+ el.querySelector('.step-num').textContent='✓';
+ const sl=document.getElementById('sl'+n);
+ if(sl)sl.classList.add('done');
 }
-function stepActive(n) { document.getElementById(`si${n}`).classList.add('active'); }
+function stepActive(n){document.getElementById('si'+n).classList.add('active');}
 
-function goToStep(n) {
-  [1,2,3,4,5].forEach(i => { if(i>=n) document.getElementById(`step${i}`).classList.add('hidden'); });
-  document.getElementById('bottom-bar').classList.add('hidden');
-  if (n<=3) { selectedIds.clear(); updateBottomBar(); updatePreview(); }
-  if (n<=4) { targetLangs.clear(); renderTargetChips(); }
-
-  for(let i=n;i<=5;i++){
-    const el=document.getElementById(`si${i}`);
-    el.classList.remove('active','done');
-    el.querySelector('.step-num').textContent=i;
-    const sl=document.getElementById(`sl${i}`);
-    if(sl) sl.classList.remove('done');
-  }
-  document.getElementById(`step${n}`).classList.remove('hidden');
-  stepActive(n);
-}
-
-// ── STEP 1 ───────────────────────────────────────────────────
-function selectNativeLang(btn) {
-  document.querySelectorAll('#native-grid .lang-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
-  nativeLang = btn.dataset.lang;
-  setTimeout(()=>{
-    stepDone(1);
-    document.getElementById('step1').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
-    stepActive(2);
-  }, 200);
+function goToStep(n){
+ [1,2,3,4,5].forEach(i=>{if(i>=n)document.getElementById('step'+i).classList.add('hidden');});
+ document.getElementById('bottom-bar').classList.add('hidden');
+ if(n<=3){selectedIds.clear();updateBottomBar();updatePreview();}
+ if(n<=4){targetLangs.clear();renderTargetChips();}
+ for(let i=n;i<=5;i++){
+  const el=document.getElementById('si'+i);
+  el.classList.remove('active','done');
+  el.querySelector('.step-num').textContent=i;
+  const sl=document.getElementById('sl'+i);
+  if(sl)sl.classList.remove('done');
+ }
+ document.getElementById('step'+n).classList.remove('hidden');
+ stepActive(n);
 }
 
-// ── STEP 2 ───────────────────────────────────────────────────
-function selectLevel(btn) {
-  document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
-  currentLevel = parseInt(btn.dataset.level);
-  const li = LV_INFO[currentLevel], lang = LANG_INFO[nativeLang];
-  document.getElementById('i-lang-flag').textContent = lang.flag;
-  document.getElementById('i-lang-name').textContent = lang.name;
-  document.getElementById('i-lv-name').textContent = li.name;
-  document.getElementById('i-lv-dot').style.background = li.color;
-  setTimeout(()=>{
-    stepDone(2);
-    document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step3').classList.remove('hidden');
-    stepActive(3);
-    currentStep = 3;
-    document.getElementById('bottom-bar').classList.remove('hidden');
-    document.getElementById('bar-count-area').innerHTML = '<span id="count-display">0</span>개 선택됨';
-    document.getElementById('next-btn').textContent = '다음 단계 →';
-    document.getElementById('next-btn').onclick = onNextBtn;
-    currentCategory='daily';
-    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
-    document.querySelector('[data-cat="daily"]').classList.add('active');
-    renderSentences();
-  }, 200);
+// ══════════════════════════════════════════════════════════
+// STEP 1
+// ══════════════════════════════════════════════════════════
+function selectNativeLang(btn){
+ document.querySelectorAll('#native-grid .lang-btn').forEach(b=>b.classList.remove('selected'));
+ btn.classList.add('selected');
+ nativeLang=btn.dataset.lang;
+ setTimeout(()=>{
+  stepDone(1);
+  document.getElementById('step1').classList.add('hidden');
+  document.getElementById('step2').classList.remove('hidden');
+  stepActive(2);
+ },200);
 }
 
-// ── STEP 3 ───────────────────────────────────────────────────
-function switchCategory(btn, cat) {
-  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); currentCategory = cat;
-  const names={daily:'일상',greeting:'인사/반응',feeling:'감정',question:'질문'};
-  document.getElementById('category-badge').textContent = names[cat];
+// ══════════════════════════════════════════════════════════
+// STEP 2
+// ══════════════════════════════════════════════════════════
+function selectLevel(btn){
+ document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('selected'));
+ btn.classList.add('selected');
+ currentLevel=parseInt(btn.dataset.level);
+ const li=LV_INFO[currentLevel],lang=LANG_INFO[nativeLang];
+ document.getElementById('i-lang-flag').textContent=lang.flag;
+ document.getElementById('i-lang-name').textContent=lang.name;
+ document.getElementById('i-lv-name').textContent=li.name;
+ document.getElementById('i-lv-dot').style.background=li.color;
+ setTimeout(()=>{
+  stepDone(2);
+  document.getElementById('step2').classList.add('hidden');
+  document.getElementById('step3').classList.remove('hidden');
+  stepActive(3);currentStep=3;
+  document.getElementById('bottom-bar').classList.remove('hidden');
+  document.getElementById('bar-count-area').innerHTML='<span id="count-display">0</span>개 선택됨';
+  document.getElementById('next-btn').textContent='다음 단계 →';
+  currentCategory='daily';
+  document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('[data-cat="daily"]').classList.add('active');
   renderSentences();
+ },200);
 }
 
-function renderSentences() {
-  const list = document.getElementById('sentence-list');
-  const all = DATA[currentCategory].filter(s=>s.lv===currentLevel);
-  const shuffled = [...all].sort(()=>Math.random()-0.5);
-  list.innerHTML = '';
-  if(!shuffled.length){ list.innerHTML=`<div style="text-align:center;color:var(--text-muted);padding:32px">이 카테고리에 해당 레벨 문장이 없습니다.</div>`; return; }
-  const li = LV_INFO[currentLevel];
-  shuffled.forEach((s,i)=>{
-    const key = currentCategory+'-'+DATA[currentCategory].indexOf(s);
-    const item = document.createElement('div');
-    item.className = 'sentence-item fade-in'+(selectedIds.has(key)?' selected':'');
-    item.style.animationDelay=`${i*0.04}s`;
-    item.dataset.key = key;
-    item.innerHTML=`
-      <div class="checkbox"><span class="checkbox-mark">✓</span></div>
-      <span class="lv-dot ${li.cls}"></span>
-      <div class="sentence-text">${s[nativeLang]}</div>
-      <span class="sentence-tag">${s.tag.split('/')[0]}</span>`;
-    item.addEventListener('click',()=>toggleSentence(item,key));
-    list.appendChild(item);
+// ══════════════════════════════════════════════════════════
+// STEP 3
+// ══════════════════════════════════════════════════════════
+function switchCategory(btn,cat){
+ document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');currentCategory=cat;
+ const names={daily:'일상',greeting:'인사/반응',feeling:'감정',question:'질문'};
+ document.getElementById('category-badge').textContent=names[cat];
+ renderSentences();
+}
+
+function renderSentences(){
+ const list=document.getElementById('sentence-list');
+ const all=DATA[currentCategory].filter(s=>s.lv===currentLevel);
+ const shuffled=[...all].sort(()=>Math.random()-0.5);
+ list.innerHTML='';
+ if(!shuffled.length){
+  list.innerHTML='<div style="text-align:center;color:var(--text-muted);padding:28px">이 카테고리에 해당 레벨 문장이 없습니다.</div>';
+  return;
+ }
+ const li=LV_INFO[currentLevel];
+ shuffled.forEach((s,i)=>{
+  const key=currentCategory+'-'+DATA[currentCategory].indexOf(s);
+  const item=document.createElement('div');
+  item.className='sentence-item fade-in'+(selectedIds.has(key)?' selected':'');
+  item.style.animationDelay=`${i*0.04}s`;
+  item.dataset.key=key;
+  item.innerHTML=`<div class="checkbox"><span class="checkbox-mark">✓</span></div>
+   <span class="lv-dot ${li.cls}"></span>
+   <div class="sentence-text">${s[nativeLang]}</div>
+   <span class="sentence-tag">${s.tag}</span>`;
+  item.addEventListener('click',()=>toggleSentence(item,key));
+  list.appendChild(item);
+ });
+}
+
+function toggleSentence(item,key){
+ if(selectedIds.has(key)){selectedIds.delete(key);item.classList.remove('selected');}
+ else{selectedIds.add(key);item.classList.add('selected');}
+ updateBottomBar();updatePreview();
+}
+
+function refreshSentences(){
+ const btn=document.getElementById('refresh-btn');btn.disabled=true;
+ setTimeout(()=>{renderSentences();btn.disabled=false;},350);
+}
+
+function updateBottomBar(){
+ const el=document.getElementById('count-display');
+ if(el)el.textContent=currentStep===3?selectedIds.size:targetLangs.size;
+ if(currentStep===3)document.getElementById('next-btn').disabled=selectedIds.size===0;
+}
+
+function updatePreview(){
+ const preview=document.getElementById('selected-preview');
+ document.getElementById('preview-count').textContent=selectedIds.size;
+ if(!selectedIds.size){preview.classList.remove('visible');return;}
+ preview.classList.add('visible');
+ const chips=document.getElementById('preview-chips');chips.innerHTML='';
+ selectedIds.forEach(key=>{
+  const[cat,idx]=key.split('-');const s=DATA[cat][parseInt(idx)];if(!s)return;
+  const chip=document.createElement('div');chip.className='preview-chip';
+  chip.innerHTML=`<span>${s[nativeLang]}</span><span class="chip-remove" onclick="removeSelected('${key}')">×</span>`;
+  chips.appendChild(chip);
+ });
+}
+
+function removeSelected(key){
+ selectedIds.delete(key);
+ document.querySelectorAll('.sentence-item').forEach(item=>{if(item.dataset.key===key)item.classList.remove('selected');});
+ updateBottomBar();updatePreview();
+}
+
+// ══════════════════════════════════════════════════════════
+// STEP 3 → 4
+// ══════════════════════════════════════════════════════════
+function onNextBtn(){
+ if(currentStep===3)goToStep4();
+ else if(currentStep===4)startLearning();
+}
+
+function goToStep4(){
+ stepDone(3);
+ document.getElementById('step3').classList.add('hidden');
+ document.querySelectorAll('#target-grid .lang-btn').forEach(b=>{
+  b.disabled=(b.dataset.lang===nativeLang);
+  b.classList.remove('selected');
+ });
+ targetLangs.clear();renderTargetChips();
+ document.getElementById('step4').classList.remove('hidden');
+ stepActive(4);currentStep=4;
+ document.getElementById('bar-count-area').innerHTML='<span id="count-display">0</span>개 언어 선택됨';
+ document.getElementById('next-btn').textContent='학습 시작 →';
+ document.getElementById('next-btn').disabled=true;
+}
+
+// ══════════════════════════════════════════════════════════
+// STEP 4
+// ══════════════════════════════════════════════════════════
+function toggleTargetLang(btn){
+ const lang=btn.dataset.lang;
+ if(targetLangs.has(lang)){targetLangs.delete(lang);btn.classList.remove('selected');}
+ else{targetLangs.add(lang);btn.classList.add('selected');}
+ renderTargetChips();
+ document.getElementById('count-display').textContent=targetLangs.size;
+ document.getElementById('next-btn').disabled=targetLangs.size===0;
+}
+
+function renderTargetChips(){
+ const area=document.getElementById('selected-target-langs');area.innerHTML='';
+ if(!targetLangs.size){
+  area.innerHTML='<span style="font-size:0.8rem;color:var(--text-muted)">언어를 선택하면 여기에 표시됩니다</span>';
+  return;
+ }
+ targetLangs.forEach(lang=>{
+  const info=LANG_INFO[lang];
+  const chip=document.createElement('div');chip.className='lang-chip';
+  chip.innerHTML=`<span>${info.flag}</span><span>${info.name}</span>`;
+  area.appendChild(chip);
+ });
+}
+
+// ══════════════════════════════════════════════════════════
+// STEP 5 : CAROUSEL
+// ══════════════════════════════════════════════════════════
+function startLearning(){
+ stepDone(4);
+ document.getElementById('step4').classList.add('hidden');
+ document.getElementById('bottom-bar').classList.add('hidden');
+ buildCarousel();
+ document.getElementById('step5').classList.remove('hidden');
+ stepActive(5);
+}
+
+function buildCarousel(){
+ const nl=LANG_INFO[nativeLang];
+ const li=LV_INFO[currentLevel];
+ const langs=Array.from(targetLangs);
+
+ // Header
+ document.getElementById('learn-native-flag').textContent=nl.flag;
+ document.getElementById('learn-native-name').textContent=nl.name;
+ document.getElementById('learn-target-flags').innerHTML=
+  langs.map(l=>`${LANG_INFO[l].flag}<span style="font-size:0.8rem;font-weight:600"> ${LANG_INFO[l].name}</span>`).join(' · ');
+
+ const track=document.getElementById('carousel-track');
+ track.innerHTML='';
+ const sentences=[];
+ selectedIds.forEach(key=>{
+  const[cat,idx]=key.split('-');
+  const s=DATA[cat][parseInt(idx)];
+  if(s)sentences.push({key,cat,idx:parseInt(idx),s});
+ });
+ cardTotal=sentences.length;cardIndex=0;
+
+ document.getElementById('card-tot').textContent=cardTotal;
+ document.getElementById('card-cur').textContent=1;
+
+ sentences.forEach(({key,cat,idx,s})=>{
+  const card=document.createElement('div');
+  card.className='lc-card';
+
+  // Native text
+  const nativeText = nativeLang==='jpn'?(s.jpn_ruby||s.jpn):
+                     nativeLang==='cmn'?`<div class="lc-pinyin">${s.cmn_pinyin||''}</div>${s.cmn}`:
+                     s[nativeLang];
+
+  let html=`<div class="lc-native">
+   <div class="lc-tag-row">
+    <span class="lc-tag">${s.tag}</span>
+    <span class="lc-lv-dot ${li.cls}" style="background:${li.color}"></span>
+    <span style="font-size:0.72rem;color:var(--text-muted)">${li.name}</span>
+   </div>
+   <div class="lc-native-text">${nativeText}</div>
+   <div class="lc-native-lang">${nl.flag} ${nl.name}</div>
+  </div>
+  <div class="lc-targets">`;
+
+  langs.forEach(lang=>{
+   const info=LANG_INFO[lang];
+   const rawText=s[lang]||'';
+   let displayText='';
+   if(lang==='jpn'){
+    displayText=s.jpn_ruby||s.jpn;
+   } else if(lang==='cmn'){
+    displayText=`<div class="lc-pinyin">${s.cmn_pinyin||''}</div>${s.cmn}`;
+   } else {
+    displayText=rawText;
+   }
+   const wkey=`${cat}-${idx}`;
+   const hasWords=WORDS[wkey]&&WORDS[wkey][lang];
+   html+=`<div class="lc-target" data-lang="${lang}" data-text="${rawText.replace(/"/g,'&quot;')}" data-key="${wkey}" onclick="handleTap(this,'${wkey}','${lang}')">
+    <div class="lc-target-header">
+     <div class="lc-target-label">
+      <span>${info.flag}</span>
+      <span>${info.name}</span>
+      <span class="speak-icon" id="si-${wkey}-${lang}">🔊</span>
+     </div>
+     <span class="tap-hint">${hasWords?'탭: 듣기 · 두번탭: 해설':'탭: 듣기'}</span>
+    </div>
+    <div class="lc-target-text">${displayText}</div>
+   </div>`;
   });
-}
 
-function toggleSentence(item, key) {
-  if(selectedIds.has(key)){ selectedIds.delete(key); item.classList.remove('selected'); }
-  else { selectedIds.add(key); item.classList.add('selected'); }
-  updateBottomBar(); updatePreview();
-}
+  html+='</div>';
+  card.innerHTML=html;
+  track.appendChild(card);
+ });
 
-function refreshSentences() {
-  const btn=document.getElementById('refresh-btn'); btn.disabled=true;
-  setTimeout(()=>{ renderSentences(); btn.disabled=false; }, 350);
-}
+ buildDots(cardTotal);
+ updateCarouselNav();
+ updateCarouselHeight();
 
-function updateBottomBar() {
-  const countEl = document.getElementById('count-display');
-  if(countEl) countEl.textContent = selectedIds.size;
-  if(currentStep===3){
-    document.getElementById('next-btn').disabled = selectedIds.size===0;
+ // Touch swipe
+ let tx=0,ty=0;
+ const wrap=document.getElementById('carousel-wrap');
+ wrap.addEventListener('touchstart',e=>{tx=e.changedTouches[0].screenX;ty=e.changedTouches[0].screenY;},{passive:true});
+ wrap.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].screenX-tx;
+  const dy=e.changedTouches[0].screenY-ty;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>45){
+   if(dx>0)prevCard();else nextCard();
   }
+ });
 }
 
-function updatePreview() {
-  const preview=document.getElementById('selected-preview');
-  document.getElementById('preview-count').textContent=selectedIds.size;
-  if(!selectedIds.size){ preview.classList.remove('visible'); return; }
-  preview.classList.add('visible');
-  const chips=document.getElementById('preview-chips'); chips.innerHTML='';
-  selectedIds.forEach(key=>{
-    const [cat,idx]=key.split('-');
-    const s=DATA[cat][parseInt(idx)];
-    if(!s) return;
-    const chip=document.createElement('div'); chip.className='preview-chip';
-    chip.innerHTML=`<span>${s[nativeLang]}</span><span class="chip-remove" onclick="removeSelected('${key}')">×</span>`;
-    chips.appendChild(chip);
+function buildDots(total){
+ const el=document.getElementById('carousel-dots');el.innerHTML='';
+ for(let i=0;i<total;i++){
+  const d=document.createElement('div');
+  d.className='cdot'+(i===0?' active':'');
+  d.onclick=(()=>{const idx=i;return()=>goToCard(idx);})();
+  el.appendChild(d);
+ }
+}
+
+function updateDots(){
+ document.querySelectorAll('.cdot').forEach((d,i)=>{
+  d.classList.toggle('active',i===cardIndex);
+ });
+}
+
+function goToCard(i){
+ cardIndex=i;
+ const track=document.getElementById('carousel-track');
+ track.style.transform=`translateX(-${cardIndex*100}%)`;
+ document.getElementById('card-cur').textContent=cardIndex+1;
+ updateDots();updateCarouselNav();
+ setTimeout(updateCarouselHeight,50);
+}
+
+function prevCard(){if(cardIndex>0)goToCard(cardIndex-1);}
+function nextCard(){if(cardIndex<cardTotal-1)goToCard(cardIndex+1);}
+
+function updateCarouselNav(){
+ document.getElementById('btn-prev').disabled=cardIndex===0;
+ document.getElementById('btn-next-card').disabled=cardIndex===cardTotal-1;
+}
+
+function updateCarouselHeight(){
+ const cards=document.querySelectorAll('.lc-card');
+ if(cards[cardIndex]){
+  document.getElementById('carousel-wrap').style.height=cards[cardIndex].offsetHeight+'px';
+ }
+}
+
+// ══════════════════════════════════════════════════════════
+// TTS
+// ══════════════════════════════════════════════════════════
+function speakText(text,lang){
+ if(!window.speechSynthesis||!text)return;
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);
+ u.lang=LANG_INFO[lang].tts;
+ u.rate=0.9;
+ speechSynthesis.speak(u);
+}
+
+// ══════════════════════════════════════════════════════════
+// TAP : 1회=TTS, 2회=해설
+// ══════════════════════════════════════════════════════════
+function handleTap(el,key,lang){
+ if(tapTimer&&tapEl===el){
+  // Double tap → breakdown
+  clearTimeout(tapTimer);tapTimer=null;tapEl=null;
+  showBreakdown(key,lang,el);
+ } else {
+  tapEl=el;
+  // Single tap → TTS
+  const rawText=el.dataset.text;
+  speakText(rawText,lang);
+  // Visual feedback
+  el.classList.add('playing');
+  const icon=document.getElementById('si-'+key+'-'+lang);
+  if(icon)icon.style.opacity='1';
+  setTimeout(()=>{
+   el.classList.remove('playing');
+   if(icon)icon.style.opacity='';
+  },2000);
+  tapTimer=setTimeout(()=>{tapTimer=null;tapEl=null;},420);
+ }
+}
+
+// ══════════════════════════════════════════════════════════
+// BREAKDOWN MODAL
+// ══════════════════════════════════════════════════════════
+function showBreakdown(key,lang,el){
+ const wdata=WORDS[key];
+ const info=LANG_INFO[lang];
+ const[cat,idx]=key.split('-');
+ const s=DATA[cat]?.[parseInt(idx)];
+ if(!s)return;
+
+ document.getElementById('modal-flag').textContent=info.flag;
+ document.getElementById('modal-lang-name').textContent=info.name;
+
+ // Original text with furigana/pinyin
+ let origDisplay='';
+ if(lang==='jpn')origDisplay=s.jpn_ruby||s.jpn;
+ else if(lang==='cmn')origDisplay=`${s.cmn} (${s.cmn_pinyin||''})`;
+ else origDisplay=s[lang]||'';
+ document.getElementById('modal-original').innerHTML=origDisplay;
+
+ const wordsEl=document.getElementById('modal-words');
+ wordsEl.innerHTML='';
+
+ if(wdata&&wdata[lang]&&wdata[lang].length){
+  wdata[lang].forEach(w=>{
+   const row=document.createElement('div');row.className='word-row';
+   let reading='';
+   if(w.r)reading=`<div class="word-reading">읽기: ${w.r}</div>`;
+   else if(w.p)reading=`<div class="word-reading">병음: ${w.p}</div>`;
+   row.innerHTML=`<div class="word-left"><div class="word-text">${w.t}</div>${reading}</div>
+    <div class="word-meaning">${w.m}</div>`;
+   wordsEl.appendChild(row);
   });
+ } else {
+  wordsEl.innerHTML='<div style="color:var(--text-muted);font-size:0.85rem;text-align:center;padding:16px">해설 준비 중입니다.</div>';
+ }
+
+ // Tip
+ const tips={
+  jpn:'💡 한자 위의 작은 글자(후리가나)가 읽는 방법입니다. 탭 1회로 음성을 들을 수 있어요.',
+  cmn:'💡 한자 옆/위의 로마자(병음)로 발음을 표기합니다. 성조(ˉ ˊ ˇ ˋ)에 주의하세요.',
+  jpn_note:'',
+ };
+ document.getElementById('modal-tip').textContent=tips[lang]||'💡 탭 1회: 음성 재생 · 탭 2회: 이 해설 화면';
+
+ document.getElementById('breakdown-modal').classList.remove('hidden');
 }
 
-function removeSelected(key) {
-  selectedIds.delete(key);
-  document.querySelectorAll('.sentence-item').forEach(item=>{
-    if(item.dataset.key===key) item.classList.remove('selected');
-  });
-  updateBottomBar(); updatePreview();
+function closeBreakdown(){
+ document.getElementById('breakdown-modal').classList.add('hidden');
 }
 
-// ── STEP 3 → STEP 4 ──────────────────────────────────────────
-function onNextBtn() {
-  if(currentStep===3) goToStep4();
-  else if(currentStep===4) startLearning();
-}
-
-function goToStep4() {
-  stepDone(3);
-  document.getElementById('step3').classList.add('hidden');
-
-  // 모국어 버튼 비활성화, 나머지 초기화
-  document.querySelectorAll('#target-grid .lang-btn').forEach(b=>{
-    b.disabled = (b.dataset.lang===nativeLang);
-    b.classList.remove('selected');
-  });
-  targetLangs.clear();
-  renderTargetChips();
-
-  document.getElementById('step4').classList.remove('hidden');
-  stepActive(4);
-
-  // 바텀바: 학습 언어 선택 개수 표시 + 학습 시작 버튼
-  currentStep = 4;
-  document.getElementById('bar-count-area').innerHTML = '<span id="count-display">0</span>개 언어 선택됨';
-  document.getElementById('next-btn').textContent = '학습 시작 →';
-  document.getElementById('next-btn').disabled = true;
-  document.getElementById('next-btn').onclick = onNextBtn;
-}
-
-// ── STEP 4 : 복수 언어 토글 ───────────────────────────────────
-function toggleTargetLang(btn) {
-  const lang = btn.dataset.lang;
-  if(targetLangs.has(lang)){
-    targetLangs.delete(lang);
-    btn.classList.remove('selected');
-  } else {
-    targetLangs.add(lang);
-    btn.classList.add('selected');
-  }
-  renderTargetChips();
-  document.getElementById('count-display').textContent = targetLangs.size;
-  document.getElementById('next-btn').disabled = targetLangs.size === 0;
-}
-
-function renderTargetChips() {
-  const area = document.getElementById('selected-target-langs');
-  area.innerHTML = '';
-  if(!targetLangs.size){
-    area.innerHTML = '<span style="font-size:0.82rem;color:var(--text-muted)">언어를 선택하면 여기에 표시됩니다</span>';
-    return;
-  }
-  targetLangs.forEach(lang=>{
-    const info = LANG_INFO[lang];
-    const chip = document.createElement('div'); chip.className = 'lang-chip';
-    chip.innerHTML = `<span class="chip-flag">${info.flag}</span><span>${info.name}</span>`;
-    area.appendChild(chip);
-  });
-}
-
-// ── STEP 5 : 학습 화면 ───────────────────────────────────────
-function startLearning() {
-  stepDone(4);
-  document.getElementById('step4').classList.add('hidden');
-  document.getElementById('bottom-bar').classList.add('hidden');
-  buildLearningView();
-  document.getElementById('step5').classList.remove('hidden');
-  stepActive(5);
-}
-
-function buildLearningView() {
-  const nl = LANG_INFO[nativeLang];
-  const li = LV_INFO[currentLevel];
-
-  document.getElementById('learn-native-flag').textContent = nl.flag;
-  document.getElementById('learn-native-name').textContent = nl.name;
-  document.getElementById('learn-lv-dot').style.background = li.color;
-  document.getElementById('learn-lv-name').textContent = li.name;
-
-  // 선택한 목표 언어 플래그들
-  const flagsEl = document.getElementById('learn-target-flags');
-  flagsEl.innerHTML = '';
-  const langs = Array.from(targetLangs);
-  langs.forEach((lang, idx)=>{
-    const info = LANG_INFO[lang];
-    if(idx>0){
-      const sep = document.createElement('span'); sep.className='target-flag-sep'; sep.textContent='·';
-      flagsEl.appendChild(sep);
-    }
-    const item = document.createElement('div'); item.className='target-flag-item';
-    item.innerHTML=`<span>${info.flag}</span><span style="font-weight:600">${info.name}</span>`;
-    flagsEl.appendChild(item);
-  });
-
-  // 카드 렌더링
-  const cards = document.getElementById('learn-cards');
-  cards.innerHTML = '';
-  revealAll = false;
-  document.getElementById('reveal-toggle').classList.remove('on');
-
-  selectedIds.forEach(key=>{
-    const [cat,idx] = key.split('-');
-    const s = DATA[cat][parseInt(idx)];
-    if(!s) return;
-
-    const card = document.createElement('div'); card.className='learn-card fade-in';
-
-    // 모국어 표시
-    let html = `
-      <div class="learn-native">
-        <span class="learn-tag" style="float:right;margin-left:8px">${s.tag.split('/')[0]}</span>
-        ${s[nativeLang]}
-      </div>
-      <div class="lang-rows">`;
-
-    // 각 선택 언어별 행
-    langs.forEach(lang=>{
-      const info = LANG_INFO[lang];
-      const rowId = `row-${key}-${lang}`;
-      html += `
-        <div class="lang-row">
-          <div class="lang-row-label">
-            <span class="flag">${info.flag}</span>
-            <span>${info.name}</span>
-          </div>
-          <div class="lang-row-body hidden-text" id="${rowId}">
-            <span class="target-text">${s[lang]}</span>
-            <button class="btn-reveal" onclick="revealRow('${rowId}',this)">보기</button>
-          </div>
-        </div>`;
-    });
-
-    html += `</div>`;
-    card.innerHTML = html;
-    cards.appendChild(card);
-  });
-}
-
-function revealRow(id, btn) {
-  const el = document.getElementById(id);
-  const isHidden = el.classList.toggle('hidden-text');
-  btn.textContent = isHidden ? '보기' : '가리기';
-}
-
-function toggleRevealAll() {
-  revealAll = !revealAll;
-  document.getElementById('reveal-toggle').classList.toggle('on', revealAll);
-  document.querySelectorAll('.lang-row-body').forEach(el=>{
-    el.classList.toggle('hidden-text', !revealAll);
-  });
-  document.querySelectorAll('.btn-reveal').forEach(btn=>{
-    btn.textContent = revealAll ? '가리기' : '보기';
-  });
-}
+// 키보드 좌우 화살표
+document.addEventListener('keydown',e=>{
+ if(e.key==='ArrowLeft')prevCard();
+ else if(e.key==='ArrowRight')nextCard();
+ else if(e.key==='Escape')closeBreakdown();
+});
 </script>
 </body>
 </html>
