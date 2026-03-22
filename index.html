@@ -3,229 +3,218 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>자연스러운 언어 학습</title>
+  <title>LangPick</title>
   <style>
     :root {
-      --bg: #0f1117;
-      --surface: #1a1d27;
-      --surface2: #22263a;
-      --border: #2e3349;
-      --accent: #5b6ef5;
-      --accent-hover: #7080ff;
-      --text: #e8eaf6;
-      --text-muted: #7b82a8;
-      --success: #4caf8a;
-      --radius: 14px;
-      --lv1: #4caf8a;
-      --lv2: #f5a623;
-      --lv3: #e05c5c;
-      --lv4: #b06ef5;
+      --bg: #0f1117; --surface: #1a1d27; --surface2: #22263a; --border: #2e3349;
+      --accent: #5b6ef5; --accent-hover: #7080ff; --text: #e8eaf6; --text-muted: #7b82a8;
+      --success: #4caf8a; --radius: 14px;
+      --lv1: #4caf8a; --lv2: #f5a623; --lv3: #e05c5c; --lv4: #b06ef5;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 16px 80px;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; padding: 40px 16px 80px;
     }
-    header { text-align: center; margin-bottom: 48px; }
-    header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
+    header { text-align: center; margin-bottom: 40px; }
+    header h1 { font-size: 2rem; font-weight: 700; }
     header p { margin-top: 8px; color: var(--text-muted); font-size: 0.95rem; }
 
-    /* STEP INDICATOR */
-    .steps { display: flex; align-items: center; gap: 0; margin-bottom: 40px; }
-    .step { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); }
+    /* STEPS */
+    .steps { display: flex; align-items: center; margin-bottom: 36px; flex-wrap: wrap; justify-content: center; gap: 4px; }
+    .step { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--text-muted); }
     .step.active { color: var(--accent); }
     .step.done { color: var(--success); }
     .step-num {
-      width: 28px; height: 28px; border-radius: 50%;
-      border: 2px solid currentColor;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; font-weight: 700; flex-shrink: 0;
+      width: 26px; height: 26px; border-radius: 50%; border: 2px solid currentColor;
+      display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0;
     }
     .step.done .step-num { background: var(--success); border-color: var(--success); color: #fff; }
     .step.active .step-num { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .step-line { width: 40px; height: 2px; background: var(--border); margin: 0 4px; }
+    .step-line { width: 28px; height: 2px; background: var(--border); }
     .step-line.done { background: var(--success); }
 
     /* CARD */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 32px;
-      width: 100%;
-      max-width: 700px;
-    }
-    .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 24px; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; width: 100%; max-width: 700px; }
+    .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; }
 
-    /* LANGUAGE GRID */
-    .lang-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+    /* LANG GRID */
+    .lang-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
     @media (max-width: 520px) { .lang-grid { grid-template-columns: repeat(3, 1fr); } }
     .lang-btn {
-      background: var(--surface2);
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 8px;
-      cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      transition: all 0.2s; color: var(--text);
+      background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius);
+      padding: 16px 6px; cursor: pointer; display: flex; flex-direction: column;
+      align-items: center; gap: 7px; transition: all 0.2s; color: var(--text);
     }
-    .lang-btn:hover { border-color: var(--accent); background: #1f2340; }
+    .lang-btn:hover { border-color: var(--accent); }
     .lang-btn.selected { border-color: var(--accent); background: rgba(91,110,245,0.15); }
-    .lang-btn .flag { font-size: 2rem; }
-    .lang-btn .name { font-size: 0.8rem; font-weight: 600; }
-    .lang-btn .native { font-size: 0.7rem; color: var(--text-muted); }
+    .lang-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .lang-btn .flag { font-size: 1.8rem; }
+    .lang-btn .name { font-size: 0.78rem; font-weight: 600; }
+    .lang-btn .native { font-size: 0.68rem; color: var(--text-muted); }
 
-    /* LEVEL SELECTOR */
-    .level-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    /* LEVEL GRID */
+    .level-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
     @media (max-width: 480px) { .level-grid { grid-template-columns: repeat(2, 1fr); } }
     .level-btn {
-      background: var(--surface2);
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      padding: 20px 8px 16px;
-      cursor: pointer;
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      transition: all 0.2s; color: var(--text);
-      position: relative; overflow: hidden;
+      background: var(--surface2); border: 2px solid var(--border); border-radius: var(--radius);
+      padding: 18px 8px 14px; cursor: pointer; display: flex; flex-direction: column;
+      align-items: center; gap: 7px; transition: all 0.2s; color: var(--text);
     }
-    .level-btn:hover { transform: translateY(-2px); }
-    .level-btn.lv1 { --lv-color: var(--lv1); }
-    .level-btn.lv2 { --lv-color: var(--lv2); }
-    .level-btn.lv3 { --lv-color: var(--lv3); }
-    .level-btn.lv4 { --lv-color: var(--lv4); }
-    .level-btn.selected { border-color: var(--lv-color); background: color-mix(in srgb, var(--lv-color) 15%, transparent); }
-    .level-btn:hover { border-color: var(--lv-color); }
-    .level-icon { font-size: 1.8rem; }
-    .level-name { font-size: 1rem; font-weight: 700; color: var(--lv-color); }
-    .level-label { font-size: 0.72rem; color: var(--text-muted); }
-    .level-desc { font-size: 0.72rem; color: var(--text-muted); text-align: center; line-height: 1.4; margin-top: 4px; }
-    .level-bar {
-      width: 100%; height: 4px;
-      background: var(--border);
-      border-radius: 2px;
-      margin-top: 8px;
-      overflow: hidden;
-    }
-    .level-bar-fill { height: 100%; background: var(--lv-color); border-radius: 2px; transition: width 0.4s; }
+    .level-btn.lv1 { --lv-c: var(--lv1); } .level-btn.lv2 { --lv-c: var(--lv2); }
+    .level-btn.lv3 { --lv-c: var(--lv3); } .level-btn.lv4 { --lv-c: var(--lv4); }
+    .level-btn:hover { border-color: var(--lv-c); transform: translateY(-2px); }
+    .level-btn.selected { border-color: var(--lv-c); background: color-mix(in srgb, var(--lv-c) 12%, transparent); }
+    .level-icon { font-size: 1.7rem; }
+    .level-name { font-size: 1rem; font-weight: 700; color: var(--lv-c); }
+    .level-label { font-size: 0.7rem; color: var(--text-muted); }
+    .level-desc { font-size: 0.7rem; color: var(--text-muted); text-align: center; line-height: 1.4; }
+    .level-bar { width: 100%; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .level-bar-fill { height: 100%; background: var(--lv-c); border-radius: 2px; }
 
-    /* SENTENCES */
-    .sentence-controls {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 16px; flex-wrap: wrap; gap: 10px;
-    }
-    .badge {
-      border-radius: 20px; padding: 4px 12px; font-size: 0.8rem; font-weight: 600;
-    }
+    /* SENTENCE LIST */
+    .sentence-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+    .badge { border-radius: 20px; padding: 3px 10px; font-size: 0.78rem; font-weight: 600; }
     .badge-cat { background: rgba(91,110,245,0.2); color: var(--accent); }
-    .badge-lv1 { background: rgba(76,175,138,0.2); color: var(--lv1); }
-    .badge-lv2 { background: rgba(245,166,35,0.2); color: var(--lv2); }
-    .badge-lv3 { background: rgba(224,92,92,0.2); color: var(--lv3); }
-    .badge-lv4 { background: rgba(176,110,245,0.2); color: var(--lv4); }
-
-    .btn-refresh {
-      background: transparent; border: 1px solid var(--border);
-      color: var(--text-muted); border-radius: 8px; padding: 6px 14px;
-      cursor: pointer; font-size: 0.82rem; display: flex; align-items: center; gap: 6px;
-      transition: all 0.2s;
+    .btn-sm {
+      background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+      border-radius: 8px; padding: 5px 12px; cursor: pointer; font-size: 0.8rem;
+      display: flex; align-items: center; gap: 5px; transition: all 0.2s;
     }
-    .btn-refresh:hover { border-color: var(--accent); color: var(--accent); }
-    .btn-refresh:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-sm:disabled { opacity: 0.4; cursor: not-allowed; }
+    .cat-tab {
+      background: var(--surface2); border: 1px solid var(--border); border-radius: 20px;
+      padding: 5px 12px; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+    }
+    .cat-tab:hover { border-color: var(--accent); color: var(--text); }
+    .cat-tab.active { background: rgba(91,110,245,0.2); border-color: var(--accent); color: var(--accent); font-weight: 600; }
 
-    .sentence-list { display: flex; flex-direction: column; gap: 10px; }
+    .sentence-list { display: flex; flex-direction: column; gap: 9px; }
     .sentence-item {
-      background: var(--surface2); border: 1.5px solid var(--border);
-      border-radius: 10px; padding: 16px 18px; cursor: pointer;
-      display: flex; align-items: center; gap: 14px;
-      transition: all 0.18s; user-select: none; position: relative;
+      background: var(--surface2); border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 14px 16px; cursor: pointer; display: flex; align-items: center; gap: 12px;
+      transition: all 0.18s; user-select: none;
     }
     .sentence-item:hover { border-color: var(--accent); }
-    .sentence-item.selected { border-color: var(--accent); background: rgba(91,110,245,0.12); }
-    .sentence-item .lv-dot {
-      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
-    }
-    .sentence-item .lv-dot.lv1 { background: var(--lv1); }
-    .sentence-item .lv-dot.lv2 { background: var(--lv2); }
-    .sentence-item .lv-dot.lv3 { background: var(--lv3); }
-    .sentence-item .lv-dot.lv4 { background: var(--lv4); }
+    .sentence-item.selected { border-color: var(--accent); background: rgba(91,110,245,0.1); }
+    .lv-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .lv-dot.lv1 { background: var(--lv1); } .lv-dot.lv2 { background: var(--lv2); }
+    .lv-dot.lv3 { background: var(--lv3); } .lv-dot.lv4 { background: var(--lv4); }
     .checkbox {
-      width: 20px; height: 20px; border-radius: 6px;
-      border: 2px solid var(--border); flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center; transition: all 0.18s;
+      width: 20px; height: 20px; border-radius: 6px; border: 2px solid var(--border);
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.18s;
     }
     .sentence-item.selected .checkbox { background: var(--accent); border-color: var(--accent); }
     .checkbox-mark { color: #fff; font-size: 0.75rem; display: none; }
     .sentence-item.selected .checkbox-mark { display: block; }
-    .sentence-text { font-size: 1rem; line-height: 1.5; flex: 1; }
-    .sentence-tag {
-      font-size: 0.72rem; color: var(--text-muted);
-      background: var(--border); border-radius: 4px; padding: 2px 7px; flex-shrink: 0;
-    }
-
-    /* CAT TABS */
-    .cat-tab {
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 20px; padding: 6px 14px; font-size: 0.82rem;
-      color: var(--text-muted); cursor: pointer; transition: all 0.2s;
-    }
-    .cat-tab:hover { border-color: var(--accent); color: var(--text); }
-    .cat-tab.active {
-      background: rgba(91,110,245,0.2); border-color: var(--accent);
-      color: var(--accent); font-weight: 600;
-    }
+    .sentence-text { font-size: 0.98rem; line-height: 1.5; flex: 1; }
+    .sentence-tag { font-size: 0.7rem; color: var(--text-muted); background: var(--border); border-radius: 4px; padding: 2px 6px; flex-shrink: 0; }
 
     /* SELECTED PREVIEW */
-    .selected-preview { margin-top: 20px; display: none; }
+    .selected-preview { margin-top: 18px; display: none; }
     .selected-preview.visible { display: block; }
-    .preview-title { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 10px; }
-    .preview-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .preview-title { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
+    .preview-chips { display: flex; flex-wrap: wrap; gap: 6px; }
     .preview-chip {
-      background: rgba(91,110,245,0.15); border: 1px solid rgba(91,110,245,0.3);
-      border-radius: 20px; padding: 5px 12px; font-size: 0.82rem;
-      display: flex; align-items: center; gap: 6px;
+      background: rgba(91,110,245,0.12); border: 1px solid rgba(91,110,245,0.3);
+      border-radius: 20px; padding: 4px 10px; font-size: 0.78rem; display: flex; align-items: center; gap: 5px;
     }
-    .chip-remove { cursor: pointer; color: var(--text-muted); font-size: 0.9rem; }
-    .chip-remove:hover { color: #ff6b6b; }
+    .chip-remove { cursor: pointer; color: var(--text-muted); } .chip-remove:hover { color: #ff6b6b; }
+
+    /* INFO CHIPS */
+    .current-info { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .info-chip {
+      display: flex; align-items: center; gap: 5px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 20px; padding: 4px 10px;
+      font-size: 0.78rem; color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+    }
+    .info-chip:hover { border-color: var(--accent); color: var(--text); }
+    .info-chip .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+    /* ── LEARNING VIEW ── */
+    .learning-header {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .lang-arrow {
+      display: flex; align-items: center; gap: 8px; background: var(--surface2);
+      border: 1px solid var(--border); border-radius: 20px; padding: 6px 14px; font-size: 0.85rem;
+    }
+    .lang-arrow .arr { color: var(--accent); font-size: 1.1rem; }
+
+    .learn-cards { display: flex; flex-direction: column; gap: 14px; }
+    .learn-card {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden;
+    }
+    .learn-native {
+      padding: 18px 20px 14px;
+      font-size: 1.1rem; font-weight: 500; line-height: 1.6;
+    }
+    .learn-divider {
+      height: 1px; background: var(--border); margin: 0 20px;
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .learn-divider::after {
+      content: '▼';
+      position: absolute;
+      background: var(--surface2);
+      padding: 0 8px;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+    }
+    .learn-target {
+      padding: 14px 20px 18px;
+      font-size: 1rem; color: var(--accent); line-height: 1.6;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    }
+    .learn-target.hidden-text .target-text { filter: blur(6px); user-select: none; }
+    .btn-reveal {
+      background: rgba(91,110,245,0.15); border: 1px solid rgba(91,110,245,0.3);
+      color: var(--accent); border-radius: 8px; padding: 5px 12px;
+      cursor: pointer; font-size: 0.75rem; white-space: nowrap; flex-shrink: 0; transition: all 0.2s;
+    }
+    .btn-reveal:hover { background: rgba(91,110,245,0.25); }
+    .learn-tag { font-size: 0.7rem; color: var(--text-muted); background: var(--border); border-radius: 4px; padding: 2px 6px; }
+
+    /* TOGGLE REVEAL ALL */
+    .toggle-reveal {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 16px;
+    }
+    .toggle-label { font-size: 0.82rem; color: var(--text-muted); }
+    .toggle-switch {
+      width: 40px; height: 22px; background: var(--border); border-radius: 11px;
+      position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+    }
+    .toggle-switch.on { background: var(--accent); }
+    .toggle-switch::after {
+      content: ''; position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; background: #fff; border-radius: 50%; transition: left 0.2s;
+    }
+    .toggle-switch.on::after { left: 21px; }
 
     /* BOTTOM BAR */
     .bottom-bar {
       position: fixed; bottom: 0; left: 0; right: 0;
       background: rgba(15,17,23,0.95); border-top: 1px solid var(--border);
-      backdrop-filter: blur(10px); padding: 14px 24px;
+      backdrop-filter: blur(10px); padding: 12px 24px;
       display: flex; align-items: center; justify-content: space-between; gap: 16px;
     }
-    .selected-count { font-size: 0.9rem; color: var(--text-muted); }
+    .selected-count { font-size: 0.88rem; color: var(--text-muted); }
     .selected-count span { color: var(--accent); font-weight: 700; }
     .btn-next {
-      background: var(--accent); color: #fff; border: none;
-      border-radius: 10px; padding: 12px 28px; font-size: 0.95rem; font-weight: 600;
-      cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff; border: none; border-radius: 10px;
+      padding: 11px 24px; font-size: 0.92rem; font-weight: 600; cursor: pointer;
+      transition: all 0.2s; display: flex; align-items: center; gap: 7px;
     }
     .btn-next:hover { background: var(--accent-hover); transform: translateY(-1px); }
     .btn-next:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; }
 
-    /* LEVEL CHANGE CHIP */
-    .current-info {
-      display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 18px;
-    }
-    .info-chip {
-      display: flex; align-items: center; gap: 6px;
-      background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 20px; padding: 5px 12px; font-size: 0.8rem; color: var(--text-muted);
-      cursor: pointer; transition: all 0.2s;
-    }
-    .info-chip:hover { border-color: var(--accent); color: var(--text); }
-    .info-chip .dot { width: 8px; height: 8px; border-radius: 50%; }
-
     .fade-in { animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
     .hidden { display: none !important; }
-    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -235,719 +224,421 @@
   <p>자연스러운 일상 문장으로 언어를 배우세요</p>
 </header>
 
-<!-- STEP INDICATOR -->
+<!-- STEPS -->
 <div class="steps">
-  <div class="step active" id="step1-indicator">
-    <div class="step-num">1</div><span>모국어 선택</span>
-  </div>
-  <div class="step-line" id="line1"></div>
-  <div class="step" id="step2-indicator">
-    <div class="step-num">2</div><span>레벨 선택</span>
-  </div>
-  <div class="step-line" id="line2"></div>
-  <div class="step" id="step3-indicator">
-    <div class="step-num">3</div><span>문장 선택</span>
-  </div>
-  <div class="step-line" id="line3"></div>
-  <div class="step" id="step4-indicator">
-    <div class="step-num">4</div><span>학습하기</span>
-  </div>
+  <div class="step active" id="si1"><div class="step-num">1</div><span>모국어</span></div>
+  <div class="step-line" id="sl1"></div>
+  <div class="step" id="si2"><div class="step-num">2</div><span>레벨</span></div>
+  <div class="step-line" id="sl2"></div>
+  <div class="step" id="si3"><div class="step-num">3</div><span>문장 선택</span></div>
+  <div class="step-line" id="sl3"></div>
+  <div class="step" id="si4"><div class="step-num">4</div><span>학습 언어</span></div>
+  <div class="step-line" id="sl4"></div>
+  <div class="step" id="si5"><div class="step-num">5</div><span>학습하기</span></div>
 </div>
 
-<!-- STEP 1: 모국어 선택 -->
+<!-- STEP 1 -->
 <div class="card fade-in" id="step1">
   <div class="card-title">모국어를 선택하세요</div>
-  <div class="lang-grid">
-    <button class="lang-btn" data-lang="kor" onclick="selectNativeLang(this)">
-      <span class="flag">🇰🇷</span><span class="name">Korean</span><span class="native">한국어</span>
-    </button>
-    <button class="lang-btn" data-lang="eng" onclick="selectNativeLang(this)">
-      <span class="flag">🇺🇸</span><span class="name">English</span><span class="native">영어</span>
-    </button>
-    <button class="lang-btn" data-lang="jpn" onclick="selectNativeLang(this)">
-      <span class="flag">🇯🇵</span><span class="name">Japanese</span><span class="native">日本語</span>
-    </button>
-    <button class="lang-btn" data-lang="cmn" onclick="selectNativeLang(this)">
-      <span class="flag">🇨🇳</span><span class="name">Chinese</span><span class="native">中文</span>
-    </button>
-    <button class="lang-btn" data-lang="vie" onclick="selectNativeLang(this)">
-      <span class="flag">🇻🇳</span><span class="name">Vietnamese</span><span class="native">Tiếng Việt</span>
-    </button>
+  <div class="lang-grid" id="native-grid">
+    <button class="lang-btn" data-lang="kor" onclick="selectNativeLang(this)"><span class="flag">🇰🇷</span><span class="name">Korean</span><span class="native">한국어</span></button>
+    <button class="lang-btn" data-lang="eng" onclick="selectNativeLang(this)"><span class="flag">🇺🇸</span><span class="name">English</span><span class="native">영어</span></button>
+    <button class="lang-btn" data-lang="jpn" onclick="selectNativeLang(this)"><span class="flag">🇯🇵</span><span class="name">Japanese</span><span class="native">日本語</span></button>
+    <button class="lang-btn" data-lang="cmn" onclick="selectNativeLang(this)"><span class="flag">🇨🇳</span><span class="name">Chinese</span><span class="native">中文</span></button>
+    <button class="lang-btn" data-lang="vie" onclick="selectNativeLang(this)"><span class="flag">🇻🇳</span><span class="name">Vietnamese</span><span class="native">Tiếng Việt</span></button>
   </div>
 </div>
 
-<!-- STEP 2: 레벨 선택 -->
+<!-- STEP 2 -->
 <div class="card fade-in hidden" id="step2">
   <div class="card-title">학습 레벨을 선택하세요</div>
   <div class="level-grid">
     <button class="level-btn lv1" data-level="1" onclick="selectLevel(this)">
-      <span class="level-icon">🌱</span>
-      <span class="level-name">초급</span>
-      <span class="level-label">Beginner</span>
-      <span class="level-desc">짧고 단순한<br>기본 표현</span>
+      <span class="level-icon">🌱</span><span class="level-name">초급</span>
+      <span class="level-label">Beginner</span><span class="level-desc">짧고 단순한<br>기본 표현</span>
       <div class="level-bar"><div class="level-bar-fill" style="width:25%"></div></div>
     </button>
     <button class="level-btn lv2" data-level="2" onclick="selectLevel(this)">
-      <span class="level-icon">📗</span>
-      <span class="level-name">중급</span>
-      <span class="level-label">Intermediate</span>
-      <span class="level-desc">일상에서 자주<br>쓰는 표현</span>
+      <span class="level-icon">📗</span><span class="level-name">중급</span>
+      <span class="level-label">Intermediate</span><span class="level-desc">일상에서 자주<br>쓰는 표현</span>
       <div class="level-bar"><div class="level-bar-fill" style="width:50%"></div></div>
     </button>
     <button class="level-btn lv3" data-level="3" onclick="selectLevel(this)">
-      <span class="level-icon">🔥</span>
-      <span class="level-name">고급</span>
-      <span class="level-label">Advanced</span>
-      <span class="level-desc">뉘앙스 있는<br>자연스러운 표현</span>
+      <span class="level-icon">🔥</span><span class="level-name">고급</span>
+      <span class="level-label">Advanced</span><span class="level-desc">뉘앙스 있는<br>자연스러운 표현</span>
       <div class="level-bar"><div class="level-bar-fill" style="width:75%"></div></div>
     </button>
     <button class="level-btn lv4" data-level="4" onclick="selectLevel(this)">
-      <span class="level-icon">👑</span>
-      <span class="level-name">급</span>
-      <span class="level-label">Master</span>
-      <span class="level-desc">원어민 수준<br>관용·속어 표현</span>
+      <span class="level-icon">👑</span><span class="level-name">급</span>
+      <span class="level-label">Master</span><span class="level-desc">원어민 수준<br>관용·속어 표현</span>
       <div class="level-bar"><div class="level-bar-fill" style="width:100%"></div></div>
     </button>
   </div>
 </div>
 
-<!-- STEP 3: 문장 선택 -->
+<!-- STEP 3 -->
 <div class="card fade-in hidden" id="step3">
   <div class="sentence-controls">
     <div>
-      <div class="card-title" style="margin-bottom:4px" id="step3-title">문장을 선택하세요</div>
-      <div style="font-size:0.82rem; color:var(--text-muted)">여러 개 선택 가능 · 일상에서 자주 쓰는 표현들입니다</div>
+      <div class="card-title" style="margin-bottom:4px">문장을 선택하세요</div>
+      <div style="font-size:0.8rem;color:var(--text-muted)">여러 개 선택 가능 · 일상에서 실제로 쓰는 표현</div>
     </div>
-    <div style="display:flex; gap:8px; align-items:center">
+    <div style="display:flex;gap:7px;align-items:center">
       <span class="badge badge-cat" id="category-badge">일상</span>
-      <button class="btn-refresh" id="refresh-btn" onclick="refreshSentences()">
-        <span id="refresh-icon">↻</span> 새로고침
-      </button>
+      <button class="btn-sm" id="refresh-btn" onclick="refreshSentences()">↻ 새로고침</button>
     </div>
   </div>
-
-  <!-- Current info chips -->
   <div class="current-info">
-    <div class="info-chip" onclick="goToStep(1)">
-      <span id="info-lang-flag">🇰🇷</span>
-      <span id="info-lang-name">한국어</span>
-      <span style="font-size:0.7rem">✕</span>
-    </div>
-    <div class="info-chip" id="info-level-chip" onclick="goToStep(2)">
-      <span class="dot" id="info-level-dot" style="background:var(--lv1)"></span>
-      <span id="info-level-name">초급</span>
-      <span style="font-size:0.7rem">✕</span>
-    </div>
+    <div class="info-chip" onclick="goToStep(1)"><span id="i-lang-flag">🇰🇷</span><span id="i-lang-name">한국어</span><span style="font-size:0.65rem">✕</span></div>
+    <div class="info-chip" onclick="goToStep(2)"><span class="dot" id="i-lv-dot" style="background:var(--lv1)"></span><span id="i-lv-name">초급</span><span style="font-size:0.65rem">✕</span></div>
   </div>
-
-  <!-- Category Tabs -->
-  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:18px" id="category-tabs">
+  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px">
     <button class="cat-tab active" data-cat="daily" onclick="switchCategory(this,'daily')">일상 대화</button>
     <button class="cat-tab" data-cat="greeting" onclick="switchCategory(this,'greeting')">인사/반응</button>
     <button class="cat-tab" data-cat="feeling" onclick="switchCategory(this,'feeling')">감정/상태</button>
     <button class="cat-tab" data-cat="question" onclick="switchCategory(this,'question')">질문</button>
   </div>
-
   <div class="sentence-list" id="sentence-list"></div>
-
   <div class="selected-preview" id="selected-preview">
     <div class="preview-title">선택한 문장 (<span id="preview-count">0</span>개)</div>
     <div class="preview-chips" id="preview-chips"></div>
   </div>
 </div>
 
+<!-- STEP 4 -->
+<div class="card fade-in hidden" id="step4">
+  <div class="card-title">배우고 싶은 언어를 선택하세요</div>
+  <div class="lang-grid" id="target-grid">
+    <button class="lang-btn" data-lang="kor" onclick="selectTargetLang(this)"><span class="flag">🇰🇷</span><span class="name">Korean</span><span class="native">한국어</span></button>
+    <button class="lang-btn" data-lang="eng" onclick="selectTargetLang(this)"><span class="flag">🇺🇸</span><span class="name">English</span><span class="native">영어</span></button>
+    <button class="lang-btn" data-lang="jpn" onclick="selectTargetLang(this)"><span class="flag">🇯🇵</span><span class="name">Japanese</span><span class="native">日本語</span></button>
+    <button class="lang-btn" data-lang="cmn" onclick="selectTargetLang(this)"><span class="flag">🇨🇳</span><span class="name">Chinese</span><span class="native">中文</span></button>
+    <button class="lang-btn" data-lang="vie" onclick="selectTargetLang(this)"><span class="flag">🇻🇳</span><span class="name">Vietnamese</span><span class="native">Tiếng Việt</span></button>
+  </div>
+</div>
+
+<!-- STEP 5 -->
+<div class="card fade-in hidden" id="step5">
+  <div class="learning-header">
+    <div class="lang-arrow">
+      <span id="learn-native-flag">🇰🇷</span>
+      <span id="learn-native-name" style="font-weight:600">한국어</span>
+      <span class="arr">→</span>
+      <span id="learn-target-flag">🇺🇸</span>
+      <span id="learn-target-name" style="font-weight:600">English</span>
+    </div>
+    <div class="info-chip" style="font-size:0.78rem" id="learn-lv-chip">
+      <span class="dot" id="learn-lv-dot"></span>
+      <span id="learn-lv-name">초급</span>
+    </div>
+  </div>
+  <div class="toggle-reveal">
+    <div class="toggle-switch" id="reveal-toggle" onclick="toggleRevealAll()"></div>
+    <span class="toggle-label">번역 가리기 (클릭해서 확인)</span>
+  </div>
+  <div class="learn-cards" id="learn-cards"></div>
+</div>
+
 <!-- BOTTOM BAR -->
 <div class="bottom-bar hidden" id="bottom-bar">
   <div class="selected-count"><span id="count-display">0</span>개 선택됨</div>
-  <button class="btn-next" id="next-btn" disabled onclick="goNext()">학습 시작 →</button>
+  <button class="btn-next" id="next-btn" disabled onclick="goToStep4()">다음 단계 →</button>
 </div>
 
 <script>
-// ── DATA: level 1=초급 2=중급 3=고급 4=급 ─────────────────────
-const SENTENCES = {
-  kor: {
-    daily: [
-      // 초급
-      { text: "밥 먹었어?", tag: "식사", lv: 1 },
-      { text: "지금 어디야?", tag: "위치", lv: 1 },
-      { text: "나 집에 가.", tag: "이동", lv: 1 },
-      { text: "뭐 먹을래?", tag: "식사", lv: 1 },
-      // 중급
-      { text: "나 지금 밥 먹는 중이야.", tag: "식사", lv: 2 },
-      { text: "조금 이따가 전화할게.", tag: "연락", lv: 2 },
-      { text: "나 지금 바빠, 나중에 얘기하자.", tag: "연락", lv: 2 },
-      { text: "이따 같이 가자.", tag: "약속", lv: 2 },
-      // 고급
-      { text: "아 맞다, 깜빡했어 완전히.", tag: "일상", lv: 3 },
-      { text: "그냥 오늘은 집에서 쉬고 싶어.", tag: "일상", lv: 3 },
-      { text: "거기까지 어떻게 가면 돼?", tag: "길", lv: 3 },
-      { text: "나 먼저 갈게, 뒤에 따라와.", tag: "이동", lv: 3 },
-      // 급
-      { text: "어차피 갈 거면 진작에 말하지.", tag: "일상", lv: 4 },
-      { text: "밥은 먹고 다니는 거야?", tag: "식사", lv: 4 },
-      { text: "이 동네 맛집 알면 알려줘, 나 완전 초행이거든.", tag: "식사", lv: 4 },
-      { text: "오늘 완전 몸이 안 받쳐줘.", tag: "컨디션", lv: 4 },
-    ],
-    greeting: [
-      { text: "안녕!", tag: "인사", lv: 1 },
-      { text: "잘 지냈어?", tag: "인사", lv: 1 },
-      { text: "고마워!", tag: "감사", lv: 1 },
-      { text: "괜찮아.", tag: "반응", lv: 1 },
-      { text: "오랜만이야!", tag: "인사", lv: 2 },
-      { text: "나중에 봐!", tag: "인사", lv: 2 },
-      { text: "별거 아닌데 뭘.", tag: "겸손", lv: 2 },
-      { text: "조심히 가.", tag: "인사", lv: 2 },
-      { text: "얼마 만이야, 진짜 오랜만이다.", tag: "인사", lv: 3 },
-      { text: "그동안 잘 지냈어? 연락이 없길래.", tag: "인사", lv: 3 },
-      { text: "아 그렇구나, 몰랐네.", tag: "반응", lv: 3 },
-      { text: "어디 가? 나도 그쪽인데.", tag: "인사", lv: 3 },
-      { text: "야, 요즘 완전 뜸하네 너.", tag: "인사", lv: 4 },
-      { text: "별일 없지? 갑자기 연락해서.", tag: "인사", lv: 4 },
-      { text: "어, 잘 됐다 마침 너한테 할 말 있었는데.", tag: "반응", lv: 4 },
-      { text: "됐어 됐어, 신경 꺼.", tag: "반응", lv: 4 },
-    ],
-    feeling: [
-      { text: "피곤해.", tag: "피로", lv: 1 },
-      { text: "배고파.", tag: "배고픔", lv: 1 },
-      { text: "졸려.", tag: "피로", lv: 1 },
-      { text: "짜증나.", tag: "감정", lv: 1 },
-      { text: "너무 피곤해 죽겠어.", tag: "피로", lv: 2 },
-      { text: "배고파 미칠 것 같아.", tag: "배고픔", lv: 2 },
-      { text: "기분이 좀 별로야.", tag: "감정", lv: 2 },
-      { text: "너무 설레.", tag: "감정", lv: 2 },
-      { text: "몸이 천근만근이야 오늘.", tag: "피로", lv: 3 },
-      { text: "뭔가 찝찝한 느낌이 안 가.", tag: "감정", lv: 3 },
-      { text: "속이 다 시원하다, 진짜.", tag: "감정", lv: 3 },
-      { text: "완전 신나, 기분 최고야.", tag: "감정", lv: 3 },
-      { text: "기분이 묘하게 싱숭생숭해.", tag: "감정", lv: 4 },
-      { text: "뭔가 에너지가 방전된 느낌이야.", tag: "피로", lv: 4 },
-      { text: "괜히 심통이 나는 날이야 오늘.", tag: "감정", lv: 4 },
-      { text: "이거 해치우고 나니까 속이 뻥 뚫리네.", tag: "감정", lv: 4 },
-    ],
-    question: [
-      { text: "뭐 해?", tag: "질문", lv: 1 },
-      { text: "어디야?", tag: "질문", lv: 1 },
-      { text: "왜?", tag: "질문", lv: 1 },
-      { text: "언제 와?", tag: "질문", lv: 1 },
-      { text: "지금 뭐 해?", tag: "질문", lv: 2 },
-      { text: "그거 어디서 샀어?", tag: "질문", lv: 2 },
-      { text: "그 영화 재밌어?", tag: "질문", lv: 2 },
-      { text: "같이 갈래?", tag: "질문", lv: 2 },
-      { text: "거기 예약하고 가야 돼?", tag: "질문", lv: 3 },
-      { text: "이거 지금 당장 해야 해?", tag: "질문", lv: 3 },
-      { text: "그 얘기 어디서 들었어?", tag: "질문", lv: 3 },
-      { text: "혹시 나한테 서운한 거 있어?", tag: "질문", lv: 3 },
-      { text: "그게 다야? 뭔가 더 있는 거 아니야?", tag: "질문", lv: 4 },
-      { text: "설마 그 말 진심으로 한 거야?", tag: "질문", lv: 4 },
-      { text: "그쪽이랑은 어떻게 알게 된 거야?", tag: "질문", lv: 4 },
-      { text: "이거 나만 이상하게 느끼는 거야?", tag: "질문", lv: 4 },
-    ],
-  },
-
-  eng: {
-    daily: [
-      { text: "Did you eat?", tag: "meal", lv: 1 },
-      { text: "Where are you?", tag: "location", lv: 1 },
-      { text: "I'm going home.", tag: "movement", lv: 1 },
-      { text: "What do you want to eat?", tag: "meal", lv: 1 },
-      { text: "I'm eating right now.", tag: "meal", lv: 2 },
-      { text: "I'll call you in a bit.", tag: "contact", lv: 2 },
-      { text: "I'm busy, let's talk later.", tag: "contact", lv: 2 },
-      { text: "Let's go together.", tag: "plan", lv: 2 },
-      { text: "Oh right, I totally forgot.", tag: "daily", lv: 3 },
-      { text: "I'd rather just stay home tonight.", tag: "daily", lv: 3 },
-      { text: "How do I get there from here?", tag: "direction", lv: 3 },
-      { text: "I'll head out first, catch up with me.", tag: "movement", lv: 3 },
-      { text: "You could've just told me earlier.", tag: "daily", lv: 4 },
-      { text: "Are you actually eating these days?", tag: "meal", lv: 4 },
-      { text: "If you know any good spots around here, let me know — I'm totally new.", tag: "meal", lv: 4 },
-      { text: "I'm running on empty today.", tag: "condition", lv: 4 },
-    ],
-    greeting: [
-      { text: "Hi!", tag: "greeting", lv: 1 },
-      { text: "How are you?", tag: "greeting", lv: 1 },
-      { text: "Thanks!", tag: "thanks", lv: 1 },
-      { text: "It's fine.", tag: "reaction", lv: 1 },
-      { text: "Long time no see!", tag: "greeting", lv: 2 },
-      { text: "Talk later!", tag: "greeting", lv: 2 },
-      { text: "No big deal.", tag: "humble", lv: 2 },
-      { text: "Take care!", tag: "greeting", lv: 2 },
-      { text: "It's been forever, seriously.", tag: "greeting", lv: 3 },
-      { text: "Haven't heard from you in a while — you good?", tag: "greeting", lv: 3 },
-      { text: "Oh, I didn't know that.", tag: "reaction", lv: 3 },
-      { text: "Where are you headed? I'm going that way too.", tag: "greeting", lv: 3 },
-      { text: "Hey, you've been MIA lately.", tag: "greeting", lv: 4 },
-      { text: "Sorry for the random text — nothing's wrong, just wanted to check in.", tag: "greeting", lv: 4 },
-      { text: "Oh perfect timing, I actually wanted to talk to you.", tag: "reaction", lv: 4 },
-      { text: "Forget it, don't worry about it.", tag: "reaction", lv: 4 },
-    ],
-    feeling: [
-      { text: "I'm tired.", tag: "tired", lv: 1 },
-      { text: "I'm hungry.", tag: "hungry", lv: 1 },
-      { text: "I'm sleepy.", tag: "tired", lv: 1 },
-      { text: "I'm annoyed.", tag: "emotion", lv: 1 },
-      { text: "I'm absolutely exhausted.", tag: "tired", lv: 2 },
-      { text: "I'm starving.", tag: "hungry", lv: 2 },
-      { text: "I'm not feeling great.", tag: "emotion", lv: 2 },
-      { text: "I'm so excited!", tag: "emotion", lv: 2 },
-      { text: "My body is completely done today.", tag: "tired", lv: 3 },
-      { text: "Something just feels off and I can't shake it.", tag: "emotion", lv: 3 },
-      { text: "That's such a relief, honestly.", tag: "emotion", lv: 3 },
-      { text: "I'm pumped, best mood ever.", tag: "emotion", lv: 3 },
-      { text: "I'm in this weird unsettled headspace.", tag: "emotion", lv: 4 },
-      { text: "I feel completely drained, like my battery's at zero.", tag: "tired", lv: 4 },
-      { text: "I'm just randomly irritable today for no reason.", tag: "emotion", lv: 4 },
-      { text: "Getting that off my chest feels like a weight lifted.", tag: "emotion", lv: 4 },
-    ],
-    question: [
-      { text: "What's up?", tag: "question", lv: 1 },
-      { text: "Where are you?", tag: "question", lv: 1 },
-      { text: "Why?", tag: "question", lv: 1 },
-      { text: "When are you coming?", tag: "question", lv: 1 },
-      { text: "What are you up to?", tag: "question", lv: 2 },
-      { text: "Where'd you get that?", tag: "question", lv: 2 },
-      { text: "Is that movie good?", tag: "question", lv: 2 },
-      { text: "Wanna come with?", tag: "question", lv: 2 },
-      { text: "Do you need a reservation there?", tag: "question", lv: 3 },
-      { text: "Does this need to happen right now?", tag: "question", lv: 3 },
-      { text: "Where did you hear that from?", tag: "question", lv: 3 },
-      { text: "Is there something I did that bothered you?", tag: "question", lv: 3 },
-      { text: "That's it? I feel like there's more to it.", tag: "question", lv: 4 },
-      { text: "Wait, were you actually serious when you said that?", tag: "question", lv: 4 },
-      { text: "How do you even know them?", tag: "question", lv: 4 },
-      { text: "Am I the only one who finds this weird?", tag: "question", lv: 4 },
-    ],
-  },
-
-  jpn: {
-    daily: [
-      { text: "ご飯食べた？", tag: "食事", lv: 1 },
-      { text: "今どこ？", tag: "場所", lv: 1 },
-      { text: "家帰るね。", tag: "移動", lv: 1 },
-      { text: "何食べたい？", tag: "食事", lv: 1 },
-      { text: "今ご飯食べてるとこ。", tag: "食事", lv: 2 },
-      { text: "ちょっとしたら電話するね。", tag: "連絡", lv: 2 },
-      { text: "今忙しいから後で話そ。", tag: "連絡", lv: 2 },
-      { text: "一緒に行こうよ。", tag: "約束", lv: 2 },
-      { text: "あ、そうだ、すっかり忘れてた。", tag: "日常", lv: 3 },
-      { text: "今日はなんか家でゆっくりしたい気分。", tag: "日常", lv: 3 },
-      { text: "そこってここからどう行けばいいの？", tag: "道", lv: 3 },
-      { text: "先行くから後でついてきて。", tag: "移動", lv: 3 },
-      { text: "どうせ行くなら早く言ってよ。", tag: "日常", lv: 4 },
-      { text: "ちゃんとご飯食べてる？", tag: "食事", lv: 4 },
-      { text: "このへんでおすすめあったら教えて、全然詳しくないから。", tag: "食事", lv: 4 },
-      { text: "今日はマジで体がついてかない。", tag: "体調", lv: 4 },
-    ],
-    greeting: [
-      { text: "こんにちは！", tag: "挨拶", lv: 1 },
-      { text: "元気？", tag: "挨拶", lv: 1 },
-      { text: "ありがとう！", tag: "感謝", lv: 1 },
-      { text: "大丈夫。", tag: "反応", lv: 1 },
-      { text: "久しぶり！", tag: "挨拶", lv: 2 },
-      { text: "またね！", tag: "挨拶", lv: 2 },
-      { text: "大したことじゃないよ。", tag: "謙遜", lv: 2 },
-      { text: "気をつけてね。", tag: "挨拶", lv: 2 },
-      { text: "ほんと久々だね、懐かしい。", tag: "挨拶", lv: 3 },
-      { text: "連絡なかったから心配してたよ。", tag: "挨拶", lv: 3 },
-      { text: "あー、そうなんだ、知らなかった。", tag: "反応", lv: 3 },
-      { text: "どこ行くの？私もそっちなんだけど。", tag: "挨拶", lv: 3 },
-      { text: "最近全然顔出さないじゃん。", tag: "挨拶", lv: 4 },
-      { text: "急に連絡してごめんね、特に用はないんだけど。", tag: "挨拶", lv: 4 },
-      { text: "ちょうどよかった、ちょっと話したいことあったんだよね。", tag: "反応", lv: 4 },
-      { text: "もういいって、気にしないで。", tag: "反応", lv: 4 },
-    ],
-    feeling: [
-      { text: "疲れた。", tag: "疲労", lv: 1 },
-      { text: "お腹すいた。", tag: "空腹", lv: 1 },
-      { text: "眠い。", tag: "疲労", lv: 1 },
-      { text: "イライラする。", tag: "感情", lv: 1 },
-      { text: "もうめっちゃ疲れた。", tag: "疲労", lv: 2 },
-      { text: "お腹ペコペコ。", tag: "空腹", lv: 2 },
-      { text: "なんかちょっとしんどいな。", tag: "感情", lv: 2 },
-      { text: "すごくドキドキしてる。", tag: "感情", lv: 2 },
-      { text: "今日は体が全然言うこと聞かない。", tag: "疲労", lv: 3 },
-      { text: "なんかモヤモヤが取れないんだよね。", tag: "感情", lv: 3 },
-      { text: "これでスッキリした、ほんとに。", tag: "感情", lv: 3 },
-      { text: "完全テンション上がってる。", tag: "感情", lv: 3 },
-      { text: "なんか変にそわそわしてる自分がいる。", tag: "感情", lv: 4 },
-      { text: "エネルギーが完全に切れた感じ。", tag: "疲労", lv: 4 },
-      { text: "理由もないのになんか今日むしゃくしゃする。", tag: "感情", lv: 4 },
-      { text: "これ言えてすっごい楽になった。", tag: "感情", lv: 4 },
-    ],
-    question: [
-      { text: "何してる？", tag: "質問", lv: 1 },
-      { text: "どこにいる？", tag: "質問", lv: 1 },
-      { text: "なんで？", tag: "質問", lv: 1 },
-      { text: "いつ来る？", tag: "質問", lv: 1 },
-      { text: "今何してるの？", tag: "質問", lv: 2 },
-      { text: "それどこで買ったの？", tag: "質問", lv: 2 },
-      { text: "その映画、面白い？", tag: "質問", lv: 2 },
-      { text: "一緒に行かない？", tag: "質問", lv: 2 },
-      { text: "そこって予約してから行く感じ？", tag: "質問", lv: 3 },
-      { text: "これって今すぐやらないとダメ？", tag: "質問", lv: 3 },
-      { text: "その話どこで聞いたの？", tag: "質問", lv: 3 },
-      { text: "もしかして私のことで何か気に障ってる？", tag: "質問", lv: 3 },
-      { text: "それだけ？なんか他にもある気がするんだけど。", tag: "質問", lv: 4 },
-      { text: "え、あれって本気で言ってたの？", tag: "質問", lv: 4 },
-      { text: "あの人とはどういう経緯で知り合ったの？", tag: "質問", lv: 4 },
-      { text: "これって私だけ変に感じてる？", tag: "質問", lv: 4 },
-    ],
-  },
-
-  cmn: {
-    daily: [
-      { text: "吃了吗？", tag: "饮食", lv: 1 },
-      { text: "你在哪？", tag: "位置", lv: 1 },
-      { text: "我回家了。", tag: "出行", lv: 1 },
-      { text: "想吃什么？", tag: "饮食", lv: 1 },
-      { text: "我正在吃饭呢。", tag: "饮食", lv: 2 },
-      { text: "一会儿给你打电话。", tag: "联系", lv: 2 },
-      { text: "我现在忙，晚点再聊。", tag: "联系", lv: 2 },
-      { text: "一起去吧。", tag: "约定", lv: 2 },
-      { text: "哦对了，我给忘了。", tag: "日常", lv: 3 },
-      { text: "今天就想待在家里休息。", tag: "日常", lv: 3 },
-      { text: "从这里怎么去那边？", tag: "路线", lv: 3 },
-      { text: "我先走了，你跟上来。", tag: "出行", lv: 3 },
-      { text: "你早说不就好了。", tag: "日常", lv: 4 },
-      { text: "你最近有好好吃饭吗？", tag: "饮食", lv: 4 },
-      { text: "这附近有什么好吃的推荐一下，我完全不熟。", tag: "饮食", lv: 4 },
-      { text: "今天整个人都不在状态。", tag: "状态", lv: 4 },
-    ],
-    greeting: [
-      { text: "你好！", tag: "打招呼", lv: 1 },
-      { text: "你还好吗？", tag: "打招呼", lv: 1 },
-      { text: "谢谢！", tag: "感谢", lv: 1 },
-      { text: "没事。", tag: "反应", lv: 1 },
-      { text: "好久不见！", tag: "打招呼", lv: 2 },
-      { text: "回头见！", tag: "打招呼", lv: 2 },
-      { text: "没什么大不了的。", tag: "谦虚", lv: 2 },
-      { text: "路上小心。", tag: "打招呼", lv: 2 },
-      { text: "真的好久没见了，都快认不出了。", tag: "打招呼", lv: 3 },
-      { text: "一直没消息，还以为出什么事了。", tag: "打招呼", lv: 3 },
-      { text: "哦，这个我还真不知道。", tag: "反应", lv: 3 },
-      { text: "你去哪儿？我也顺路。", tag: "打招呼", lv: 3 },
-      { text: "你最近整个人消失了一样。", tag: "打招呼", lv: 4 },
-      { text: "突然联系你，没什么事，就是想问问你。", tag: "打招呼", lv: 4 },
-      { text: "来得正好，我正好有话要跟你说。", tag: "反应", lv: 4 },
-      { text: "算了，你别管了。", tag: "反应", lv: 4 },
-    ],
-    feeling: [
-      { text: "好累。", tag: "疲惫", lv: 1 },
-      { text: "好饿。", tag: "饥饿", lv: 1 },
-      { text: "好困。", tag: "疲惫", lv: 1 },
-      { text: "好烦。", tag: "情绪", lv: 1 },
-      { text: "累死了。", tag: "疲惫", lv: 2 },
-      { text: "饿死了。", tag: "饥饿", lv: 2 },
-      { text: "感觉不太好。", tag: "情绪", lv: 2 },
-      { text: "好期待啊。", tag: "情绪", lv: 2 },
-      { text: "今天身体完全不听使唤。", tag: "疲惫", lv: 3 },
-      { text: "有种说不清的不舒服，一直在那。", tag: "情绪", lv: 3 },
-      { text: "终于说出来了，整个人都轻松了。", tag: "情绪", lv: 3 },
-      { text: "现在状态超好，心情美美的。", tag: "情绪", lv: 3 },
-      { text: "莫名有点心神不定。", tag: "情绪", lv: 4 },
-      { text: "感觉能量被榨干了，什么都不想做。", tag: "疲惫", lv: 4 },
-      { text: "今天就是无缘无故地烦，也不知道为什么。", tag: "情绪", lv: 4 },
-      { text: "把这事说出来之后感觉压在心里的石头掉了。", tag: "情绪", lv: 4 },
-    ],
-    question: [
-      { text: "在干嘛？", tag: "问题", lv: 1 },
-      { text: "你在哪？", tag: "问题", lv: 1 },
-      { text: "为什么？", tag: "问题", lv: 1 },
-      { text: "什么时候来？", tag: "问题", lv: 1 },
-      { text: "你现在在干嘛？", tag: "问题", lv: 2 },
-      { text: "这个在哪买的？", tag: "问题", lv: 2 },
-      { text: "那部电影好看吗？", tag: "问题", lv: 2 },
-      { text: "要不要一起去？", tag: "问题", lv: 2 },
-      { text: "那个地方要提前订位吗？", tag: "问题", lv: 3 },
-      { text: "这个现在必须做吗？", tag: "问题", lv: 3 },
-      { text: "这是从哪听来的？", tag: "问题", lv: 3 },
-      { text: "你是不是对我有什么意见？", tag: "问题", lv: 3 },
-      { text: "就这样？感觉还有什么没说。", tag: "问题", lv: 4 },
-      { text: "等等，你说那句话是认真的吗？", tag: "问题", lv: 4 },
-      { text: "你们是怎么认识的？", tag: "问题", lv: 4 },
-      { text: "这件事就我一个人觉得奇怪吗？", tag: "问题", lv: 4 },
-    ],
-  },
-
-  vie: {
-    daily: [
-      { text: "Ăn chưa?", tag: "bữa ăn", lv: 1 },
-      { text: "Bạn đang ở đâu?", tag: "vị trí", lv: 1 },
-      { text: "Mình về nhà đây.", tag: "di chuyển", lv: 1 },
-      { text: "Muốn ăn gì?", tag: "bữa ăn", lv: 1 },
-      { text: "Tôi đang ăn cơm.", tag: "bữa ăn", lv: 2 },
-      { text: "Lát nữa gọi cho bạn nhé.", tag: "liên lạc", lv: 2 },
-      { text: "Mình bận, nói chuyện sau nhé.", tag: "liên lạc", lv: 2 },
-      { text: "Đi cùng nhau đi.", tag: "hẹn hò", lv: 2 },
-      { text: "Ừ nhỉ, mình quên béng mất.", tag: "hàng ngày", lv: 3 },
-      { text: "Hôm nay chỉ muốn ở nhà nghỉ ngơi thôi.", tag: "hàng ngày", lv: 3 },
-      { text: "Từ đây đi đến đó bằng đường nào?", tag: "đường đi", lv: 3 },
-      { text: "Mình đi trước, bạn đi theo sau nhé.", tag: "di chuyển", lv: 3 },
-      { text: "Biết vậy nói sớm hơn cho rồi.", tag: "hàng ngày", lv: 4 },
-      { text: "Dạo này bạn có ăn uống đàng hoàng không?", tag: "bữa ăn", lv: 4 },
-      { text: "Ở đây có chỗ nào ngon không chỉ mình với, mình không rành khu này.", tag: "bữa ăn", lv: 4 },
-      { text: "Hôm nay người mình không ra gì cả.", tag: "trạng thái", lv: 4 },
-    ],
-    greeting: [
-      { text: "Xin chào!", tag: "chào hỏi", lv: 1 },
-      { text: "Bạn khỏe không?", tag: "chào hỏi", lv: 1 },
-      { text: "Cảm ơn!", tag: "cảm ơn", lv: 1 },
-      { text: "Không sao.", tag: "phản ứng", lv: 1 },
-      { text: "Lâu quá không gặp!", tag: "chào hỏi", lv: 2 },
-      { text: "Gặp lại sau nhé!", tag: "chào hỏi", lv: 2 },
-      { text: "Có gì đâu.", tag: "khiêm tốn", lv: 2 },
-      { text: "Đi cẩn thận nhé.", tag: "chào hỏi", lv: 2 },
-      { text: "Lâu thật, gặp lại mừng quá.", tag: "chào hỏi", lv: 3 },
-      { text: "Không thấy liên lạc, tưởng có chuyện gì.", tag: "chào hỏi", lv: 3 },
-      { text: "Ồ, vậy hả, mình không biết.", tag: "phản ứng", lv: 3 },
-      { text: "Bạn đi đâu vậy? Mình cũng đi hướng đó.", tag: "chào hỏi", lv: 3 },
-      { text: "Dạo này bạn biến đi đâu hết vậy?", tag: "chào hỏi", lv: 4 },
-      { text: "Nhắn đột ngột vậy thôi chứ không có gì, chỉ hỏi thăm.", tag: "chào hỏi", lv: 4 },
-      { text: "May quá gặp bạn, mình vừa có chuyện muốn nói.", tag: "phản ứng", lv: 4 },
-      { text: "Thôi kệ đi, đừng nghĩ nhiều.", tag: "phản ứng", lv: 4 },
-    ],
-    feeling: [
-      { text: "Mệt quá.", tag: "mệt mỏi", lv: 1 },
-      { text: "Đói bụng.", tag: "đói", lv: 1 },
-      { text: "Buồn ngủ.", tag: "mệt mỏi", lv: 1 },
-      { text: "Bực mình.", tag: "cảm xúc", lv: 1 },
-      { text: "Mệt quá trời.", tag: "mệt mỏi", lv: 2 },
-      { text: "Đói muốn xỉu.", tag: "đói", lv: 2 },
-      { text: "Không được khỏe lắm.", tag: "cảm xúc", lv: 2 },
-      { text: "Hồi hộp ghê.", tag: "cảm xúc", lv: 2 },
-      { text: "Hôm nay người không nghe lời gì hết.", tag: "mệt mỏi", lv: 3 },
-      { text: "Có gì đó cứ vướng mãi, không rõ là gì.", tag: "cảm xúc", lv: 3 },
-      { text: "Nói ra được rồi, nhẹ cả người.", tag: "cảm xúc", lv: 3 },
-      { text: "Đang cực kỳ phấn khởi, tâm trạng đỉnh lắm.", tag: "cảm xúc", lv: 3 },
-      { text: "Không hiểu sao hôm nay bứt rứt lạ.", tag: "cảm xúc", lv: 4 },
-      { text: "Cảm giác pin xuống về không, không muốn làm gì hết.", tag: "mệt mỏi", lv: 4 },
-      { text: "Hôm nay bực bội vô cớ, cũng chẳng biết tại sao.", tag: "cảm xúc", lv: 4 },
-      { text: "Nói xong cái này thấy như trút được gánh nặng.", tag: "cảm xúc", lv: 4 },
-    ],
-    question: [
-      { text: "Đang làm gì?", tag: "hỏi", lv: 1 },
-      { text: "Bạn ở đâu?", tag: "hỏi", lv: 1 },
-      { text: "Tại sao?", tag: "hỏi", lv: 1 },
-      { text: "Khi nào đến?", tag: "hỏi", lv: 1 },
-      { text: "Bạn đang làm gì vậy?", tag: "hỏi", lv: 2 },
-      { text: "Mua cái đó ở đâu?", tag: "hỏi", lv: 2 },
-      { text: "Phim đó hay không?", tag: "hỏi", lv: 2 },
-      { text: "Đi cùng không?", tag: "hỏi", lv: 2 },
-      { text: "Chỗ đó có cần đặt trước không?", tag: "hỏi", lv: 3 },
-      { text: "Cái này phải làm ngay bây giờ không?", tag: "hỏi", lv: 3 },
-      { text: "Nghe chuyện này ở đâu vậy?", tag: "hỏi", lv: 3 },
-      { text: "Bạn có đang phật lòng gì về mình không?", tag: "hỏi", lv: 3 },
-      { text: "Chỉ vậy thôi? Mình thấy còn có gì đó nữa.", tag: "hỏi", lv: 4 },
-      { text: "Ủa, câu đó bạn nói thật hay đùa vậy?", tag: "hỏi", lv: 4 },
-      { text: "Bạn và người đó quen nhau qua đâu?", tag: "hỏi", lv: 4 },
-      { text: "Hay chỉ mình thấy chuyện này kỳ kỳ?", tag: "hỏi", lv: 4 },
-    ],
-  },
+// ── PARALLEL DATA (모든 언어가 화용적으로 동등한 문장) ─────────
+const DATA = {
+  daily: [
+    { lv:1, tag:"식사/meal", kor:"밥 먹었어?", eng:"Did you eat?", jpn:"ご飯食べた？", cmn:"吃了吗？", vie:"Ăn chưa?" },
+    { lv:1, tag:"위치/location", kor:"지금 어디야?", eng:"Where are you?", jpn:"今どこ？", cmn:"你在哪？", vie:"Bạn đang ở đâu?" },
+    { lv:1, tag:"이동/movement", kor:"나 집에 가.", eng:"I'm heading home.", jpn:"家帰るね。", cmn:"我回家了。", vie:"Mình về nhà đây." },
+    { lv:1, tag:"식사/meal", kor:"뭐 먹을래?", eng:"What do you want to eat?", jpn:"何食べたい？", cmn:"想吃什么？", vie:"Muốn ăn gì?" },
+    { lv:2, tag:"식사/meal", kor:"나 지금 밥 먹는 중이야.", eng:"I'm eating right now.", jpn:"今ご飯食べてるとこ。", cmn:"我正在吃饭呢。", vie:"Tôi đang ăn cơm." },
+    { lv:2, tag:"연락/contact", kor:"조금 이따가 전화할게.", eng:"I'll call you in a bit.", jpn:"ちょっとしたら電話するね。", cmn:"一会儿给你打电话。", vie:"Lát nữa gọi cho bạn nhé." },
+    { lv:2, tag:"연락/contact", kor:"나 지금 바빠, 나중에 얘기하자.", eng:"I'm busy, let's talk later.", jpn:"今忙しいから後で話そ。", cmn:"我现在忙，晚点再聊。", vie:"Mình bận, nói chuyện sau nhé." },
+    { lv:2, tag:"약속/plan", kor:"이따 같이 가자.", eng:"Let's go together later.", jpn:"後で一緒に行こうよ。", cmn:"待会儿一起去吧。", vie:"Lát đi cùng nhau nhé." },
+    { lv:3, tag:"일상/daily", kor:"아 맞다, 깜빡했어 완전히.", eng:"Oh right, I totally forgot.", jpn:"あ、そうだ、すっかり忘れてた。", cmn:"哦对了，我给忘了。", vie:"Ừ nhỉ, mình quên béng mất." },
+    { lv:3, tag:"일상/daily", kor:"그냥 오늘은 집에서 쉬고 싶어.", eng:"I'd rather just stay home today.", jpn:"今日はなんか家でゆっくりしたい気分。", cmn:"今天就想待在家里休息。", vie:"Hôm nay chỉ muốn ở nhà nghỉ ngơi thôi." },
+    { lv:3, tag:"길/direction", kor:"거기까지 어떻게 가면 돼?", eng:"How do I get there from here?", jpn:"そこってここからどう行けばいいの？", cmn:"从这里怎么去那边？", vie:"Từ đây đi đến đó bằng đường nào?" },
+    { lv:3, tag:"이동/movement", kor:"나 먼저 갈게, 뒤에 따라와.", eng:"I'll head out first, catch up with me.", jpn:"先行くから後でついてきて。", cmn:"我先走了，你跟上来。", vie:"Mình đi trước, bạn đi theo sau nhé." },
+    { lv:4, tag:"일상/daily", kor:"어차피 갈 거면 진작에 말하지.", eng:"You could've just told me earlier.", jpn:"どうせ行くなら早く言ってよ。", cmn:"你早说不就好了。", vie:"Biết vậy nói sớm hơn cho rồi." },
+    { lv:4, tag:"식사/meal", kor:"밥은 먹고 다니는 거야?", eng:"Are you actually eating these days?", jpn:"ちゃんとご飯食べてる？", cmn:"你最近有好好吃饭吗？", vie:"Dạo này bạn có ăn uống đàng hoàng không?" },
+    { lv:4, tag:"식사/meal", kor:"이 동네 맛집 알면 알려줘, 나 완전 초행이거든.", eng:"Know any good spots? I'm totally new to this area.", jpn:"このへんでおすすめあったら教えて、全然詳しくないから。", cmn:"这附近有什么好吃的推荐一下，我完全不熟。", vie:"Ở đây có chỗ nào ngon không chỉ mình với, mình không rành khu này." },
+    { lv:4, tag:"컨디션/condition", kor:"오늘 완전 몸이 안 받쳐줘.", eng:"I'm running on empty today.", jpn:"今日はマジで体がついてかない。", cmn:"今天整个人都不在状态。", vie:"Hôm nay người mình không ra gì cả." },
+  ],
+  greeting: [
+    { lv:1, tag:"인사/greeting", kor:"안녕!", eng:"Hey!", jpn:"こんにちは！", cmn:"你好！", vie:"Xin chào!" },
+    { lv:1, tag:"인사/greeting", kor:"잘 지냈어?", eng:"How have you been?", jpn:"元気？", cmn:"你还好吗？", vie:"Bạn khỏe không?" },
+    { lv:1, tag:"감사/thanks", kor:"고마워!", eng:"Thanks!", jpn:"ありがとう！", cmn:"谢谢！", vie:"Cảm ơn!" },
+    { lv:1, tag:"반응/reaction", kor:"괜찮아.", eng:"It's fine.", jpn:"大丈夫。", cmn:"没事。", vie:"Không sao." },
+    { lv:2, tag:"인사/greeting", kor:"오랜만이야!", eng:"Long time no see!", jpn:"久しぶり！", cmn:"好久不见！", vie:"Lâu quá không gặp!" },
+    { lv:2, tag:"인사/greeting", kor:"나중에 봐!", eng:"Talk later!", jpn:"またね！", cmn:"回头见！", vie:"Gặp lại sau nhé!" },
+    { lv:2, tag:"겸손/humble", kor:"별거 아닌데 뭘.", eng:"No big deal.", jpn:"大したことじゃないよ。", cmn:"没什么大不了的。", vie:"Có gì đâu." },
+    { lv:2, tag:"인사/greeting", kor:"조심히 가.", eng:"Take care!", jpn:"気をつけてね。", cmn:"路上小心。", vie:"Đi cẩn thận nhé." },
+    { lv:3, tag:"인사/greeting", kor:"얼마 만이야, 진짜 오랜만이다.", eng:"It's been forever, seriously.", jpn:"ほんと久々だね、懐かしい。", cmn:"真的好久没见了，都快认不出了。", vie:"Lâu thật, gặp lại mừng quá." },
+    { lv:3, tag:"인사/greeting", kor:"그동안 잘 지냈어? 연락이 없길래.", eng:"Haven't heard from you in a while — you good?", jpn:"連絡なかったから心配してたよ。", cmn:"一直没消息，还以为出什么事了。", vie:"Không thấy liên lạc, tưởng có chuyện gì." },
+    { lv:3, tag:"반응/reaction", kor:"아 그렇구나, 몰랐네.", eng:"Oh, I didn't know that.", jpn:"あー、そうなんだ、知らなかった。", cmn:"哦，这个我还真不知道。", vie:"Ồ, vậy hả, mình không biết." },
+    { lv:3, tag:"인사/greeting", kor:"어디 가? 나도 그쪽인데.", eng:"Where are you headed? I'm going that way too.", jpn:"どこ行くの？私もそっちなんだけど。", cmn:"你去哪儿？我也顺路。", vie:"Bạn đi đâu vậy? Mình cũng đi hướng đó." },
+    { lv:4, tag:"인사/greeting", kor:"야, 요즘 완전 뜸하네 너.", eng:"Hey, you've been MIA lately.", jpn:"最近全然顔出さないじゃん。", cmn:"你最近整个人消失了一样。", vie:"Dạo này bạn biến đi đâu hết vậy?" },
+    { lv:4, tag:"인사/greeting", kor:"별일 없지? 갑자기 연락해서.", eng:"Sorry for the random text — just wanted to check in.", jpn:"急に連絡してごめんね、特に用はないんだけど。", cmn:"突然联系你，没什么事，就是想问问你。", vie:"Nhắn đột ngột vậy thôi chứ không có gì, chỉ hỏi thăm." },
+    { lv:4, tag:"반응/reaction", kor:"어, 잘 됐다 마침 너한테 할 말 있었는데.", eng:"Oh perfect timing, I actually wanted to talk to you.", jpn:"ちょうどよかった、ちょっと話したいことあったんだよね。", cmn:"来得正好，我正好有话要跟你说。", vie:"May quá gặp bạn, mình vừa có chuyện muốn nói." },
+    { lv:4, tag:"반응/reaction", kor:"됐어 됐어, 신경 꺼.", eng:"Forget it, don't worry about it.", jpn:"もういいって、気にしないで。", cmn:"算了，你别管了。", vie:"Thôi kệ đi, đừng nghĩ nhiều." },
+  ],
+  feeling: [
+    { lv:1, tag:"피로/tired", kor:"피곤해.", eng:"I'm tired.", jpn:"疲れた。", cmn:"好累。", vie:"Mệt quá." },
+    { lv:1, tag:"배고픔/hungry", kor:"배고파.", eng:"I'm hungry.", jpn:"お腹すいた。", cmn:"好饿。", vie:"Đói bụng." },
+    { lv:1, tag:"피로/tired", kor:"졸려.", eng:"I'm sleepy.", jpn:"眠い。", cmn:"好困。", vie:"Buồn ngủ." },
+    { lv:1, tag:"감정/emotion", kor:"짜증나.", eng:"So annoying.", jpn:"イライラする。", cmn:"好烦。", vie:"Bực mình." },
+    { lv:2, tag:"피로/tired", kor:"너무 피곤해 죽겠어.", eng:"I'm absolutely exhausted.", jpn:"もうめっちゃ疲れた。", cmn:"累死了。", vie:"Mệt quá trời." },
+    { lv:2, tag:"배고픔/hungry", kor:"배고파 미칠 것 같아.", eng:"I'm starving.", jpn:"お腹ペコペコ。", cmn:"饿死了。", vie:"Đói muốn xỉu." },
+    { lv:2, tag:"감정/emotion", kor:"기분이 좀 별로야.", eng:"I'm not feeling great.", jpn:"なんかちょっとしんどいな。", cmn:"感觉不太好。", vie:"Không được khỏe lắm." },
+    { lv:2, tag:"감정/emotion", kor:"너무 설레.", eng:"I'm so excited!", jpn:"すごくドキドキしてる。", cmn:"好期待啊。", vie:"Hồi hộp ghê." },
+    { lv:3, tag:"피로/tired", kor:"몸이 천근만근이야 오늘.", eng:"My body is completely done today.", jpn:"今日は体が全然言うこと聞かない。", cmn:"今天身体完全不听使唤。", vie:"Hôm nay người không nghe lời gì hết." },
+    { lv:3, tag:"감정/emotion", kor:"뭔가 찝찝한 느낌이 안 가.", eng:"Something just feels off and I can't shake it.", jpn:"なんかモヤモヤが取れないんだよね。", cmn:"有种说不清的不舒服，一直在那。", vie:"Có gì đó cứ vướng mãi, không rõ là gì." },
+    { lv:3, tag:"감정/emotion", kor:"속이 다 시원하다, 진짜.", eng:"That's such a relief, honestly.", jpn:"これでスッキリした、ほんとに。", cmn:"终于说出来了，整个人都轻松了。", vie:"Nói ra được rồi, nhẹ cả người." },
+    { lv:3, tag:"감정/emotion", kor:"완전 신나, 기분 최고야.", eng:"I'm pumped, best mood ever.", jpn:"完全テンション上がってる。", cmn:"现在状态超好，心情美美的。", vie:"Đang cực kỳ phấn khởi, tâm trạng đỉnh lắm." },
+    { lv:4, tag:"감정/emotion", kor:"기분이 묘하게 싱숭생숭해.", eng:"I'm in this weird unsettled headspace.", jpn:"なんか変にそわそわしてる自分がいる。", cmn:"莫名有点心神不定。", vie:"Không hiểu sao hôm nay bứt rứt lạ." },
+    { lv:4, tag:"피로/tired", kor:"뭔가 에너지가 방전된 느낌이야.", eng:"I feel completely drained, like my battery's at zero.", jpn:"エネルギーが完全に切れた感じ。", cmn:"感觉能量被榨干了，什么都不想做。", vie:"Cảm giác pin xuống về không, không muốn làm gì hết." },
+    { lv:4, tag:"감정/emotion", kor:"괜히 심통이 나는 날이야 오늘.", eng:"I'm just randomly irritable today for no reason.", jpn:"理由もないのになんか今日むしゃくしゃする。", cmn:"今天就是无缘无故地烦，也不知道为什么。", vie:"Hôm nay bực bội vô cớ, cũng chẳng biết tại sao." },
+    { lv:4, tag:"감정/emotion", kor:"이거 해치우고 나니까 속이 뻥 뚫리네.", eng:"Getting that off my chest feels like a weight lifted.", jpn:"これ言えてすっごい楽になった。", cmn:"把这事说出来之后感觉压在心里的石头掉了。", vie:"Nói xong cái này thấy như trút được gánh nặng." },
+  ],
+  question: [
+    { lv:1, tag:"질문/question", kor:"뭐 해?", eng:"What's up?", jpn:"何してる？", cmn:"在干嘛？", vie:"Đang làm gì?" },
+    { lv:1, tag:"질문/question", kor:"어디야?", eng:"Where are you?", jpn:"どこにいる？", cmn:"你在哪？", vie:"Bạn ở đâu?" },
+    { lv:1, tag:"질문/question", kor:"왜?", eng:"Why?", jpn:"なんで？", cmn:"为什么？", vie:"Tại sao?" },
+    { lv:1, tag:"질문/question", kor:"언제 와?", eng:"When are you coming?", jpn:"いつ来る？", cmn:"什么时候来？", vie:"Khi nào đến?" },
+    { lv:2, tag:"질문/question", kor:"지금 뭐 해?", eng:"What are you up to?", jpn:"今何してるの？", cmn:"你现在在干嘛？", vie:"Bạn đang làm gì vậy?" },
+    { lv:2, tag:"질문/question", kor:"그거 어디서 샀어?", eng:"Where'd you get that?", jpn:"それどこで買ったの？", cmn:"这个在哪买的？", vie:"Mua cái đó ở đâu?" },
+    { lv:2, tag:"질문/question", kor:"그 영화 재밌어?", eng:"Is that movie good?", jpn:"その映画、面白い？", cmn:"那部电影好看吗？", vie:"Phim đó hay không?" },
+    { lv:2, tag:"질문/question", kor:"같이 갈래?", eng:"Wanna come with?", jpn:"一緒に行かない？", cmn:"要不要一起去？", vie:"Đi cùng không?" },
+    { lv:3, tag:"질문/question", kor:"거기 예약하고 가야 돼?", eng:"Do you need a reservation there?", jpn:"そこって予約してから行く感じ？", cmn:"那个地方要提前订位吗？", vie:"Chỗ đó có cần đặt trước không?" },
+    { lv:3, tag:"질문/question", kor:"이거 지금 당장 해야 해?", eng:"Does this need to happen right now?", jpn:"これって今すぐやらないとダメ？", cmn:"这个现在必须做吗？", vie:"Cái này phải làm ngay bây giờ không?" },
+    { lv:3, tag:"질문/question", kor:"그 얘기 어디서 들었어?", eng:"Where did you hear that from?", jpn:"その話どこで聞いたの？", cmn:"这是从哪听来的？", vie:"Nghe chuyện này ở đâu vậy?" },
+    { lv:3, tag:"질문/question", kor:"혹시 나한테 서운한 거 있어?", eng:"Is there something I did that bothered you?", jpn:"もしかして私のことで何か気に障ってる？", cmn:"你是不是对我有什么意见？", vie:"Bạn có đang phật lòng gì về mình không?" },
+    { lv:4, tag:"질문/question", kor:"그게 다야? 뭔가 더 있는 거 아니야?", eng:"That's it? I feel like there's more to it.", jpn:"それだけ？なんか他にもある気がするんだけど。", cmn:"就这样？感觉还有什么没说。", vie:"Chỉ vậy thôi? Mình thấy còn có gì đó nữa." },
+    { lv:4, tag:"질문/question", kor:"설마 그 말 진심으로 한 거야?", eng:"Wait, were you actually serious when you said that?", jpn:"え、あれって本気で言ってたの？", cmn:"等等，你说那句话是认真的吗？", vie:"Ủa, câu đó bạn nói thật hay đùa vậy?" },
+    { lv:4, tag:"질문/question", kor:"그쪽이랑은 어떻게 알게 된 거야?", eng:"How do you even know them?", jpn:"あの人とはどういう経緯で知り合ったの？", cmn:"你们是怎么认识的？", vie:"Bạn và người đó quen nhau qua đâu?" },
+    { lv:4, tag:"질문/question", kor:"이거 나만 이상하게 느끼는 거야?", eng:"Am I the only one who finds this weird?", jpn:"これって私だけ変に感じてる？", cmn:"这件事就我一个人觉得奇怪吗？", vie:"Hay chỉ mình thấy chuyện này kỳ kỳ?" },
+  ],
 };
 
 // ── STATE ─────────────────────────────────────────────
-let nativeLang = null;
-let currentLevel = null;
+let nativeLang = null, targetLang = null, currentLevel = null;
 let currentCategory = 'daily';
-let selectedSentences = new Set();
+let selectedIds = new Set(); // store sentence index keys like "daily-0"
+let revealAll = false;
 
 const LANG_INFO = {
-  kor: { flag: '🇰🇷', name: '한국어' },
-  eng: { flag: '🇺🇸', name: 'English' },
-  jpn: { flag: '🇯🇵', name: '日本語' },
-  cmn: { flag: '🇨🇳', name: '中文' },
-  vie: { flag: '🇻🇳', name: 'Tiếng Việt' },
+  kor:{ flag:'🇰🇷', name:'한국어' }, eng:{ flag:'🇺🇸', name:'English' },
+  jpn:{ flag:'🇯🇵', name:'日本語' }, cmn:{ flag:'🇨🇳', name:'中文' },
+  vie:{ flag:'🇻🇳', name:'Tiếng Việt' },
 };
-const LEVEL_INFO = {
-  1: { name: '초급', color: 'var(--lv1)', cls: 'lv1' },
-  2: { name: '중급', color: 'var(--lv2)', cls: 'lv2' },
-  3: { name: '고급', color: 'var(--lv3)', cls: 'lv3' },
-  4: { name: '급',   color: 'var(--lv4)', cls: 'lv4' },
+const LV_INFO = {
+  1:{ name:'초급', color:'var(--lv1)', cls:'lv1' }, 2:{ name:'중급', color:'var(--lv2)', cls:'lv2' },
+  3:{ name:'고급', color:'var(--lv3)', cls:'lv3' }, 4:{ name:'급',   color:'var(--lv4)', cls:'lv4' },
 };
 
-// ── STEP NAV ──────────────────────────────────────────
-function setStepDone(n) {
-  const el = document.getElementById(`step${n}-indicator`);
-  el.classList.remove('active');
-  el.classList.add('done');
+// ── STEP HELPERS ──────────────────────────────────────
+function stepDone(n) {
+  const el = document.getElementById(`si${n}`);
+  el.classList.remove('active'); el.classList.add('done');
   el.querySelector('.step-num').textContent = '✓';
-  const line = document.getElementById(`line${n}`);
-  if (line) line.classList.add('done');
+  const sl = document.getElementById(`sl${n}`);
+  if (sl) sl.classList.add('done');
 }
-function setStepActive(n) {
-  document.getElementById(`step${n}-indicator`).classList.add('active');
-}
+function stepActive(n) { document.getElementById(`si${n}`).classList.add('active'); }
 
 function goToStep(n) {
-  // Reset from step n onward
-  [1,2,3].forEach(i => {
-    if (i >= n) {
-      document.getElementById(`step${i}`).classList.add('hidden');
-    }
-  });
+  [1,2,3,4,5].forEach(i => { if(i>=n) document.getElementById(`step${i}`).classList.add('hidden'); });
   document.getElementById('bottom-bar').classList.add('hidden');
+  if (n<=3) { selectedIds.clear(); updateBottomBar(); updatePreview(); }
 
-  if (n === 1) {
-    document.getElementById('step1').classList.remove('hidden');
-    ['step1-indicator','step2-indicator','step3-indicator','step4-indicator'].forEach(id => {
-      const el = document.getElementById(id);
-      el.classList.remove('active','done');
-      el.querySelector('.step-num').textContent = id.replace('step','').replace('-indicator','');
-    });
-    ['line1','line2','line3'].forEach(id => document.getElementById(id).classList.remove('done'));
-    document.getElementById('step1-indicator').classList.add('active');
-  } else if (n === 2) {
-    document.getElementById('step2').classList.remove('hidden');
-    document.getElementById('step2-indicator').classList.remove('done');
-    document.getElementById('step2-indicator').classList.add('active');
-    document.getElementById('step2-indicator').querySelector('.step-num').textContent = '2';
-    ['step3-indicator','step4-indicator'].forEach(id => {
-      const el = document.getElementById(id);
-      el.classList.remove('active','done');
-      el.querySelector('.step-num').textContent = id.includes('3') ? '3' : '4';
-    });
-    document.getElementById('line2').classList.remove('done');
-    document.getElementById('line3').classList.remove('done');
+  // reset indicators from n onward
+  for(let i=n;i<=5;i++){
+    const el=document.getElementById(`si${i}`);
+    el.classList.remove('active','done');
+    el.querySelector('.step-num').textContent=i;
+    const sl=document.getElementById(`sl${i}`);
+    if(sl) sl.classList.remove('done');
   }
+  document.getElementById(`step${n}`).classList.remove('hidden');
+  stepActive(n);
 }
 
-// ── STEP 1: 언어 선택 ─────────────────────────────────
+// ── STEP 1 ────────────────────────────────────────────
 function selectNativeLang(btn) {
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('#native-grid .lang-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
   nativeLang = btn.dataset.lang;
-
-  setTimeout(() => {
-    document.getElementById('step1').classList.add('hidden');
-    document.getElementById('step2').classList.remove('hidden');
-    setStepDone(1);
-    setStepActive(2);
-  }, 200);
+  setTimeout(()=>{ stepDone(1); goToStep(2); document.getElementById('step2').classList.remove('hidden'); stepActive(2); document.getElementById('step1').classList.add('hidden'); }, 200);
 }
 
-// ── STEP 2: 레벨 선택 ────────────────────────────────
+// ── STEP 2 ────────────────────────────────────────────
 function selectLevel(btn) {
-  document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.level-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
   currentLevel = parseInt(btn.dataset.level);
-
-  // update info chips
-  const li = LEVEL_INFO[currentLevel];
-  const lang = LANG_INFO[nativeLang];
-  document.getElementById('info-lang-flag').textContent = lang.flag;
-  document.getElementById('info-lang-name').textContent = lang.name;
-  document.getElementById('info-level-name').textContent = li.name;
-  document.getElementById('info-level-dot').style.background = li.color;
-
-  setTimeout(() => {
-    document.getElementById('step2').classList.add('hidden');
-    document.getElementById('step3').classList.remove('hidden');
+  const li = LV_INFO[currentLevel], lang = LANG_INFO[nativeLang];
+  document.getElementById('i-lang-flag').textContent = lang.flag;
+  document.getElementById('i-lang-name').textContent = lang.name;
+  document.getElementById('i-lv-name').textContent = li.name;
+  document.getElementById('i-lv-dot').style.background = li.color;
+  setTimeout(()=>{
+    stepDone(2); goToStep(3);
+    document.getElementById('step3').classList.remove('hidden'); stepActive(3);
     document.getElementById('bottom-bar').classList.remove('hidden');
-    setStepDone(2);
-    setStepActive(3);
-
-    // reset category
-    currentCategory = 'daily';
-    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('step2').classList.add('hidden');
+    currentCategory='daily';
+    document.querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
     document.querySelector('[data-cat="daily"]').classList.add('active');
-    selectedSentences.clear();
-    updateBottomBar();
-    updatePreview();
     renderSentences();
   }, 200);
 }
 
-// ── STEP 3: 문장 ──────────────────────────────────────
+// ── STEP 3 ────────────────────────────────────────────
 function switchCategory(btn, cat) {
-  document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  currentCategory = cat;
-  const catNames = { daily: '일상', greeting: '인사/반응', feeling: '감정', question: '질문' };
-  document.getElementById('category-badge').textContent = catNames[cat];
+  document.querySelectorAll('.cat-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); currentCategory = cat;
+  const names={daily:'일상',greeting:'인사/반응',feeling:'감정',question:'질문'};
+  document.getElementById('category-badge').textContent = names[cat];
   renderSentences();
 }
 
 function renderSentences() {
   const list = document.getElementById('sentence-list');
-  const all = SENTENCES[nativeLang][currentCategory];
-  const filtered = all.filter(s => s.lv === currentLevel);
-  const shuffled = [...filtered].sort(() => Math.random() - 0.5);
-
+  const all = DATA[currentCategory].filter(s=>s.lv===currentLevel);
+  const shuffled = [...all].sort(()=>Math.random()-0.5);
   list.innerHTML = '';
-  if (shuffled.length === 0) {
-    list.innerHTML = `<div style="text-align:center;color:var(--text-muted);padding:32px">이 카테고리에 해당 레벨 문장이 없습니다.</div>`;
-    return;
-  }
-
-  const li = LEVEL_INFO[currentLevel];
-  shuffled.forEach((s, i) => {
+  if(!shuffled.length){ list.innerHTML=`<div style="text-align:center;color:var(--text-muted);padding:32px">이 카테고리에 해당 레벨 문장이 없습니다.</div>`; return; }
+  const li = LV_INFO[currentLevel];
+  shuffled.forEach((s,i)=>{
+    const key = currentCategory+'-'+DATA[currentCategory].indexOf(s);
     const item = document.createElement('div');
-    item.className = 'sentence-item fade-in' + (selectedSentences.has(s.text) ? ' selected' : '');
-    item.style.animationDelay = `${i * 0.04}s`;
-    item.dataset.text = s.text;
-    item.innerHTML = `
+    item.className = 'sentence-item fade-in'+(selectedIds.has(key)?' selected':'');
+    item.style.animationDelay=`${i*0.04}s`;
+    item.dataset.key = key;
+    item.innerHTML=`
       <div class="checkbox"><span class="checkbox-mark">✓</span></div>
       <span class="lv-dot ${li.cls}"></span>
-      <div class="sentence-text">${s.text}</div>
-      <span class="sentence-tag">${s.tag}</span>
-    `;
-    item.addEventListener('click', () => toggleSentence(item, s.text));
+      <div class="sentence-text">${s[nativeLang]}</div>
+      <span class="sentence-tag">${s.tag.split('/')[0]}</span>`;
+    item.addEventListener('click',()=>toggleSentence(item,key));
     list.appendChild(item);
   });
 }
 
-function toggleSentence(item, text) {
-  if (selectedSentences.has(text)) {
-    selectedSentences.delete(text);
-    item.classList.remove('selected');
-  } else {
-    selectedSentences.add(text);
-    item.classList.add('selected');
-  }
-  updateBottomBar();
-  updatePreview();
+function toggleSentence(item, key) {
+  if(selectedIds.has(key)){ selectedIds.delete(key); item.classList.remove('selected'); }
+  else { selectedIds.add(key); item.classList.add('selected'); }
+  updateBottomBar(); updatePreview();
 }
 
 function refreshSentences() {
-  const btn = document.getElementById('refresh-btn');
-  btn.disabled = true;
-  setTimeout(() => { renderSentences(); btn.disabled = false; }, 350);
+  const btn=document.getElementById('refresh-btn'); btn.disabled=true;
+  setTimeout(()=>{ renderSentences(); btn.disabled=false; }, 350);
 }
 
 function updateBottomBar() {
-  const count = selectedSentences.size;
-  document.getElementById('count-display').textContent = count;
-  document.getElementById('next-btn').disabled = count === 0;
+  document.getElementById('count-display').textContent=selectedIds.size;
+  document.getElementById('next-btn').disabled=selectedIds.size===0;
 }
 
 function updatePreview() {
-  const preview = document.getElementById('selected-preview');
-  const chips = document.getElementById('preview-chips');
-  document.getElementById('preview-count').textContent = selectedSentences.size;
-  if (selectedSentences.size === 0) { preview.classList.remove('visible'); return; }
+  const preview=document.getElementById('selected-preview');
+  document.getElementById('preview-count').textContent=selectedIds.size;
+  if(!selectedIds.size){ preview.classList.remove('visible'); return; }
   preview.classList.add('visible');
-  chips.innerHTML = '';
-  selectedSentences.forEach(text => {
-    const chip = document.createElement('div');
-    chip.className = 'preview-chip';
-    const safe = text.replace(/'/g, "\\'");
-    chip.innerHTML = `<span>${text}</span><span class="chip-remove" onclick="removeSelected('${safe}')">×</span>`;
+  const chips=document.getElementById('preview-chips'); chips.innerHTML='';
+  selectedIds.forEach(key=>{
+    const [cat,idx]=key.split('-');
+    const s=DATA[cat][parseInt(idx)];
+    if(!s) return;
+    const chip=document.createElement('div'); chip.className='preview-chip';
+    chip.innerHTML=`<span>${s[nativeLang]}</span><span class="chip-remove" onclick="removeSelected('${key}')">×</span>`;
     chips.appendChild(chip);
   });
 }
 
-function removeSelected(text) {
-  selectedSentences.delete(text);
-  document.querySelectorAll('.sentence-item').forEach(item => {
-    if (item.dataset.text === text) item.classList.remove('selected');
+function removeSelected(key) {
+  selectedIds.delete(key);
+  document.querySelectorAll('.sentence-item').forEach(item=>{
+    if(item.dataset.key===key) item.classList.remove('selected');
   });
-  updateBottomBar();
-  updatePreview();
+  updateBottomBar(); updatePreview();
 }
 
-function goNext() {
-  const lv = LEVEL_INFO[currentLevel];
-  alert(`✅ ${selectedSentences.size}개 문장 선택 완료!\n레벨: ${lv.name}\n\n다음 단계: 학습 언어를 선택하고 연습을 시작합니다.\n(개발 예정)`);
+// ── STEP 4 ────────────────────────────────────────────
+function goToStep4() {
+  stepDone(3);
+  document.getElementById('step3').classList.add('hidden');
+  document.getElementById('bottom-bar').classList.add('hidden');
+
+  // disable native lang button in target grid
+  document.querySelectorAll('#target-grid .lang-btn').forEach(b=>{
+    b.disabled = (b.dataset.lang===nativeLang);
+    b.classList.remove('selected');
+  });
+  document.getElementById('step4').classList.remove('hidden');
+  stepActive(4);
+}
+
+function selectTargetLang(btn) {
+  document.querySelectorAll('#target-grid .lang-btn').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+  targetLang = btn.dataset.lang;
+  setTimeout(()=>{ stepDone(4); showLearning(); }, 200);
+}
+
+// ── STEP 5 ────────────────────────────────────────────
+function showLearning() {
+  const nl=LANG_INFO[nativeLang], tl=LANG_INFO[targetLang], li=LV_INFO[currentLevel];
+  document.getElementById('learn-native-flag').textContent=nl.flag;
+  document.getElementById('learn-native-name').textContent=nl.name;
+  document.getElementById('learn-target-flag').textContent=tl.flag;
+  document.getElementById('learn-target-name').textContent=tl.name;
+  document.getElementById('learn-lv-dot').style.background=li.color;
+  document.getElementById('learn-lv-name').textContent=li.name;
+
+  const cards=document.getElementById('learn-cards'); cards.innerHTML='';
+  selectedIds.forEach(key=>{
+    const [cat,idx]=key.split('-');
+    const s=DATA[cat][parseInt(idx)];
+    if(!s) return;
+    const card=document.createElement('div'); card.className='learn-card fade-in';
+    card.innerHTML=`
+      <div class="learn-native">
+        <span class="learn-tag" style="float:right;margin-left:8px">${s.tag.split('/')[0]}</span>
+        ${s[nativeLang]}
+      </div>
+      <div class="learn-divider"></div>
+      <div class="learn-target${revealAll?'':' hidden-text'}" id="lt-${key}">
+        <span class="target-text">${s[targetLang]}</span>
+        <button class="btn-reveal" onclick="revealOne('lt-${key}',this)">${revealAll?'가리기':'보기'}</button>
+      </div>`;
+    cards.appendChild(card);
+  });
+
+  document.getElementById('step4').classList.add('hidden');
+  document.getElementById('step5').classList.remove('hidden');
+  stepActive(5);
+}
+
+function revealOne(id, btn) {
+  const el=document.getElementById(id);
+  const hidden=el.classList.toggle('hidden-text');
+  btn.textContent=hidden?'보기':'가리기';
+}
+
+function toggleRevealAll() {
+  revealAll=!revealAll;
+  const toggle=document.getElementById('reveal-toggle');
+  toggle.classList.toggle('on',revealAll);
+  document.querySelectorAll('.learn-target').forEach(el=>{
+    el.classList.toggle('hidden-text',!revealAll);
+  });
+  document.querySelectorAll('.btn-reveal').forEach(btn=>{
+    btn.textContent=revealAll?'가리기':'보기';
+  });
 }
 </script>
 </body>
